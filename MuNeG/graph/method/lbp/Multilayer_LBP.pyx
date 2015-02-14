@@ -23,6 +23,7 @@ from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.reader.ExcelReader import ExcelReader
 cimport graph.method.lbp.CrossValMethods as cvm
 cimport graph.method.lbp.LBPTools as tool
+cimport graph.method.common.CommonUtils as commonUtils
 cdef class Multilayer_LBP:
     
     
@@ -50,10 +51,10 @@ cdef class Multilayer_LBP:
         lbp = LoopyBeliefPropagation()
         
         cdef tools = tool.LBPTools(nrOfNodes, graph, defaultClassMat, lbpMaxSteps, lbpThreshold, percentOfTrainingNodes)
-        
+        cdef common = commonUtils.CommonUtils()
         fold_sum, fuz_mean_occ, sum = tools.crossVal(items, nrOfFolds, graph, nrOfNodes, 
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
-                       tools.k_fold_cross_validation, tools.giveCorrectData,
+                       common.k_fold_cross_validation, tools.giveCorrectData,
                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)
             
         #cross validation summary

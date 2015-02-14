@@ -12,6 +12,7 @@ from random import shuffle
 from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 cimport graph.method.lbp.CrossValMethods as crossValMethods
 cimport graph.method.lbp.LBPTools as tool
+cimport graph.method.common.CommonUtils as commonUtils
 DTYPE = np.int
 ctypedef np.int_t DTYPE_t
 DOUBTYPE = np.float
@@ -59,10 +60,11 @@ cdef class FlatLBP:
         #TODO add tzpe when changed to cdef class
         lbp = LoopyBeliefPropagation()
         cdef tool.LBPTools tools = tool.LBPTools(nrOfNodes, graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfTrainignNodes)
-        
+        common = commonUtils.CommonUtils()
+
         fold_sum = tools.crossVal(items, numberOfFolds, graph, nrOfNodes, 
                        defaultClassMat, lbpSteps, lbpThreshold, 
-                       tools.k_fold_cross_validation, self.prepareFoldClassMat,
+                       common.k_fold_cross_validation, self.prepareFoldClassMat,
                        lbp.lbp, None, method.flatCrossVal, False, percentOfTrainignNodes, None, None, None)
         
         cdef list foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)

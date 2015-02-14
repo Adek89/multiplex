@@ -4,15 +4,15 @@ Created on 28 mar 2014
 @author: MKulisiewicz
 '''
 
-import networkx as nx
-import numpy as np
-import random
-from graph.gen.Node import Node
-from sympy.combinatorics import graycode
-from graph.method.lbp.LBPTools import LBPTools
-from nltk.metrics.scores import precision
-from graph.method.lbp.CrossValMethods import CrossValMethods
 import copy
+
+import numpy as np
+
+from graph.method.lbp import CrossValMethods
+from graph.method.lbp.LBPTools import LBPTools
+from graph.method.common.CommonUtils import CommonUtils
+
+
 class RwpLBP:
     
     
@@ -34,10 +34,10 @@ class RwpLBP:
         # print defaultClassMat.T
         
         method = CrossValMethods()
-        
+        common = CommonUtils()
         fold_sum, fuz_mean_occ, sum = tools.crossVal(items, nrOfFolds, graph, nrOfNodes, 
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
-                       tools.k_fold_cross_validation, tools.giveCorrectData,
+                       common.k_fold_cross_validation, tools.giveCorrectData,
                        self.propagation, layerWeights, method.multiLayerCrossVal, True, percentOfKnownNodes, self.prepare_adjetency_matrix, tools.separate_layer, tools.prepareClassMatForFold)
 
         fusion_mean = copy.deepcopy(sum)
