@@ -13,7 +13,6 @@ from graph.method.lbp.RwpLBP import RwpLBP
 from graph.evaluation.EvaluationTools import EvaluationTools
 import csv
 import time
-import matplotlib.pyplot as plt
 class DecisionFusion:
     
     #Parameters
@@ -38,7 +37,7 @@ class DecisionFusion:
     training = []
     validation = []
     
-    FILE_PATH = "output"
+    FILE_PATH = "/home/apopiel/tmp/output"
     
     
     nu = NetworkUtils()
@@ -130,7 +129,7 @@ class DecisionFusion:
     def readRealData(self):
         reader = ExcelReader()
         self.realGraph = reader.read('acta_vir')
-
+        
     def generateSyntheticData(self):
         start_time = time.time()
         self.gg = GraphGenerator(self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.LAYERS_WEIGHTS,

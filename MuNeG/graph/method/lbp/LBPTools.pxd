@@ -25,7 +25,7 @@ cdef class LBPTools:
     cdef list prepareEmptyRow(self, int nrOfClasses)
     cpdef giveCorrectData(self, int label)
     cpdef np.ndarray giveCorrectClassMat(self, int label)
-    cdef void addToGraph(self, g, n.Node n0, n.Node n1, set nodes, np.ndarray classMat, list training, int nrOfClasses, edge)
+    cdef void addToGraph(self, g, n0, n1, set nodes, np.ndarray classMat, list training, int nrOfClasses, edge)
     cpdef prepareClassMatForFold(self, int layer, list training)
     cpdef separate_layer(self, graph, list layers, np.ndarray defaultClassMat, list training)
     cdef fillEmptyRow(self, g, set rest, set nodes, int nrOfClasses, np.ndarray classMat)

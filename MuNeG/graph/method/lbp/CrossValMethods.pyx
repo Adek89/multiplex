@@ -7,7 +7,6 @@ cimport cython
 from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 import numpy as np
 cimport numpy as np
-cimport graph.gen.Node as n
 DTYPE=np.float64
 ctypedef np.float64_t DTYPE_t
 
@@ -37,7 +36,6 @@ cdef class CrossValMethods:
         cdef int num_of_res
         cdef list sum
         cdef int iter
-        cdef n.Node node
         for training, validation in k_fold_cross_validation(items, numberOfFolds, percentOfKnownNodes):
             print "-----FOLD %d-----" % fold_number
             

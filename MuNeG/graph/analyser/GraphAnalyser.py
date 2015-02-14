@@ -4,6 +4,7 @@ from sqlalchemy.sql.functions import coalesce
 __author__ = 'Adek'
 import networkx as nx
 from graph.gen.GraphGenerator import GraphGenerator
+from graph.reader.Salon24.Salon24Reader import Salon24Reader
 import csv
 import time
 import matplotlib.pyplot as plt
@@ -86,10 +87,11 @@ class GraphAnalyser:
         return diameter, shortestPath
 
     def analyse(self):
-        gg =  GraphGenerator(self.nrOfNodes, self.avgNrOfGroups, self.layerWeights,
-                                 self.grLabelHomogenity, self.probOfEdgeInSameGroup,
-                                 self.probOfEdgeInOtherGrops, self.layerName)
-        graph = gg.generate()
+        # gg =  GraphGenerator(self.nrOfNodes, self.avgNrOfGroups, self.layerWeights,
+        #                          self.grLabelHomogenity, self.probOfEdgeInSameGroup,
+        #                          self.probOfEdgeInOtherGrops, self.layerName)
+        gg = Salon24Reader()
+        graph = gg.createNetwork()
         degree_sequence, dmax = self.drawDegreeDistribution(graph) #1
         nrOfEdges = graph.number_of_edges() #2
         avgDegree = float(sum(degree_sequence))/float(len(degree_sequence)) #3

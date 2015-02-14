@@ -30,11 +30,6 @@ cdef class Node:
     def get_group(self):
         return self.group
 
-    def __reduce__(self):
-        # a tuple as specified in the pickle docs - (class_or_constructor,
-        # (tuple, of, args, to, constructor))
-        return (self.__class__, (self.group, self.label, self.id))
-
     property group:
         def __get__(self):
           return self.group

@@ -1,4 +1,3 @@
-from graph.analyser.GraphAnalyser import GraphAnalyser
 
 __author__ = 'Adek'
 import time

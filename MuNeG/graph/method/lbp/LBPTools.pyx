@@ -12,7 +12,6 @@ from graph.gen.Node import Node
 cimport cython
 import numpy.matrixlib.defmatrix as defmatrix
 cimport numpy as np
-cimport graph.gen.Node as n
 cdef class LBPTools:
     '''
     classdocs
@@ -110,7 +109,7 @@ cdef class LBPTools:
         # print self.folds[str(label)]
         return self.folds[str(label)]
     
-    cdef void addToGraph(self, g, n.Node n0, n.Node n1, set nodes, np.ndarray classMat, list training, int nrOfClasses, edge):
+    cdef void addToGraph(self, g, n0, n1, set nodes, np.ndarray classMat, list training, int nrOfClasses, edge):
 
         if not g.has_node(n0):
             nodes.add(n0)
@@ -156,8 +155,6 @@ cdef class LBPTools:
         cdef int nrOfClasses = self.classMats[str(1)].shape[1]
         cdef int label
         cdef str temp
-        cdef n.Node n0
-        cdef n.Node n1
         for edge in graph.edges(data=True):
             for label in layers:
                 temp = ".*'layer': 'L"+str(label)+"'.*"
@@ -173,13 +170,16 @@ cdef class LBPTools:
         for i in layers:
             self.rests[str(i)] = gNodes.difference(self.nodes[str(i)])
         for i in layers:
+            print i
+            print self.nodes[str(i)]
+            print self.rests[str(i)]
+            print self.classMats[str(i)]
             self.classMats[str(i)], self.adjMats[str(i)], self.nodes[str(i)] = self.fillEmptyRow(self.graphs[str(i)],
                                                                                                  self.rests[str(i)],
                                                                                                  self.nodes[str(i)],
                                                                                                  nrOfClasses,
                                                                                                      self.classMats[str(i)])
     cdef fillEmptyRow(self, g, set rest, set nodes, int nrOfClasses, np.ndarray classMat):
-        cdef n.Node node
         cdef list row
         cdef list sortedNodes
         cdef np.ndarray adjMat

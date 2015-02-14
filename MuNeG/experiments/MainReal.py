@@ -6,7 +6,7 @@ Created on 18 mar 2014
 import time
 import sys
 sys.path.append('/home/apopiel/MuNeG')
-from experiments.DecisionFusion import DecisionFusion
+from experiments.DecisionFusionReal import DecisionFusion
 if __name__ == '__main__':
     start_time = time.time()
     # groups = [100, 500, 1000]
@@ -20,16 +20,10 @@ if __name__ == '__main__':
     #         for label in groupLabel:
     #             for probIn in probInGroup:
     #                 for probBetween in probBetweenGroups:
-    nodes = int(sys.argv[1])
-    size = int(sys.argv[2])
-    label = float(sys.argv[3])
-    probIn = int(sys.argv[4])
-    probBetween = float(sys.argv[5])
-    nrOfLayers = int(sys.argv[6])
-    percentOfTrainingNodes = float(sys.argv[7])
-    counter = int(sys.argv[8])
+    percentOfTrainingNodes = float(sys.argv[1])
+    counter = float(sys.argv[2])
 
 
-    df = DecisionFusion(nodes, size, label, probIn, probBetween, nrOfLayers, percentOfTrainingNodes, counter)
+    df = DecisionFusion(percentOfTrainingNodes, counter)
     df.processExperiment()
     print("--- %s seconds ---" % str(time.time() - start_time))
