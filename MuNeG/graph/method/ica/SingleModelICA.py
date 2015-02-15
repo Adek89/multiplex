@@ -1,7 +1,7 @@
 __author__ = 'Adek'
 
 import networkx as nx
-
+import numpy as np
 import graph.method.common.CommonUtils as commons
 
 
@@ -18,13 +18,41 @@ class SingleModelICA:
         self.nrOfFolds = nrOfFolds
         self.classifier = classifier
 
+    def prepareClassifierInputs(self, node):
+        nxNode = node.item()
+        neigbourhood = self.graph.neighbors(nxNode)
+        y = nxNode.label
+        x = [0, 0]
+        for neighbour in neigbourhood:
+            if (neighbour.label == 0):
+                x[0] = x[0] + 1
+            else:
+                x[1] = x[1] + 1
+        return x, y
+
+    def trainClassifier(self, nodesArray, training):
+        trainingNodes = nodesArray[training]
+        x = []
+        y = []
+        for node in np.nditer(trainingNodes, ["refs_ok"]):
+            nodeX, nodeY = self.prepareClassifierInputs(node)
+            x.append(nodeX)
+            y.append(nodeY)
+        self.classifier.fit(x, y)
+
+    def crossValidation(self, commonUtils, items, nodesArray):
+        for training, validation in commonUtils.k_fold_cross_validation(items, self.nrOfFolds, self.percentTraining):
+            self.trainClassifier(nodesArray, training)
+            testNodes = nodesArray[validation]
+
     def classify(self):
         nodes = self.graph.nodes()
+        nodesArray = np.asanyarray(nodes).transpose()
         nrOfNodes = nodes.__len__()
         commonUtils = commons.CommonUtils()
-        for i in xrange(self.nrOfFolds):  #nrOfFolds times
-            items = range(nrOfNodes)
-            trainingId, testId = commonUtils.k_fold_cross_validation(items, self.nrOfFolds, self.percentTraining)
+        items = range(nrOfNodes)
+        self.crossValidation(commonUtils, items, nodesArray)
+
 
 
 
