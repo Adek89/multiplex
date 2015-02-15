@@ -3,6 +3,7 @@ __author__ = 'Adek'
 import numpy as np
 import networkx as nx
 import random
+import copy
 class ICA:
 
     #global variables
@@ -11,7 +12,7 @@ class ICA:
     testNodes = None
     nrOfNodes = 0
     classifier = None
-    y = []
+    y = dict([])
 
     NR_OF_ITERATIONS = 100
 
@@ -25,7 +26,7 @@ class ICA:
          self.testNodes = testNodes
          self.nrOfNodes = self.graph.nodes().__len__()
          self.classifier = classifier
-         self.y = []
+         self.y = dict([])
 
     #Start of algorithm
     def execute(self):
@@ -34,14 +35,20 @@ class ICA:
         #2. Iterative classification
         self.classifyIteratively()
 
-    def classify(self, neighbours, testNodeIndex):
+    def updateInputVector(self, label, x):
+        if (label == 0):
+            x[0] = x[0] + 1
+        else:
+            x[1] = x[1] + 1
+
+    def classify(self, knownNeighbours, tempLabels, testNode):
         x = [0, 0]
-        for neighbour in neighbours:
-            if (neighbour.label == 0):
-                x[0] = x[0] + 1
-            else:
-                x[1] = x[1] + 1
-        self.y.append(self.classifier.predict(x).item())
+        for neighbour in knownNeighbours:
+            self.updateInputVector(neighbour.label, x)
+        for label in tempLabels:
+            self.updateInputVector(label, x)
+        prediction = self.classifier.predict(x).item()
+        self.y.update({testNode : prediction})
 
     def classifyIteratively(self):
         nrOfTestNodes = range(self.testNodes.__len__())
@@ -51,14 +58,20 @@ class ICA:
                 currentNode = self.testNodes[j]
                 neighbourhoodAll = self.graph.neighbors(currentNode)
                 knownNodes = self.extractKnownNodes(neighbourhoodAll)
+                knownNodesList = knownNodes.tolist()
+                unknownList = list(set(neighbourhoodAll) - set(knownNodesList))
+                tempLabels = []
+                for unknownNode in unknownList:
+                    currentPrediction = self.y.get(unknownNode)
+                    tempLabels.append(currentPrediction)
+                self.classify(knownNodesList, tempLabels, currentNode)
 
     def bootstrapping(self):
-        testNodeIndex = 0
         for testNode in np.nditer(self.testNodes, ["refs_ok"]):
             nxTestNode = testNode.item()
             neighbourhoodAll = self.graph.neighbors(nxTestNode)
             knownNodes = self.extractKnownNodes(neighbourhoodAll)
-            self.classify(knownNodes, testNodeIndex)
+            self.classify(knownNodes, [], nxTestNode)
 
     def extractKnownNodes(self, neighbourhoodAll):
         neighbourArray = np.asanyarray(neighbourhoodAll)
