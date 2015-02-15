@@ -3,7 +3,7 @@ __author__ = 'Adek'
 import networkx as nx
 import numpy as np
 import graph.method.common.CommonUtils as commons
-
+from graph.method.ica.ICA import ICA
 
 class SingleModelICA:
     graph = nx.MultiGraph()
@@ -39,15 +39,22 @@ class SingleModelICA:
             x.append(nodeX)
             y.append(nodeY)
         self.classifier.fit(x, y)
+        return trainingNodes
+
+    def executeICA(self, testNodes, trainingNodes):
+        ica = ICA(self.graph, trainingNodes, testNodes, self.classifier)
+        ica.execute()
 
     def crossValidation(self, commonUtils, items, nodesArray):
         for training, validation in commonUtils.k_fold_cross_validation(items, self.nrOfFolds, self.percentTraining):
-            self.trainClassifier(nodesArray, training)
+            trainingNodes = self.trainClassifier(nodesArray, training)
             testNodes = nodesArray[validation]
+            self.executeICA(testNodes, trainingNodes)
 
     def classify(self):
         nodes = self.graph.nodes()
-        nodesArray = np.asanyarray(nodes).transpose()
+        sortedNodes = sorted(nodes, key=lambda node: node.id)
+        nodesArray = np.asanyarray(sortedNodes).transpose()
         nrOfNodes = nodes.__len__()
         commonUtils = commons.CommonUtils()
         items = range(nrOfNodes)

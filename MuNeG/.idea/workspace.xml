@@ -12,7 +12,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/MuNeG$SingleModelICATest.coverage" NAME="SingleModelICATest Coverage Results" MODIFIED="1424006567514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/graph/method/ica" />
+    <SUITE FILE_PATH="coverage/MuNeG$SingleModelICATest.coverage" NAME="SingleModelICATest Coverage Results" MODIFIED="1424024429523" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/graph/method/ica" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -26,21 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainReal.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/experiments/MainReal.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="561">
-              <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SingleModelICA.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/graph/method/ica/SingleModelICA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="1088">
-              <caret line="45" column="45" selection-start-line="45" selection-start-column="45" selection-end-line="45" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="570" max-vertical-offset="1207">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding>
                 <element signature="e#21#42#0" expanded="true" />
               </folding>
@@ -48,14 +38,71 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Salon24Reader.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/graph/reader/Salon24/Salon24Reader.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2822">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1423604248000" expanded="true" signature="817:853" placeholder="SELECT count..salon24com..." />
+                <marker date="1423604248000" expanded="true" signature="3588:3873" placeholder="select Autho..salon24com..." />
+                <marker date="1423604248000" expanded="true" signature="3718:3872" placeholder="select 1 fro..salon24com..." />
+                <marker date="1423604248000" expanded="true" signature="4145:4428" placeholder="select Autho..salon24com..." />
+                <marker date="1423604248000" expanded="true" signature="4278:4427" placeholder="select 1 fro..salon24com..." />
+                <marker date="1423604248000" expanded="true" signature="4681:4848" placeholder="SELECT Autho..salon24com..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Salon24Node.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/graph/reader/Salon24/Salon24Node.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__builtin__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-762174762/__builtin__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="8806" max-vertical-offset="86598">
+              <caret line="524" column="4" selection-start-line="524" selection-start-column="4" selection-end-line="524" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ICA.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/graph/method/ica/ICA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.80456024" vertical-offset="178" max-vertical-offset="663">
-              <caret line="25" column="19" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.33224756" vertical-offset="731" max-vertical-offset="1258">
+              <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
               <folding>
                 <element signature="e#21#39#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EvaluationTools.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/graph/evaluation/EvaluationTools.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1947" max-vertical-offset="4012">
+              <caret line="133" column="4" selection-start-line="133" selection-start-column="4" selection-end-line="133" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DecisionFusion.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/experiments/DecisionFusion.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2708" max-vertical-offset="3553">
+              <caret line="186" column="31" selection-start-line="186" selection-start-column="31" selection-end-line="186" selection-end-column="31" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -70,21 +117,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommonUtils.pyx" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/graph/method/common/CommonUtils.pyx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="952">
-              <caret line="9" column="8" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SingleModelICATest.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/graph/method/ica/SingleModelICATest.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <caret line="7" column="21" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
               <folding>
                 <element signature="e#20#78#0" expanded="true" />
               </folding>
@@ -102,43 +139,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="defmatrix.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://C:/Python27/Lib/site-packages/numpy/matrixlib/defmatrix.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5287" max-vertical-offset="18700">
-              <caret line="317" column="0" selection-start-line="317" selection-start-column="0" selection-end-line="317" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GraphGenerator.pyx" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/graph/gen/GraphGenerator.pyx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="429" max-vertical-offset="2584">
-              <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Salon24Reader.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/graph/reader/Salon24Reader.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2720">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <marker date="1423592823000" expanded="true" signature="817:853" placeholder="SELECT count..salon24com..." />
-                <marker date="1423592823000" expanded="true" signature="3588:3873" placeholder="select Autho..salon24com..." />
-                <marker date="1423592823000" expanded="true" signature="3718:3872" placeholder="select 1 fro..salon24com..." />
-                <marker date="1423592823000" expanded="true" signature="4145:4428" placeholder="select Autho..salon24com..." />
-                <marker date="1423592823000" expanded="true" signature="4278:4427" placeholder="select 1 fro..salon24com..." />
-                <marker date="1423592823000" expanded="true" signature="4681:4848" placeholder="SELECT Autho..salon24com..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -151,7 +151,6 @@
       <list>
         <option value="$PROJECT_DIR$/graph/method/ica/ClassifiersUtil.py" />
         <option value="$PROJECT_DIR$/experiments/DecisionFusion.py" />
-        <option value="$PROJECT_DIR$/graph/method/ica/ICA.py" />
         <option value="$PROJECT_DIR$/graph/method/ica/EnsambleLearning.py" />
         <option value="$PROJECT_DIR$/graph/method/common/CommonUtils.py" />
         <option value="$PROJECT_DIR$/graph/method/lbp/LBPTools.pyx" />
@@ -162,6 +161,7 @@
         <option value="$PROJECT_DIR$/graph/method/common/CommonUtils.pxd" />
         <option value="$PROJECT_DIR$/graph/method/ica/SingleModelICATest.py" />
         <option value="$PROJECT_DIR$/graph/method/ica/SingleModelICA.py" />
+        <option value="$PROJECT_DIR$/graph/method/ica/ICA.py" />
       </list>
     </option>
   </component>
@@ -609,6 +609,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="graph" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="evaluation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MuNeG" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MuNeG" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="experiments" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -879,12 +897,17 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/graph/method/ica/SingleModelICA.py</url>
-          <line>48</line>
-          <option name="timeStamp" value="1" />
+          <url>file://$PROJECT_DIR$/graph/method/ica/ICA.py</url>
+          <line>49</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/graph/method/ica/ICA.py</url>
+          <line>37</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="2" />
+      <option name="time" value="10" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -932,14 +955,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="368">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiments/DecisionFusion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2166" max-vertical-offset="3553">
-          <caret line="143" column="8" selection-start-line="143" selection-start-column="8" selection-end-line="143" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -1035,7 +1050,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="867" max-vertical-offset="1615">
           <caret line="63" column="9" selection-start-line="63" selection-start-column="9" selection-end-line="63" selection-end-column="9" />
           <folding>
-            <element signature="e#55#76#0" expanded="true" />
+            <element signature="e#55#76#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1069,7 +1084,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="922" max-vertical-offset="1428">
           <caret line="72" column="8" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="8" />
           <folding>
-            <element signature="e#46#57#0" expanded="true" />
+            <element signature="e#46#57#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1079,38 +1094,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1555" max-vertical-offset="3179">
           <caret line="98" column="8" selection-start-line="98" selection-start-column="8" selection-end-line="98" selection-end-column="103" />
           <folding>
-            <element signature="e#63#137#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-762174762/__builtin__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="57480" max-vertical-offset="86598">
-          <caret line="3388" column="8" selection-start-line="3388" selection-start-column="8" selection-end-line="3388" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/graph/reader/Salon24/Salon24Node.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/graph/reader/Salon24/Salon24Reader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2822">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1423604248000" expanded="true" signature="-1:-1" placeholder="SELECT count..salon24com..." />
-            <marker date="1423604248000" expanded="true" signature="-1:-1" placeholder="select Autho..salon24com..." />
-            <marker date="1423604248000" expanded="true" signature="-1:-1" placeholder="select 1 fro..salon24com..." />
-            <marker date="1423604248000" expanded="true" signature="-1:-1" placeholder="select Autho..salon24com..." />
-            <marker date="1423604248000" expanded="true" signature="-1:-1" placeholder="select 1 fro..salon24com..." />
-            <marker date="1423604248000" expanded="true" signature="-1:-1" placeholder="SELECT Autho..salon24com..." />
+            <element signature="e#63#137#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1120,12 +1104,12 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2720">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1423592823000" expanded="true" signature="817:853" placeholder="SELECT count..salon24com..." />
-            <marker date="1423592823000" expanded="true" signature="3588:3873" placeholder="select Autho..salon24com..." />
-            <marker date="1423592823000" expanded="true" signature="3718:3872" placeholder="select 1 fro..salon24com..." />
-            <marker date="1423592823000" expanded="true" signature="4145:4428" placeholder="select Autho..salon24com..." />
-            <marker date="1423592823000" expanded="true" signature="4278:4427" placeholder="select 1 fro..salon24com..." />
-            <marker date="1423592823000" expanded="true" signature="4681:4848" placeholder="SELECT Autho..salon24com..." />
+            <marker date="1423592823000" expanded="true" signature="-1:-1" placeholder="SELECT count..salon24com..." />
+            <marker date="1423592823000" expanded="true" signature="-1:-1" placeholder="select Autho..salon24com..." />
+            <marker date="1423592823000" expanded="true" signature="-1:-1" placeholder="select 1 fro..salon24com..." />
+            <marker date="1423592823000" expanded="true" signature="-1:-1" placeholder="select Autho..salon24com..." />
+            <marker date="1423592823000" expanded="true" signature="-1:-1" placeholder="select 1 fro..salon24com..." />
+            <marker date="1423592823000" expanded="true" signature="-1:-1" placeholder="SELECT Autho..salon24com..." />
           </folding>
         </state>
       </provider>
@@ -1170,16 +1154,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/graph/method/ica/SingleModelICATest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding>
-            <element signature="e#20#78#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/site-packages/networkx-1.8.1-py2.7.egg/networkx/classes/graph.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="16473" max-vertical-offset="30923">
@@ -1188,10 +1162,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-762174762/__builtin__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="8806" max-vertical-offset="86598">
+          <caret line="524" column="4" selection-start-line="524" selection-start-column="4" selection-end-line="524" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/graph/reader/Salon24/Salon24Node.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/graph/reader/Salon24/Salon24Reader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2822">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1423604248000" expanded="true" signature="817:853" placeholder="SELECT count..salon24com..." />
+            <marker date="1423604248000" expanded="true" signature="3588:3873" placeholder="select Autho..salon24com..." />
+            <marker date="1423604248000" expanded="true" signature="3718:3872" placeholder="select 1 fro..salon24com..." />
+            <marker date="1423604248000" expanded="true" signature="4145:4428" placeholder="select Autho..salon24com..." />
+            <marker date="1423604248000" expanded="true" signature="4278:4427" placeholder="select 1 fro..salon24com..." />
+            <marker date="1423604248000" expanded="true" signature="4681:4848" placeholder="SELECT Autho..salon24com..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/graph/method/ica/SingleModelICATest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
+          <caret line="7" column="21" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
+          <folding>
+            <element signature="e#20#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/graph/evaluation/EvaluationTools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1947" max-vertical-offset="4012">
+          <caret line="133" column="4" selection-start-line="133" selection-start-column="4" selection-end-line="133" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiments/DecisionFusion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2708" max-vertical-offset="3553">
+          <caret line="186" column="31" selection-start-line="186" selection-start-column="31" selection-end-line="186" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/graph/method/ica/SingleModelICA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="1088">
-          <caret line="45" column="45" selection-start-line="45" selection-start-column="45" selection-end-line="45" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="570" max-vertical-offset="1207">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
             <element signature="e#21#42#0" expanded="true" />
           </folding>
@@ -1200,8 +1231,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/graph/method/ica/ICA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80456024" vertical-offset="178" max-vertical-offset="663">
-          <caret line="25" column="19" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.33224756" vertical-offset="731" max-vertical-offset="1258">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
           <folding>
             <element signature="e#21#39#0" expanded="true" />
           </folding>
