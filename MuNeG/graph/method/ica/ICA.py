@@ -3,7 +3,6 @@ __author__ = 'Adek'
 import numpy as np
 import networkx as nx
 import random
-import copy
 class ICA:
 
     #global variables
@@ -30,10 +29,9 @@ class ICA:
 
     #Start of algorithm
     def execute(self):
-        #1. Bootstrapping
         self.bootstrapping()
-        #2. Iterative classification
         self.classifyIteratively()
+        return self.y
 
     def updateInputVector(self, label, x):
         if (label == 0):
@@ -50,21 +48,27 @@ class ICA:
         prediction = self.classifier.predict(x).item()
         self.y.update({testNode : prediction})
 
+    def extractTempLabels(self, tempLabels, unknownList):
+        for unknownNode in unknownList:
+            currentPrediction = self.y.get(unknownNode)
+            tempLabels.append(currentPrediction)
+
+    def performIteration(self, nrOfTestNodes):
+        for j in nrOfTestNodes:
+            currentNode = self.testNodes[j]
+            neighbourhoodAll = self.graph.neighbors(currentNode)
+            knownNodes = self.extractKnownNodes(neighbourhoodAll)
+            knownNodesList = knownNodes.tolist()
+            unknownList = list(set(neighbourhoodAll) - set(knownNodesList))
+            tempLabels = []
+            self.extractTempLabels(tempLabels, unknownList)
+            self.classify(knownNodesList, tempLabels, currentNode)
+
     def classifyIteratively(self):
         nrOfTestNodes = range(self.testNodes.__len__())
         for i in range(0, self.NR_OF_ITERATIONS):
             random.shuffle(nrOfTestNodes)
-            for j in nrOfTestNodes:
-                currentNode = self.testNodes[j]
-                neighbourhoodAll = self.graph.neighbors(currentNode)
-                knownNodes = self.extractKnownNodes(neighbourhoodAll)
-                knownNodesList = knownNodes.tolist()
-                unknownList = list(set(neighbourhoodAll) - set(knownNodesList))
-                tempLabels = []
-                for unknownNode in unknownList:
-                    currentPrediction = self.y.get(unknownNode)
-                    tempLabels.append(currentPrediction)
-                self.classify(knownNodesList, tempLabels, currentNode)
+            self.performIteration(nrOfTestNodes)
 
     def bootstrapping(self):
         for testNode in np.nditer(self.testNodes, ["refs_ok"]):

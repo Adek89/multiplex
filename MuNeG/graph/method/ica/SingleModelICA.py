@@ -43,7 +43,8 @@ class SingleModelICA:
 
     def executeICA(self, testNodes, trainingNodes):
         ica = ICA(self.graph, trainingNodes, testNodes, self.classifier)
-        ica.execute()
+        testNodesDict = ica.execute()
+
 
     def crossValidation(self, commonUtils, items, nodesArray):
         for training, validation in commonUtils.k_fold_cross_validation(items, self.nrOfFolds, self.percentTraining):
