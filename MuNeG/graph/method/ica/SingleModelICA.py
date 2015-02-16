@@ -10,6 +10,7 @@ class SingleModelICA:
     percentTraining = 0.0
     nrOfFolds = 0
     classifier = None
+    y = dict([])
 
     # classifier - to learn
     def __init__(self, graph, percentTraining, nrOfFolds, classifier):
@@ -44,6 +45,7 @@ class SingleModelICA:
     def executeICA(self, testNodes, trainingNodes):
         ica = ICA(self.graph, trainingNodes, testNodes, self.classifier)
         testNodesDict = ica.execute()
+        self.y.update(testNodesDict)
 
 
     def crossValidation(self, commonUtils, items, nodesArray):
@@ -51,6 +53,11 @@ class SingleModelICA:
             trainingNodes = self.trainClassifier(nodesArray, training)
             testNodes = nodesArray[validation]
             self.executeICA(testNodes, trainingNodes)
+        labelsList = []
+        for key in sorted(self.y.keys(), key= lambda node: node.id):
+            prio = self.y.get(key)
+            labelsList.append(prio)
+        return labelsList
 
     def classify(self):
         nodes = self.graph.nodes()
@@ -59,7 +66,7 @@ class SingleModelICA:
         nrOfNodes = nodes.__len__()
         commonUtils = commons.CommonUtils()
         items = range(nrOfNodes)
-        self.crossValidation(commonUtils, items, nodesArray)
+        return self.crossValidation(commonUtils, items, nodesArray)
 
 
 
