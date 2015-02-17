@@ -7,11 +7,13 @@ class EnsambleLearning:
     graph = nx.MultiGraph()
     nrOfModels = 0
     ensambleSet = set([])
+    nrOfNodesInSubgraph = 0
 
-    def __init__(self, graph, nrOfModels):
+    def __init__(self, graph, nrOfModels, nrOfNodesInSubgraph):
         self.graph = graph
         self.nrOfModels = nrOfModels
         self.ensambleSet = set([])
+        self.nrOfNodesInSubgraph = nrOfNodesInSubgraph
 
     def ensamble(self):
         for i in range(0, self.nrOfModels):
@@ -21,7 +23,7 @@ class EnsambleLearning:
         return self.ensambleSet
 
     def sampleGraph(self):
-        pass
+        nrOfNodes = self.graph.nodes().__len__()
 
     def learnModel(self):
         pass
