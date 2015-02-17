@@ -48,15 +48,22 @@ class SingleModelICA:
         self.y.update(testNodesDict)
 
 
-    def crossValidation(self, commonUtils, items, nodesArray):
+    def executeCrossValidation(self, commonUtils, items, nodesArray):
         for training, validation in commonUtils.k_fold_cross_validation(items, self.nrOfFolds, self.percentTraining):
             trainingNodes = self.trainClassifier(nodesArray, training)
             testNodes = nodesArray[validation]
             self.executeICA(testNodes, trainingNodes)
+
+    def collectResults(self):
         labelsList = []
-        for key in sorted(self.y.keys(), key= lambda node: node.id):
+        for key in sorted(self.y.keys(), key=lambda node: node.id):
             prio = self.y.get(key)
             labelsList.append(prio)
+        return labelsList
+
+    def crossValidation(self, commonUtils, items, nodesArray):
+        self.executeCrossValidation(commonUtils, items, nodesArray)
+        labelsList = self.collectResults()
         return labelsList
 
     def classify(self):
