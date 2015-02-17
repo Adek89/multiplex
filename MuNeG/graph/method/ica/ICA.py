@@ -39,12 +39,16 @@ class ICA:
         else:
             x[1] = x[1] + 1
 
-    def classify(self, knownNeighbours, tempLabels, testNode):
+    def prepareInput(self, knownNeighbours, tempLabels):
         x = [0, 0]
         for neighbour in knownNeighbours:
             self.updateInputVector(neighbour.label, x)
         for label in tempLabels:
             self.updateInputVector(label, x)
+        return x
+
+    def classify(self, knownNeighbours, tempLabels, testNode):
+        x = self.prepareInput(knownNeighbours, tempLabels)
         prediction = self.classifier.predict(x).item()
         self.y.update({testNode : prediction})
 
