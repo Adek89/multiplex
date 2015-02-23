@@ -33,7 +33,7 @@ class RwpLBP:
         # print "start class matrix"
         # print defaultClassMat.T
         
-        method = CrossValMethods()
+        method = CrossValMethods.CrossValMethods()
         common = CommonUtils()
         fold_sum, fuz_mean_occ, sum = tools.crossVal(items, nrOfFolds, graph, nrOfNodes, 
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 

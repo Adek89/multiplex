@@ -101,7 +101,7 @@ cdef class CrossValMethods:
             
             #separate layers
             results_agregator = []
-        1    num_of_res = 0
+            num_of_res = 0
             
             
             for layer_label in layerWeights:
