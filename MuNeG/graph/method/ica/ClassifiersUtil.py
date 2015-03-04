@@ -20,4 +20,7 @@ def giveSVM():
 def giveDecisionTree():
     return DecisionTreeClassifier()
 
+def knownModels(neighbors=2):
+    return list({giveDecisionTree(), giveKNearestNeighbours(neighbors), giveLabelPropagation(), giveNaiveBayes(), giveSVM()})
+
 

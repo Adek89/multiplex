@@ -16,9 +16,11 @@ class Salon24Reader:
     id = 0
     nodes = dict([])
     graphs = dict([])
+    limit = 0
 
 
-    def __init__(self):
+    def __init__(self, limit):
+        self.limit = limit
         db = MySQLdb.connect(host="156.17.131.242", # your host, usually localhost
                      user="mkuli", # your username
                       passwd="trudnocorobic", # your password
@@ -102,7 +104,7 @@ class Salon24Reader:
         return row
 
     def loadDataFromDB(self):
-        self.cur.execute("select author_name, answer_to, category, url from test.s24_comments")
+        self.cur.execute("select author_name, answer_to, category, url from test.s24_comments limit " + str(self.limit))
         row = self.cur.fetchone()
         counter = 0
         while row is not None:

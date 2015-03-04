@@ -5,36 +5,31 @@ __author__ = 'Adek'
 import networkx as nx
 from graph.gen.GraphGenerator import GraphGenerator
 from graph.reader.Salon24.Salon24Reader import Salon24Reader
+from graph.method.ensamble.EnsambleLearning import EnsambleLearning
 import csv
 import time
 import matplotlib.pyplot as plt
 class GraphAnalyser:
 
-    nrOfNodes = 10
-    nrOfGroups = 1
-    avgNrOfGroups = 1
-    grLabelHomogenity = 0
-    probOfEdgeInSameGroup = 1
-    probOfEdgeInOtherGrops = 1
+    # nrOfNodes = 10
+    # nrOfGroups = 1
+    # avgNrOfGroups = 1
+    # grLabelHomogenity = 0
+    # probOfEdgeInSameGroup = 1
+    # probOfEdgeInOtherGrops = 1
     layerWeights = []
     layerName = []
-    nrOfLayers = 1
+    # nrOfLayers = 1
     percentOfTrainingNodes = 0
     counter = 0
+    graph = None
+    FILE_PATH = "/home/apopiel/tmp/"
 
 
-    def __init__(self, nrOfNodes, nrOfGroups, grLabelHomogenity,
-                 prEdgeInGroup, prEdgeBetweenGroups, nrOfLayers, percentOfTrainignNodes, counter):
-        self.nrOfNodes = nrOfNodes
-        self.nrOfGroups = nrOfGroups
-        self.prepareNumberOfGroups(nrOfNodes, nrOfGroups)
-        self.grLabelHomogenity = grLabelHomogenity
-        self.probOfEdgeInSameGroup = prEdgeInGroup
-        self.probOfEdgeInOtherGrops = prEdgeBetweenGroups
-        self.initLayers(nrOfLayers)
-        self.nrOfLayers = nrOfLayers
+    def __init__(self, graph, percentOfTrainignNodes, counter):
         self.percentOfTrainingNodes = percentOfTrainignNodes
         self.counter = counter
+        self.graph = graph
 
     def prepareNumberOfGroups(self, nrOfNodes, nrOfGroups):
         while True:
@@ -90,8 +85,7 @@ class GraphAnalyser:
         # gg =  GraphGenerator(self.nrOfNodes, self.avgNrOfGroups, self.layerWeights,
         #                          self.grLabelHomogenity, self.probOfEdgeInSameGroup,
         #                          self.probOfEdgeInOtherGrops, self.layerName)
-        gg = Salon24Reader()
-        graph = gg.createNetwork()
+        graph = self.graph
         degree_sequence, dmax = self.drawDegreeDistribution(graph) #1
         nrOfEdges = graph.number_of_edges() #2
         avgDegree = float(sum(degree_sequence))/float(len(degree_sequence)) #3
@@ -103,13 +97,12 @@ class GraphAnalyser:
         diameter, shortestPath = self.getDiameterAndShortestPath(graph)
         avgDiameter = float(sum(diameter))/float(len(diameter))
         avgShortestPath = sum(shortestPath)/len(shortestPath)
+        layers = set([ (edata['layer']) for u,v,edata in graph.edges(data=True)])
 
-        with open('graphparams' + str(self.counter) + '.csv', 'ab') as csvfile:
+        with open(self.FILE_PATH + 'graphparams' + str(self.counter) + '.csv', 'ab') as csvfile:
             writer = csv.writer(csvfile)
 
-            writer.writerow([self.nrOfNodes, self.nrOfGroups, self.grLabelHomogenity,
-                              self.probOfEdgeInSameGroup, self.probOfEdgeInOtherGrops,
-                                self.nrOfLayers, self.percentOfTrainingNodes, nrOfEdges, avgDegree,
+            writer.writerow([graph.nodes().__len__(), layers.__len__(), self.percentOfTrainingNodes, nrOfEdges, avgDegree,
                                 dmax,
                                 nrOfTriangles,
                                 0, # avgSquareCount,

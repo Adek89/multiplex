@@ -22,8 +22,10 @@ if __name__ == '__main__':
     #                 for probBetween in probBetweenGroups:
     percentOfTrainingNodes = float(sys.argv[1])
     counter = float(sys.argv[2])
+    sampleNodes = float(sys.argv[3])
+    limit = int(sys.argv[4])
 
 
-    df = DecisionFusion(percentOfTrainingNodes, counter)
+    df = DecisionFusion(percentOfTrainingNodes, counter, sampleNodes, limit)
     df.processExperiment()
     print("--- %s seconds ---" % str(time.time() - start_time))

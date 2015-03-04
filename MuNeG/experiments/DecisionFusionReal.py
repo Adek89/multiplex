@@ -14,6 +14,8 @@ from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.reader.Salon24.Salon24Reader import Salon24Reader
 import csv
 import time
+from graph.method.ensamble.EnsambleLearning import EnsambleLearning
+from graph.analyser.GraphAnalyser import GraphAnalyser
 import matplotlib.pyplot as plt
 class DecisionFusion:
     
@@ -40,7 +42,7 @@ class DecisionFusion:
     validation = []
     
     FILE_PATH = "/home/apopiel/tmp/output"
-    
+    # FILE_PATH = "output"
     
     nu = NetworkUtils()
     training = []
@@ -74,10 +76,14 @@ class DecisionFusion:
     nrOfLayers = 0
     percentOfTrainignNodes = 0.0
     counter = 0
+    sampledNodes = 0
+    limit = 0
 
-    def __init__(self, percentOfTrainignNodes, counter):
+    def __init__(self, percentOfTrainignNodes, counter, sampledNodes, limit):
         self.percentOfTrainignNodes = percentOfTrainignNodes
         self.counter = counter
+        self.sampledNodes = sampledNodes
+        self.limit = limit
 
     def initLayers(self, nrOfLayers):
         for i in xrange(0, nrOfLayers):
@@ -108,8 +114,12 @@ class DecisionFusion:
     Prepare data
     '''      
     def readRealData(self):
-        reader = Salon24Reader()
+        reader = Salon24Reader(self.limit)
         self.realGraph = reader.createNetwork()
+        ensamble = EnsambleLearning(self.realGraph, 1, self.sampledNodes)
+        self.realGraph = ensamble.sampleGraph()
+        ga = GraphAnalyser(self.realGraph, self.percentOfTrainignNodes, self.counter)
+        ga.analyse()
 
     def generateSyntheticData(self):
         start_time = time.time()
@@ -181,7 +191,7 @@ class DecisionFusion:
             writer = csv.writer(csvfile)
         
             writer.writerow([
-                self.realGraph.nodes().__len__(),self.percentOfTrainignNodes,
+                self.realGraph.nodes().__len__(),self.percentOfTrainignNodes, self.sampledNodes, self.limit,
                             fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMacroRWPRealFoldSum,
                             fMacroRWPRealFusionMean])
         

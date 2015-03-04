@@ -111,7 +111,7 @@ class DecisionFusion:
                 self.multiLayerLBP()
                 self.rwpLBP()
                 self.evaluation()
-            except IndexError, ValueError: 
+            except IndexError, ValueError:
                 self.generateSyntheticData()
                 continue
             break
