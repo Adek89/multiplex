@@ -23,8 +23,8 @@ class GraphAnalyser:
     percentOfTrainingNodes = 0
     counter = 0
     graph = None
-    FILE_PATH = "/home/apopiel/tmp/"
-
+    FILE_PATH = "/home/apopiel/tmp_local/"
+    # FILE_PATH = ""
 
     def __init__(self, graph, percentOfTrainignNodes, counter):
         self.percentOfTrainingNodes = percentOfTrainignNodes

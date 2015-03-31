@@ -49,10 +49,10 @@ class SingleModelICA:
 
 
     def executeCrossValidation(self, commonUtils, items, nodesArray):
-        for training, validation in commonUtils.k_fold_cross_validation(items, self.nrOfFolds, self.percentTraining):
-            trainingNodes = self.trainClassifier(nodesArray, training)
-            testNodes = nodesArray[validation]
-            self.executeICA(testNodes, trainingNodes)
+        # for training, validation in commonUtils.k_fold_cross_validation(items, self.nrOfFolds, self.percentTraining):
+        trainingNodes = self.trainClassifier(nodesArray, items)
+            # testNodes = nodesArray[validation]
+            # self.executeICA(testNodes, trainingNodes)
 
     def collectResults(self):
         labelsList = []

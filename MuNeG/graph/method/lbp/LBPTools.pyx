@@ -167,3 +167,16 @@ cdef class LBPTools:
                      k_fold_cross_validation, separationMethod, lbp, list layerWeights, crossValMethod, isRandomWalk, percentOfKnownNodes, adjMarPrep, prepareLayers, prepareClassMat):
         return crossValMethod(items, numberOfFolds, graph, nrOfNodes,
                      defaultClassMat, lbpSteps, lbpThreshold, k_fold_cross_validation, separationMethod, lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMarPrep, prepareLayers, prepareClassMat)
+
+
+    property classMats:
+        def __get__(self):
+          return self.classMats
+        def __set__(self, dict value):
+          self.classMats = value
+
+    property graphs:
+        def __get__(self):
+          return self.graphs
+        def __set__(self, dict value):
+          self.graphs = value

@@ -6,39 +6,42 @@ import Queue
 import random
 from graph.method.ensamble.Edge import Edge
 from graph.method.ica.SingleModelICA import SingleModelICA
+from graph.gen.Node import Node
 import graph.method.ica.ClassifiersUtil as cu
 class EnsambleLearning:
 
     graph = nx.MultiGraph()
-    nrOfModels = 0
+    models = []
     ensambleSet = set([])
     nrOfNodesInSubgraph = 0
     PERCENT_TRAINING = 0.2
+    copiedNodesId = set([])
+    copiedNodes = dict([])
 
-    def __init__(self, graph, nrOfModels, nrOfNodesInSubgraph):
+    def __init__(self, graph, models, nrOfNodesInSubgraph):
         self.graph = graph
-        self.nrOfModels = nrOfModels
+        self.models = models
         self.ensambleSet = set([])
         self.nrOfNodesInSubgraph = nrOfNodesInSubgraph
 
     def ensamble(self):
-        models = cu.knownModels()
-        for i in range(0, self.nrOfModels):
+        for i in range(0, self.models.__len__()):
             sampledGraph = self.sampleGraph()
-            model = self.learnModel(sampledGraph, models[i])
+            model = self.learnModel(sampledGraph, self.models[i])
             self.ensambleSet.add(model)
         return self.ensambleSet
 
-    def createSampledGraph(self, sampledEdges, sampledGraph, sampledNodes):
+    def createSampledGraph(self, sampledEdges, sampledGraph):
         newIds = 0
-        for node in sampledNodes:
+        for id, node in self.copiedNodes.items():
             node.id = newIds
             newIds += 1
         for edge in sampledEdges:
             edgeData = edge.data
             sampledGraph.add_edge(edge.node1, edge.node2, weight=edgeData['weight'], layer=edgeData['layer'],
                                   conWeight=edgeData['conWeight'])
-        nodesWithoutEdge = sampledNodes.intersection(set(sampledGraph.nodes()))
+        copiedNodesSet = set([el[1] for el in self.copiedNodes.items()])
+        nodesWithoutEdge = copiedNodesSet.difference(set(sampledGraph.nodes()))
         for node in nodesWithoutEdge:
             sampledGraph.add_node(node)
 
@@ -51,12 +54,23 @@ class EnsambleLearning:
             for n in neighbors:
                 q.put(n)
 
+    def assignCopyOrCreate(self, copiedNodes, copiedNodesId, node):
+        if (node.id in copiedNodesId):
+            tempNode = copiedNodes[node.id]
+        else:
+            tempNode = Node(node.group, node.label, node.id)
+            copiedNodesId.add(node.id)
+            copiedNodes.update({node.id: tempNode})
+        return tempNode
+
     def collectEdges(self, edges, sampledEdges):
         for edge in edges:
             node1 = edge[0]
+            tempNode1 = self.assignCopyOrCreate(self.copiedNodes, self.copiedNodesId, node1)
             node2 = edge[1]
+            tempNode2 = self.assignCopyOrCreate(self.copiedNodes, self.copiedNodesId, node2)
             data = edge[2]
-            edgeObj = Edge(node1, node2, data)
+            edgeObj = Edge(tempNode1, tempNode2, data)
             sampledEdges.add(edgeObj)
 
     def sample(self, graphNodes, iterateUnitl, nrOfNodesList, sampledEdges, sampledNodes):
@@ -86,7 +100,7 @@ class EnsambleLearning:
         sampledEdges = set([])
         sampledGraph = nx.MultiGraph()
         sampledNodes = self.sample(graphNodes, int(iterateUnitl), nrOfNodesList, sampledEdges, sampledNodes)
-        self.createSampledGraph(sampledEdges, sampledGraph, sampledNodes)
+        self.createSampledGraph(sampledEdges, sampledGraph)
         return sampledGraph
 
 
