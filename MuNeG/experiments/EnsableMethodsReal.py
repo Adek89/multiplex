@@ -12,9 +12,9 @@ from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.method.lbp.LBPTools import LBPTools
 import random
 import re
-from graph.analyser.GraphAnalyser import GraphAnalyser
 import csv
 import threading
+import copy
 class EnsambleMethods:
 
     NUMBER_OF_NODES = 0;
@@ -30,9 +30,9 @@ class EnsambleMethods:
     counter = 0
 
 
-    synthetic = nx.MultiGraph()
-    syntheticClassMat = []
-    syntheticNrOfClasses = 0
+    real = nx.MultiGraph()
+    realClassMat = []
+    realNrOfClasses = 0
 
     nu = NetworkUtils()
 
@@ -52,34 +52,18 @@ class EnsambleMethods:
 
     threads = dict([])
 
-    # FILE_PATH = "/home/apopiel/tmp_local/output"
-    FILE_PATH = "output"
+    FILE_PATH = "/home/adrian/tmp_local/outputreal"
+    # FILE_PATH = "output"
 
-    def __init__(self,  nrOfNodes, nrOfGroups, grLabelHomogenity, prEdgeInGroup,
-                 prEdgeBetweenGroups, nrOfLayers, percentOfTrainignNodes, nrOfNodesInSubgraph, counter):
-        self.NUMBER_OF_NODES = nrOfNodes
-        self.NUMBER_OF_GROUPS = nrOfGroups
-        self.GROUP_LABEL_HOMOGENITY = grLabelHomogenity
-        self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP = prEdgeInGroup
-        self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS = prEdgeBetweenGroups
-        self.initLayers(nrOfLayers)
-        self.nrOfLayers = nrOfLayers
-        self.percentOfTrainignNodes = percentOfTrainignNodes
-        self.counter = counter
-        self.models = cu.knownModels()
+    def __init__(self, graph, nrOfNodesInSubgraph, percentOfKnownNodes):
+        self.real = graph
         self.nrOfNodesInSubgraph = nrOfNodesInSubgraph
-        self.prepareNumberOfGroups(nrOfNodes, nrOfGroups)
-
-
-
-    def generateSyntheticData(self):
-        self.gg = GraphGenerator(self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.LAYERS_WEIGHTS,
-                                 self.GROUP_LABEL_HOMOGENITY, self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP,
-                                 self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS, self.LAYERS_NAME)
-        self.synthetic = self.gg.generate()
-        print 'Step 1 graph generated'
-        ga = GraphAnalyser(self.synthetic, self.percentOfTrainignNodes, self.counter)
-        ga.analyse()
+        self.models = cu.knownModels()
+        self.percentOfTrainignNodes = percentOfKnownNodes
+        layers = set([ (edata['layer']) for u,v,edata in self.real.edges(data=True)])
+        layersNr = layers.__len__()
+        self.nrOfLayers = layersNr
+        self.initLayers(layersNr)
 
 
     def initLayers(self, nrOfLayers):
@@ -98,21 +82,21 @@ class EnsambleMethods:
         self.AVERAGE_GROUP_SIZE = nrOfNodes / nrOfGroups
 
     def preprocessing(self):
-        self.syntheticClassMat, self.syntheticNrOfClasses = self.nu.createClassMat(self.synthetic)
+        self.realClassMat, self.realNrOfClasses = self.nu.createClassMat(self.real)
 
     def preprocessingLayer(self, graph):
         return self.nu.createClassMat(graph)
 
     def learning(self):
-        el = EnsambleLearning(self.synthetic, self.models, self.nrOfNodesInSubgraph)
-        self.ensambleSet, self.synthetic = el.ensamble()
+        el = EnsambleLearning(copy.deepcopy(self.real), self.models, self.nrOfNodesInSubgraph)
+        self.ensambleSet, self.real = el.ensamble()
 
     def learningLayer(self, graph):
-        el = EnsambleLearning(graph, cu.knownModels(), self.nrOfNodesInSubgraph)
+        el = EnsambleLearning(copy.deepcopy(graph), cu.knownModels(), self.nrOfNodesInSubgraph)
         return el.ensamble()
 
     def classify(self, fold):
-        ec = EnsambleClassification(map(lambda x: x, self.ensambleSet), self.synthetic, self.percentOfTrainignNodes, fold)
+        ec = EnsambleClassification(map(lambda x: x, self.ensambleSet), self.real, self.percentOfTrainignNodes, fold)
         self.finalLabelings = ec.classify()
 
     def classifyLayer(self, ensambleSet, graph, fold):
@@ -130,7 +114,8 @@ class EnsambleMethods:
         return classMatForEv
 
     def evaluation(self, syntheticResult):
-        self.syntheticLabels = self.prepareOriginalLabels(self.syntheticClassMat, self.syntheticNrOfClasses)
+        self.syntheticLabels = self.prepareOriginalLabels(self.realClassMat, self.realNrOfClasses)
+        print 'Original labels: ' + str(self.syntheticLabels)
         ev = EvaluationTools()
         accuracy = ev.calculateAccuracy(self.syntheticLabels, syntheticResult)
         return accuracy
@@ -160,10 +145,11 @@ class EnsambleMethods:
         ensambleSet, graph = self.learningLayer(graph)
         finalLabelings = self.classifyLayer(ensambleSet, graph, fold)
         layerAccuracy = self.layerEvaluation(finalLabelings)
+        print 'Layer result, layer ' + str(l) + ': ' + str(layerAccuracy)
         self.layerResults.update({l: layerAccuracy})
 
     def layeredExperiment(self, fold):
-        self.separate_layer(self.synthetic, range(1, self.nrOfLayers + 1))
+        self.separate_layer(self.real, range(1, self.nrOfLayers + 1))
         for l in range(1, self.nrOfLayers + 1):
             thread = threading.Thread(target=self.executeSingleLayer, args=(fold, l))
             self.threads.update({l:thread})
@@ -176,20 +162,19 @@ class EnsambleMethods:
 
     def processExperiments(self):
         fold = random.choice(range(0,5))
-        self.generateSyntheticData()
         self.preprocessing()
         self.learning()
         self.classify(fold)
         syntheticLabels = [v for e, v in sorted(self.finalLabelings.items())]
+        print 'Flat result' + str(syntheticLabels)
         self.flatAccuracy = self.evaluation(syntheticLabels)
 
         layeredAccuracy = self.layeredExperiment(fold)
+        layers = set([ (edata['layer']) for u,v,edata in self.real.edges(data=True)])
         with open(self.FILE_PATH + str(self.counter) + '.csv', 'ab') as csvfile:
             writer = csv.writer(csvfile)
 
-            writer.writerow([self.NUMBER_OF_NODES, self.NUMBER_OF_GROUPS, self.GROUP_LABEL_HOMOGENITY,
-                              self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP, self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
-                                self.nrOfLayers, self.percentOfTrainignNodes, self.nrOfNodesInSubgraph,
+            writer.writerow([self.real.nodes().__len__(), layers.__len__(), self.percentOfTrainignNodes, self.nrOfNodesInSubgraph,
                             self.flatAccuracy, layeredAccuracy])
 
 

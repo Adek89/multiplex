@@ -69,15 +69,20 @@ class Salon24Reader:
         self.assignIdIfNewNode(changedNode, changedReceipient, node, receipient)
         return node, receipient
 
-    def addToGraph(self, node, receipient, graph, url):
+    def addToGraph(self, node, receipient, graph, url, hour):
         wasAuthor = False
+        wasJournalist = False
+        if hour >= 8 and hour <=16:
+            wasJournalist = True
         if receipient.name == 'autor':
             receipient.name = self.recognizeAuthor(url)
             wasAuthor = True
         node, receipient = self.searchForExistance(node, receipient)
         graph.add_edge(node, receipient)
         if wasAuthor:
-            receipient.label = 1
+            node.label = 2
+        if not wasAuthor and wasJournalist:
+            node.label = 1
 
     def recognizeAuthor(self, url):
         start = url.find('http://') + 7
@@ -86,6 +91,7 @@ class Salon24Reader:
         return author
 
     def loadCategory(self, counter, row):
+        time = row[4]
         url = row[3].lower()
         node = Salon24Node(row[0].lower())
         receipient = Salon24Node(row[1].lower())
@@ -96,7 +102,11 @@ class Salon24Reader:
         else:
             currentGraph = nx.MultiGraph()
             self.graphs.update({category: currentGraph})
-        self.addToGraph(node, receipient, currentGraph, url)
+        if time == None:
+            hour = 0
+        else:
+            hour = time.hour
+        self.addToGraph(node, receipient, currentGraph, url, hour)
         row = self.cur.fetchone()
         counter = counter + 1
         if counter % 10 == 0:
@@ -104,7 +114,7 @@ class Salon24Reader:
         return row
 
     def loadDataFromDB(self):
-        self.cur.execute("select author_name, answer_to, category, url from test.s24_comments limit " + str(self.limit))
+        self.cur.execute("select author_name, answer_to, category, url, full_time from test.s24_comments limit " + str(self.limit))
         row = self.cur.fetchone()
         counter = 0
         while row is not None:
@@ -117,11 +127,11 @@ class Salon24Reader:
     def addLayerToGraph(self, adjMat, sortedNodes, layer, weight):
         for i in range(0, adjMat.shape[0]):
             row = adjMat[i]
-            sumRow = np.sum(row)
+            sumRow =row.sum()
             nodeA = sortedNodes[i]
             for j in range(0, adjMat.shape[1]):
                 nodeB = sortedNodes[j]
-                value = adjMat[i, j] / sumRow
+                value = float(adjMat[i, j]) / float(sumRow)
                 if (value != 0):
                     self.graph.add_edge(nodeA, nodeB, weight=weight, conWeight=value, layer=layer)
 

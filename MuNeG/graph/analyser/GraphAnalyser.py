@@ -23,8 +23,8 @@ class GraphAnalyser:
     percentOfTrainingNodes = 0
     counter = 0
     graph = None
-    FILE_PATH = "/home/apopiel/tmp_local/"
-    # FILE_PATH = ""
+    # FILE_PATH = "/home/apopiel/tmp_local/"
+    FILE_PATH = ""
 
     def __init__(self, graph, percentOfTrainignNodes, counter):
         self.percentOfTrainingNodes = percentOfTrainignNodes
@@ -75,8 +75,11 @@ class GraphAnalyser:
         connComponents = nx.connected_components(graph)
         diameter = []
         shortestPath = []
-        for k in xrange(0, len(connComponents)):
-            graph_subgraph = graph.subgraph(connComponents[k])
+        stop = sum(1 for x in connComponents)
+        connComponents = nx.connected_components(graph)
+        for k in xrange(0, stop):
+            component = connComponents.next()
+            graph_subgraph = graph.subgraph(component)
             diameter.append(nx.diameter(graph_subgraph))
             shortestPath.append(nx.average_shortest_path_length(graph_subgraph))
         return diameter, shortestPath

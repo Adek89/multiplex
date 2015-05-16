@@ -8,12 +8,12 @@ cdef class CommonUtils:
 
     #cross validation random fold set generator
     def k_fold_cross_validation(self, list items, int k, float percentOfKnownNodes, randomize=False):
-        # print ('Percent of known nodes %s' % percentOfKnownNodes)
+        print ('Percent of known nodes %s' % percentOfKnownNodes)
         cdef float trainignFoldsFloat = k*percentOfKnownNodes
         cdef int trainignFolds = int(trainignFoldsFloat)
         cdef int validationFolds = k-trainignFolds
-        # print('Nr of training folds %s:' % trainignFolds)
-        # print('Nr of validation folds %s:' % validationFolds)
+        print('Nr of training folds %s:' % trainignFolds)
+        print('Nr of validation folds %s:' % validationFolds)
         if randomize:
             items = list(items)
             shuffle(items)
@@ -27,7 +27,8 @@ cdef class CommonUtils:
         cdef int index
         for i in xrange(k):
             slices = [items[x::k] for x in xrange(k)]
-            # print slices
+            print slices
+            print 'slices: ' + str(slices)
             validation = []
             training = []
             for j in xrange(k):
@@ -48,4 +49,6 @@ cdef class CommonUtils:
                     # print ('Index %i added as training ' % index)
             training = sorted(training)
             validation = sorted(validation)
+            print 'training length: ' + str(training.__len__())
+            print 'validation length: ' + str(validation.__len__())
             yield training, validation

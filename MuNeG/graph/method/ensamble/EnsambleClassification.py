@@ -103,6 +103,7 @@ class EnsambleClassification:
                 iter += 1
         trainNodes = filter(lambda node: node.id in training, graphNodes)
         testNodes = filter(lambda node: node.id in validation, graphNodes)
+
         self.structurePreparation(graphNodes, labelsList, testNodes, trainNodes, validation)
         self.inference(testNodes)
         self.finalLabelsAssigning(validation)
@@ -111,7 +112,9 @@ class EnsambleClassification:
     def classify(self):
         labelsList = range(2)
         graphNodes = self.graph.nodes()
+        print 'graph Nodes length: ' + str(graphNodes.__len__())
         items = range(graphNodes.__len__())
+        print 'items length: ' + str(items.__len__())
         commonUtils = commons.CommonUtils()
         self.singleFold(commonUtils, graphNodes, items, labelsList)
         self.finalLabelings = dict([])

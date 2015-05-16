@@ -7,6 +7,7 @@ import random
 from graph.method.ensamble.Edge import Edge
 from graph.method.ica.SingleModelICA import SingleModelICA
 from graph.gen.Node import Node
+from graph.reader.Salon24.Salon24Node import Salon24Node
 import graph.method.ica.ClassifiersUtil as cu
 class EnsambleLearning:
 
@@ -29,7 +30,7 @@ class EnsambleLearning:
             sampledGraph = self.sampleGraph()
             model = self.learnModel(sampledGraph, self.models[i])
             self.ensambleSet.add(model)
-        return self.ensambleSet
+        return self.ensambleSet, self.graph
 
     def createSampledGraph(self, sampledEdges, sampledGraph):
         newIds = 0
@@ -58,9 +59,16 @@ class EnsambleLearning:
         if (node.id in copiedNodesId):
             tempNode = copiedNodes[node.id]
         else:
-            tempNode = Node(node.group, node.label, node.id)
-            copiedNodesId.add(node.id)
-            copiedNodes.update({node.id: tempNode})
+            if isinstance(node, Node):
+                tempNode = Node(node.group, node.label, node.id)
+                copiedNodesId.add(node.id)
+                copiedNodes.update({node.id: tempNode})
+            else:
+                tempNode = Salon24Node(node.name)
+                tempNode.id = node.id
+                tempNode.label = node.label
+                copiedNodesId.add(node.id)
+                copiedNodes.update({node.id: tempNode})
         return tempNode
 
     def collectEdges(self, edges, sampledEdges):
