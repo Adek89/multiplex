@@ -1,20 +1,21 @@
-from sklearn.semi_supervised.label_propagation import LabelPropagation
-
 __author__ = 'Adek'
 
-from graph.gen.GraphGenerator import GraphGenerator
-import networkx as nx
-from graph.method.lbp.NetworkUtils import NetworkUtils
-from graph.method.ensamble.EnsambleLearning import EnsambleLearning
-import graph.method.ica.ClassifiersUtil as cu
-from graph.method.ensamble.EnsambleClassification import EnsambleClassification
-from graph.evaluation.EvaluationTools import EvaluationTools
-from graph.method.lbp.LBPTools import LBPTools
 import random
 import re
-from graph.analyser.GraphAnalyser import GraphAnalyser
 import csv
 import threading
+
+import networkx as nx
+
+from bin.graph.gen.GraphGenerator import GraphGenerator
+from bin.graph.method.lbp.NetworkUtils import NetworkUtils
+from bin.graph.method.ensamble.EnsambleLearning import EnsambleLearning
+import bin.graph.method.ica.ClassifiersUtil as cu
+from bin.graph.method.ensamble.EnsambleClassification import EnsambleClassification
+from bin.graph.evaluation.EvaluationTools import EvaluationTools
+from bin.graph.analyser.GraphAnalyser import GraphAnalyser
+
+
 class EnsambleMethods:
 
     NUMBER_OF_NODES = 0;

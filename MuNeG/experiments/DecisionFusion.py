@@ -3,16 +3,20 @@ Created on 13.03.2014
 
 @author: apopiel
 '''
-from graph.reader.ExcelReader import ExcelReader
-from graph.gen.GraphGenerator import GraphGenerator
-from graph.method.lbp.Multilayer_LBP import Multilayer_LBP
-import networkx as nx
-from graph.method.lbp.NetworkUtils import NetworkUtils
-from graph.method.lbp.FlatLBP import FlatLBP
-from graph.method.lbp.RwpLBP import RwpLBP
-from graph.evaluation.EvaluationTools import EvaluationTools
 import csv
 import time
+
+import networkx as nx
+
+from bin.graph.reader.ExcelReader import ExcelReader
+from bin.graph.gen.GraphGenerator import GraphGenerator
+from bin.graph.method.lbp.Multilayer_LBP import Multilayer_LBP
+from bin.graph.method.lbp.NetworkUtils import NetworkUtils
+from bin.graph.method.lbp.FlatLBP import FlatLBP
+from bin.graph.method.lbp.RwpLBP import RwpLBP
+from bin.graph.evaluation.EvaluationTools import EvaluationTools
+
+
 class DecisionFusion:
     
     #Parameters

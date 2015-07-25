@@ -8,9 +8,10 @@ import sys
 import threading
 sys.path.append('/home/apopiel/MuNeG')
 from experiments.EnsableMethodsReal import EnsambleMethods
-from graph.reader.Salon24.Salon24Reader import Salon24Reader
-from graph.method.ensamble.EnsambleLearning import EnsambleLearning
-from graph.analyser.GraphAnalyser import GraphAnalyser
+from bin.graph.reader.Salon24 import Salon24Reader
+from bin.graph.method.ensamble import EnsambleLearning
+from bin.graph.analyser import GraphAnalyser
+
 
 def readRealData(limit):
     reader = Salon24Reader(limit)
