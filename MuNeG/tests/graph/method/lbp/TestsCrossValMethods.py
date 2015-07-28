@@ -7,6 +7,8 @@ from bin.graph.method.lbp.CrossValMethods import CrossValMethods
 from bin.graph.method.common.CommonUtils import CommonUtils
 from bin.graph.method.lbp.FlatLBP import FlatLBP
 from bin.graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
+from bin.graph.gen.Node import Node
+from bin.graph.gen.Group import Group
 
 
 __author__ = 'Adrian'
@@ -15,6 +17,15 @@ class TestStringMethods(unittest.TestCase):
 
 
     methods = CrossValMethods()
+
+    def prepareNodesAndEdges(self):
+        groupRed = Group('r', 1)
+        groupBlue = Group('b', 2)
+        node = Node(groupRed, 1, 0)
+        neighbor = Node(groupBlue, 1, 0)
+        nodes = ({node, neighbor})
+        data = dict([('layer', 'L1'), ('conWeight', 0.5), ('weight', 1)])
+        return data, neighbor, node, nodes
 
     def test_flatCrossVal(self):
         #given
@@ -34,10 +45,18 @@ class TestStringMethods(unittest.TestCase):
         prepareClassMat, \
         prepareLayers, \
         flatLBP = self.prepareExperimentData()
-        mockito.when(graph).nodes().thenReturn([])
+        data, neighbor, node, nodes = self.prepareNodesAndEdges()
+
+        mockito.when(graph).edges_iter(mockito.any(), data=True).thenReturn(self.generateEdges(2, node, neighbor, data))
+        mockito.when(graph).nodes().thenReturn(nodes)
         fold_sum = self.methods.flatCrossVal(items, nrOfFolds, graph, nrOfNodes, defaultClassMat, lbpSteps, lbpThreshold, commonUtils.k_fold_cross_validation,
                                   flatLBP.prepareFoldClassMat, lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, prepareLayers, prepareClassMat)
         print(fold_sum)
+
+    def generateEdges(self, nrOfEdges, node, neighbor, data):
+            i = 0
+            for i in range(0, nrOfEdges):
+                yield (node, neighbor, data)
 
     def prepareExperimentData(self):
         items = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
