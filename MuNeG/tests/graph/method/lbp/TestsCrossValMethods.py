@@ -50,7 +50,7 @@ class TestStringMethods(unittest.TestCase):
         mockito.when(graph).edges_iter(mockito.any(), data=True).thenReturn(self.generateEdges(2, node, neighbor, data))
         mockito.when(graph).nodes().thenReturn(nodes)
         fold_sum = self.methods.flatCrossVal(items, nrOfFolds, graph, nrOfNodes, defaultClassMat, lbpSteps, lbpThreshold, commonUtils.k_fold_cross_validation,
-                                  flatLBP.prepareFoldClassMat, lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, prepareLayers, prepareClassMat)
+                                  flatLBP.prepareFoldClassMat, lbp.lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, prepareLayers, prepareClassMat)
         print(fold_sum)
 
     def generateEdges(self, nrOfEdges, node, neighbor, data):
