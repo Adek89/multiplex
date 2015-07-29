@@ -3,8 +3,7 @@ __author__ = 'Adek'
 import time
 import sys
 sys.path.append('/home/apopiel/MuNeG')
-from bin.graph.analyser import GraphAnalyser
-
+from graph.analyser.GraphAnalyser import GraphAnalyser
 if __name__ == '__main__':
     start_time = time.time()
     nodes = int(sys.argv[1])

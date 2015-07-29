@@ -3,22 +3,20 @@ Created on 13.03.2014
 
 @author: apopiel
 '''
+from graph.reader.ExcelReader import ExcelReader
+from graph.gen.GraphGenerator import GraphGenerator
+from graph.method.lbp.Multilayer_LBP import Multilayer_LBP
+import networkx as nx
+from graph.method.lbp.NetworkUtils import NetworkUtils
+from graph.method.lbp.FlatLBP import FlatLBP
+from graph.method.lbp.RwpLBP import RwpLBP
+from graph.evaluation.EvaluationTools import EvaluationTools
+from graph.reader.Salon24.Salon24Reader import Salon24Reader
 import csv
 import time
-
-import networkx as nx
-
-from bin.graph.gen.GraphGenerator import GraphGenerator
-from bin.graph.method.lbp.Multilayer_LBP import Multilayer_LBP
-from bin.graph.method.lbp.NetworkUtils import NetworkUtils
-from bin.graph.method.lbp.FlatLBP import FlatLBP
-from bin.graph.method.lbp.RwpLBP import RwpLBP
-from bin.graph.evaluation.EvaluationTools import EvaluationTools
-from bin.graph.reader.Salon24.Salon24Reader import Salon24Reader
-from bin.graph.method.ensamble.EnsambleLearning import EnsambleLearning
-from bin.graph.analyser.GraphAnalyser import GraphAnalyser
-
-
+from graph.method.ensamble.EnsambleLearning import EnsambleLearning
+from graph.analyser.GraphAnalyser import GraphAnalyser
+import matplotlib.pyplot as plt
 class DecisionFusion:
     
     #Parameters

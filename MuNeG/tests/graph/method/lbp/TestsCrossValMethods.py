@@ -3,12 +3,12 @@ import mockito as mockito
 
 import networkx as nx
 import numpy as np
-from bin.graph.method.lbp.CrossValMethods import CrossValMethods
-from bin.graph.method.common.CommonUtils import CommonUtils
-from bin.graph.method.lbp.FlatLBP import FlatLBP
-from bin.graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
-from bin.graph.gen.Node import Node
-from bin.graph.gen.Group import Group
+from graph.method.lbp.CrossValMethods import CrossValMethods
+from graph.method.common.CommonUtils import CommonUtils
+from graph.method.lbp.FlatLBP import FlatLBP
+from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
+from graph.gen.Node import Node
+from graph.gen.Group import Group
 
 
 __author__ = 'Adrian'
