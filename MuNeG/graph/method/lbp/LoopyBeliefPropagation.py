@@ -28,7 +28,7 @@ class LoopyBeliefPropagation:
             '''
             propagacja poprzez mnozenie macierzy
             '''   
-            res = np.dot(adjMat, res_in) 
+            res = adjMat.dot(res_in)
             '''
             nadpisanie zmienionych znanych wartosci klas
             '''
