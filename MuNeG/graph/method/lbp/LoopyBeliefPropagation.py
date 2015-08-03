@@ -37,8 +37,8 @@ class LoopyBeliefPropagation:
             '''
             Normalizacja
             '''
-            adjMatPy = np.array(adjMat)
-            self.normalize(adjMatPy, testingInstances, np.finfo(np.double).tiny, res)
+            # adjMatPy = np.array(adjMat)
+            self.normalize(adjMat, testingInstances, np.finfo(np.double).tiny, res)
             
             '''
             Warunek stopu
@@ -58,7 +58,7 @@ class LoopyBeliefPropagation:
                     
     def normalize(self, adjMatPy, instances, sumElement, res):
             rows = adjMatPy[instances,:]      
-            repmatInput = np.sum(rows, axis=1) + sumElement 
+            repmatInput = rows.sum(axis=1) + sumElement
             reshaped = np.reshape(repmatInput, (repmatInput.size, 1))
             repmat = np.tile(reshaped, (1, res[0].size))
             #sprawdzic czy czy nie trzeba ./
