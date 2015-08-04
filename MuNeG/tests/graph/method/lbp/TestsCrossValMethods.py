@@ -9,7 +9,12 @@ from graph.method.lbp.FlatLBP import FlatLBP
 from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 from graph.gen.Node import Node
 from graph.gen.Group import Group
+from graph.evaluation.EvaluationTools import EvaluationTools
+from graph.method.lbp.LBPTools import LBPTools
 
+NUMBER_OF_CLASSES = 2
+FLAT_EXPECTED_RESULT = [0, 1, 0, 1, 1]
+DEFAULT_ASSIGN = [1, 0, 1, 0, 1]
 
 __author__ = 'Adrian'
 
@@ -17,21 +22,7 @@ class TestStringMethods(unittest.TestCase):
 
 
     methods = CrossValMethods()
-
-    def prepareNodesAndEdges(self):
-        groupRed = Group('r', 1)
-        groupBlue = Group('b', 2)
-        node1 = Node(groupRed, 1, 0)
-        node2 = Node(groupBlue, 0, 1)
-        node3 = Node(groupRed, 1, 2)
-        node4 = Node(groupBlue, 0, 3)
-        node5 = Node(groupBlue, 1, 4)
-        nodes = ({node1, node2, node3, node4, node5})
-        nodeList = [node1, node2, node3, node4, node5]
-        edge1 = dict([('layer', 'L1'), ('conWeight', 0.5), ('weight', 1)])
-        edge2 = dict([('layer', 'L2'), ('conWeight', 0.5), ('weight', 2)])
-        edgesData = ([edge1, edge2])
-        return edgesData, nodes, nodeList
+    ev = EvaluationTools()
 
     def test_flatCrossVal(self):
         #given
@@ -50,14 +41,71 @@ class TestStringMethods(unittest.TestCase):
         percentOfKnownNodes, \
         prepareClassMat, \
         prepareLayers, \
-        flatLBP = self.prepareExperimentData()
+        flatLBP,\
+        tools = self.prepareExperimentData()
         edges, nodes, nodesList = self.prepareNodesAndEdges()
-
-        mockito.when(graph).edges_iter(mockito.any(), data=True).thenReturn(self.generateEdges(10, nodesList, edges)).thenReturn(self.generateEdges(10, nodesList, edges))
+        #when
+        mockito.when(graph).edges_iter(mockito.any(), data=True)\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))
         mockito.when(graph).nodes().thenReturn(nodes)
         fold_sum = self.methods.flatCrossVal(items, nrOfFolds, graph, nrOfNodes, defaultClassMat, lbpSteps, lbpThreshold, commonUtils.k_fold_cross_validation,
                                   flatLBP.prepareFoldClassMat, lbp.lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, prepareLayers, prepareClassMat)
-        print(fold_sum)
+        #then
+        toEvaluate = tools.prepareToEvaluate(fold_sum, NUMBER_OF_CLASSES)
+        result = self.ev.calculateFMacro(DEFAULT_ASSIGN, toEvaluate, NUMBER_OF_CLASSES)
+        expectedResults = self.ev.calculateFMacro(DEFAULT_ASSIGN, FLAT_EXPECTED_RESULT, NUMBER_OF_CLASSES)
+        assert result == expectedResults
+
+    def test_multiCrossVal(self):
+        #given
+        graph, \
+        nrOfNodes, \
+        adjMatPrep, \
+        defaultClassMat, \
+        isRandomWalk, \
+        items, \
+        commonUtils, \
+        layerWeights, \
+        lbp, \
+        lbpSteps, \
+        lbpThreshold, \
+        nrOfFolds, \
+        percentOfKnownNodes, \
+        prepareClassMat, \
+        prepareLayers, \
+        flatLBP,\
+        tools = self.prepareExperimentData()
+        edges, nodes, nodesList = self.prepareNodesAndEdges()
+        #when
+        mockito.when(graph).edges_iter(mockito.any(), data=True)\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))
+        mockito.when(graph).nodes().thenReturn(nodes)
+        fold_sum, fuz_mean_occ, sum = self.methods.multiLayerCrossVal(items, nrOfFolds, graph, nrOfNodes, defaultClassMat, lbpSteps, lbpThreshold, commonUtils.k_fold_cross_validation,
+                                  tools.giveCorrectData, lbp.lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, tools.separate_layer, tools.prepareClassMatForFold)
+        print fold_sum
+
+    def prepareNodesAndEdges(self):
+        groupRed = Group('r', 1)
+        groupBlue = Group('b', 2)
+        node1 = Node(groupRed, 1, 0)
+        node2 = Node(groupBlue, 0, 1)
+        node3 = Node(groupRed, 1, 2)
+        node4 = Node(groupBlue, 0, 3)
+        node5 = Node(groupBlue, 1, 4)
+        nodes = ({node1, node2, node3, node4, node5})
+        nodeList = [node1, node2, node3, node4, node5]
+        edge1 = dict([('layer', 'L1'), ('conWeight', 0.5), ('weight', 1)])
+        edge2 = dict([('layer', 'L2'), ('conWeight', 0.5), ('weight', 2)])
+        edgesData = ([edge1, edge2])
+        return edgesData, nodes, nodeList
 
     def generateEdges(self, nrOfEdges, nodes, edgesData):
             i = 0
@@ -67,11 +115,11 @@ class TestStringMethods(unittest.TestCase):
                 elif (i == 1):
                     yield (nodes[1], nodes[3], edgesData[0])
                 elif (i == 2):
-                    yield (nodes[3], nodes[4], edgesData[0])
+                    yield (nodes[2], nodes[4], edgesData[0])
                 elif (i == 3):
                     yield (nodes[0], nodes[1], edgesData[0])
                 elif (i == 4):
-                    yield (nodes[2], nodes[3], edgesData[0])
+                    yield (nodes[1], nodes[4], edgesData[0])
                 elif (i == 5):
                     yield (nodes[0], nodes[2], edgesData[1])
                 elif (i == 6):
@@ -93,13 +141,13 @@ class TestStringMethods(unittest.TestCase):
         return defaultClassMat
 
     def prepareExperimentData(self):
-        items = [1, 0, 1, 0, 1]
+        items = [0, 1, 2, 3, 4]
         defaultClassMat = self.prepareTestClassMat()
         nrOfFolds = 5
         graph = mockito.mock(nx.MultiGraph)
         nrOfNodes = items.__len__()
-        lbpSteps = 2
-        lbpThreshold = 0.001
+        lbpSteps = 1000
+        lbpThreshold = 0.01
         commonUtils = CommonUtils()
         flatLBP = FlatLBP()
         lbp = LoopyBeliefPropagation()
@@ -109,5 +157,6 @@ class TestStringMethods(unittest.TestCase):
         adjMatPrep = None
         prepareLayers = None
         prepareClassMat = None
-        return graph, nrOfNodes, adjMatPrep, defaultClassMat, isRandomWalk, items, commonUtils, layerWeights, lbp, lbpSteps, lbpThreshold, nrOfFolds, percentOfKnownNodes, prepareClassMat, prepareLayers, flatLBP
+        tools = LBPTools(items.__len__(), graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfKnownNodes)
+        return graph, nrOfNodes, adjMatPrep, defaultClassMat, isRandomWalk, items, commonUtils, layerWeights, lbp, lbpSteps, lbpThreshold, nrOfFolds, percentOfKnownNodes, prepareClassMat, prepareLayers, flatLBP, tools
 

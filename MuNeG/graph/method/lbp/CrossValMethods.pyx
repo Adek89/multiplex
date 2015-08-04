@@ -38,15 +38,20 @@ cdef class CrossValMethods:
         cdef int iter
         for training, validation in k_fold_cross_validation(items, numberOfFolds, percentOfKnownNodes):
             print "-----FOLD %d-----" % fold_number
+            print "Training: "
+            print training
+            print "Validation: "
+            print validation
             
             #separate layers
             results_agregator = []
             num_of_res = 0
             class_Mat, adjMat, nodes = separationMethod(graph, defaultClassMat, validation)
-                    
+
+            print "class_mat after separation: "
+            print class_Mat
                 #-------------LBP----------------------
             class_mat = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
-            
             #create zero result matrix
             sum = []
             iter = 0
