@@ -23,8 +23,7 @@ cdef class FlatLBP:
         '''
         Constructor
         '''
-    
-    #TODO Add np.ndarray types when parameters will be passed with types, and method could be changes to cdef
+
     cpdef prepareFoldClassMat(self, graph, np.ndarray  defaultClassMat, list validation):
         cdef classMat = defaultClassMat.copy()
         cdef int nrOfClasses = classMat.shape[1]
