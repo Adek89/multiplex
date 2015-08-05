@@ -7,6 +7,7 @@ Created on 28 mar 2014
 import copy
 
 import numpy as np
+import scipy.sparse as sp
 
 from graph.method.lbp import CrossValMethods
 from graph.method.lbp.LBPTools import LBPTools
@@ -115,23 +116,38 @@ class RwpLBP:
     
     def normalize_rows(self,adjMat):
         i = 0
-        new_adjMat = np.copy(adjMat[0])
+        new_adjMat = adjMat[0].copy()
         for row in adjMat:
-            row_sum = np.sum(row)
+            row_sum = row.sum()
             if row_sum>0:
                 j = 0
                 new_row= row/row_sum
                 
-                new_adjMat = np.vstack((new_adjMat,new_row))
+                new_adjMat = sp.vstack([new_adjMat,new_row])
             else:
-                new_adjMat = np.vstack((new_adjMat,row))
+                new_adjMat = sp.vstack([new_adjMat,row])
             i+=1
-        new_adjMat = np.delete(new_adjMat, 0, 0)
+        new_adjMat = self.delete_row_csr(new_adjMat.tocsr(), 0)
         return new_adjMat
+
+    def delete_row_csr(self, mat, i):
+        if not isinstance(mat, sp.csr_matrix):
+            raise ValueError("works only for CSR format -- use .tocsr() first")
+        n = mat.indptr[i+1] - mat.indptr[i]
+        if n > 0:
+            mat.data[mat.indptr[i]:-n] = mat.data[mat.indptr[i+1]:]
+            mat.data = mat.data[:-n]
+            mat.indices[mat.indptr[i]:-n] = mat.indices[mat.indptr[i+1]:]
+            mat.indices = mat.indices[:-n]
+        mat.indptr[i:-1] = mat.indptr[i+1:]
+        mat.indptr[i:] -= n
+        mat.indptr = mat.indptr[:-1]
+        mat._shape = (mat._shape[0]-1, mat._shape[1])
+        return mat
     
     def lbp(self, adjMat, classMat, trainingInstances):
         res_in = classMat
-        res = np.dot(adjMat,res_in)
+        res = adjMat.dot(res_in)
         res[trainingInstances,:]=classMat[trainingInstances,:]
         return res
     

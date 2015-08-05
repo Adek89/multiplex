@@ -97,10 +97,9 @@ cdef class CrossValMethods:
         cdef np.ndarray n
         cdef list sum
         cdef list result
-        cdef np.ndarray adjMatPy
         cdef np.float64_t sumElement
-        cdef np.ndarray rows
-        cdef np.ndarray repmatInput
+        cdef rows
+        cdef repmatInput
         for training, validation in k_fold_cross_validation(items, numberOfFolds, percentOfKnownNodes):
             print "-----FOLD %d-----" % fold_number
             
@@ -175,10 +174,10 @@ cdef class CrossValMethods:
             # print sum
             
             #fusion - mean part1
-            adjMatPy = np.array(adjMat)
+            # adjMatPy = np.array(adjMat)
             sumElement = np.finfo(np.double).tiny
-            rows = adjMatPy[validation,:]      
-            repmatInput = np.sum(rows, axis=1) + sumElement 
+            rows = adjMat[validation,:]
+            repmatInput = rows.sum(axis=1) + sumElement
 #             print "sum ",len(sum)," repmat ",len(repmatInput)
             fuz_mean_occ = np.append(fuz_mean_occ,repmatInput)
             fold_number = fold_number + 1

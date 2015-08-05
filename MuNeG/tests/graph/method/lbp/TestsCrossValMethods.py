@@ -1,6 +1,7 @@
 import unittest
 import mockito as mockito
 
+import copy
 import networkx as nx
 import numpy as np
 from graph.method.lbp.CrossValMethods import CrossValMethods
@@ -11,9 +12,14 @@ from graph.gen.Node import Node
 from graph.gen.Group import Group
 from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.method.lbp.LBPTools import LBPTools
+from graph.method.lbp.RwpLBP import RwpLBP
 
+EXPECTED_RW_MEAN_RESULT = 0.286
+EXPECTED_RW_SUM_RESULT = 1.0
+EXPECTED_FUSION_MEAN_RESULT = 0.286
+EXPECTED_FUSION_SUM_RESULT = 0.375
+EXPECTED_FLAT_RESULT = 0.17
 NUMBER_OF_CLASSES = 2
-FLAT_EXPECTED_RESULT = [0, 1, 0, 1, 1]
 DEFAULT_ASSIGN = [1, 0, 1, 0, 1]
 
 __author__ = 'Adrian'
@@ -42,7 +48,8 @@ class TestStringMethods(unittest.TestCase):
         prepareClassMat, \
         prepareLayers, \
         flatLBP,\
-        tools = self.prepareExperimentData()
+        tools,\
+        rwp = self.prepareExperimentData()
         edges, nodes, nodesList = self.prepareNodesAndEdges()
         #when
         mockito.when(graph).edges_iter(mockito.any(), data=True)\
@@ -55,10 +62,9 @@ class TestStringMethods(unittest.TestCase):
         fold_sum = self.methods.flatCrossVal(items, nrOfFolds, graph, nrOfNodes, defaultClassMat, lbpSteps, lbpThreshold, commonUtils.k_fold_cross_validation,
                                   flatLBP.prepareFoldClassMat, lbp.lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, prepareLayers, prepareClassMat)
         #then
-        toEvaluate = tools.prepareToEvaluate(fold_sum, NUMBER_OF_CLASSES)
-        result = self.ev.calculateFMacro(DEFAULT_ASSIGN, toEvaluate, NUMBER_OF_CLASSES)
-        expectedResults = self.ev.calculateFMacro(DEFAULT_ASSIGN, FLAT_EXPECTED_RESULT, NUMBER_OF_CLASSES)
-        assert result == expectedResults
+        roundedResult = self.prepareFlatResult(fold_sum, tools)
+
+        assert roundedResult == EXPECTED_FLAT_RESULT
 
     def test_multiCrossVal(self):
         #given
@@ -78,8 +84,19 @@ class TestStringMethods(unittest.TestCase):
         prepareClassMat, \
         prepareLayers, \
         flatLBP,\
-        tools = self.prepareExperimentData()
+        tools,\
+        rwp = self.prepareExperimentData()
         edges, nodes, nodesList = self.prepareNodesAndEdges()
+        edgesList = [(nodesList[0], nodesList[2], edges[0]),
+                     (nodesList[1], nodesList[3], edges[0]),
+                     (nodesList[2], nodesList[4], edges[0]),
+                     (nodesList[0], nodesList[1], edges[0]),
+                     (nodesList[1], nodesList[4], edges[0]),
+                     (nodesList[0], nodesList[2], edges[1]),
+                     (nodesList[1], nodesList[3], edges[1]),
+                     (nodesList[1], nodesList[4], edges[1]),
+                     (nodesList[0], nodesList[1], edges[1]),
+                     (nodesList[2], nodesList[3], edges[1])]
         #when
         mockito.when(graph).edges_iter(mockito.any(), data=True)\
             .thenReturn(self.generateEdges(10, nodesList, edges))\
@@ -88,9 +105,86 @@ class TestStringMethods(unittest.TestCase):
             .thenReturn(self.generateEdges(10, nodesList, edges))\
             .thenReturn(self.generateEdges(10, nodesList, edges))
         mockito.when(graph).nodes().thenReturn(nodes)
+        mockito.when(graph).edges(data=True).thenReturn(edgesList)
         fold_sum, fuz_mean_occ, sum = self.methods.multiLayerCrossVal(items, nrOfFolds, graph, nrOfNodes, defaultClassMat, lbpSteps, lbpThreshold, commonUtils.k_fold_cross_validation,
                                   tools.giveCorrectData, lbp.lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, tools.separate_layer, tools.prepareClassMatForFold)
-        print fold_sum
+        #then
+        resultMean, resultSum = self.prepareFusionResults(fold_sum, fuz_mean_occ, sum, tools)
+        roundedResultMean = round(resultMean, 3)
+
+        assert resultSum == EXPECTED_FUSION_SUM_RESULT
+        assert roundedResultMean == EXPECTED_FUSION_MEAN_RESULT
+
+    def test_rwcCrossVal(self):
+        #given
+        graph, \
+        nrOfNodes, \
+        adjMatPrep, \
+        defaultClassMat, \
+        isRandomWalk, \
+        items, \
+        commonUtils, \
+        layerWeights, \
+        lbp, \
+        lbpSteps, \
+        lbpThreshold, \
+        nrOfFolds, \
+        percentOfKnownNodes, \
+        prepareClassMat, \
+        prepareLayers, \
+        flatLBP,\
+        tools,\
+        rwp = self.prepareExperimentData()
+        edges, nodes, nodesList = self.prepareNodesAndEdges()
+        edgesList = [(nodesList[0], nodesList[2], edges[0]),
+                     (nodesList[1], nodesList[3], edges[0]),
+                     (nodesList[2], nodesList[4], edges[0]),
+                     (nodesList[0], nodesList[1], edges[0]),
+                     (nodesList[1], nodesList[4], edges[0]),
+                     (nodesList[0], nodesList[2], edges[1]),
+                     (nodesList[1], nodesList[3], edges[1]),
+                     (nodesList[1], nodesList[4], edges[1]),
+                     (nodesList[0], nodesList[1], edges[1]),
+                     (nodesList[2], nodesList[3], edges[1])]
+        #when
+        mockito.when(graph).edges_iter(mockito.any(), data=True)\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.generateEdges(10, nodesList, edges))
+        mockito.when(graph).nodes().thenReturn(nodes)
+        mockito.when(graph).edges(data=True).thenReturn(edgesList)
+        fold_sum, fuz_mean_occ, sum = self.methods.multiLayerCrossVal(items, nrOfFolds, graph, nrOfNodes, defaultClassMat, lbpSteps, lbpThreshold, commonUtils.k_fold_cross_validation,
+                                  tools.giveCorrectData, rwp.propagation, layerWeights, True, percentOfKnownNodes, rwp.prepare_adjetency_matrix, tools.separate_layer, tools.prepareClassMatForFold)
+        #then
+        resultMean, resultSum = self.prepareFusionResults(fold_sum, fuz_mean_occ, sum, tools)
+        roundedResultMean = round(resultMean, 3)
+
+        assert resultSum == EXPECTED_RW_SUM_RESULT
+        assert roundedResultMean == EXPECTED_RW_MEAN_RESULT
+
+
+    def prepareFusionResults(self, fold_sum, fuz_mean_occ, sum, tools):
+        fusion_mean = self.calculateFusionMean(fuz_mean_occ, sum)
+        toEvaluateSum = tools.prepareToEvaluate(fold_sum, NUMBER_OF_CLASSES)
+        toEvaluateMean = tools.prepareToEvaluate(fusion_mean, NUMBER_OF_CLASSES)
+        resultSum = self.ev.calculateFMacro(DEFAULT_ASSIGN, toEvaluateSum, NUMBER_OF_CLASSES)
+        resultMean = self.ev.calculateFMacro(DEFAULT_ASSIGN, toEvaluateMean, NUMBER_OF_CLASSES)
+        return resultMean, resultSum
+
+    def prepareFlatResult(self, fold_sum, tools):
+        toEvaluate = tools.prepareToEvaluate(fold_sum, NUMBER_OF_CLASSES)
+        result = self.ev.calculateFMacro(DEFAULT_ASSIGN, toEvaluate, NUMBER_OF_CLASSES)
+        roundedResult = round(result, 2)
+        return roundedResult
+
+    def calculateFusionMean(self, fuz_mean_occ, sum):
+        fusion_mean = copy.deepcopy(sum)
+        for iter in range(0, len(sum)):
+            fusion_mean[iter][1] = sum[iter][1] / fuz_mean_occ[iter]
+            fusion_mean[iter][2] = sum[iter][2] / fuz_mean_occ[iter]
+        return fusion_mean
 
     def prepareNodesAndEdges(self):
         groupRed = Group('r', 1)
@@ -158,5 +252,6 @@ class TestStringMethods(unittest.TestCase):
         prepareLayers = None
         prepareClassMat = None
         tools = LBPTools(items.__len__(), graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfKnownNodes)
-        return graph, nrOfNodes, adjMatPrep, defaultClassMat, isRandomWalk, items, commonUtils, layerWeights, lbp, lbpSteps, lbpThreshold, nrOfFolds, percentOfKnownNodes, prepareClassMat, prepareLayers, flatLBP, tools
+        rwp = RwpLBP()
+        return graph, nrOfNodes, adjMatPrep, defaultClassMat, isRandomWalk, items, commonUtils, layerWeights, lbp, lbpSteps, lbpThreshold, nrOfFolds, percentOfKnownNodes, prepareClassMat, prepareLayers, flatLBP, tools, rwp
 

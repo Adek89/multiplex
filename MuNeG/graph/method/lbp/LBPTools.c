@@ -4124,7 +4124,7 @@ static PyObject *__pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_8separate_laye
 static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_v_self, PyObject *__pyx_v_g, PyObject *__pyx_v_rest, PyObject *__pyx_v_nodes, int __pyx_v_nrOfClasses, PyArrayObject *__pyx_v_classMat) {
   PyObject *__pyx_v_row = 0;
   PyObject *__pyx_v_sortedNodes = 0;
-  PyArrayObject *__pyx_v_adjMat = 0;
+  PyObject *__pyx_v_adjMat = 0;
   PyObject *__pyx_v_node = NULL;
   PyArrayObject *__pyx_v_out_nodes = 0;
   PyObject *__pyx_r = NULL;
@@ -4144,7 +4144,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
 
   /* "graph\method\lbp\LBPTools.pyx":141
  *         cdef list sortedNodes
- *         cdef np.ndarray adjMat
+ *         cdef adjMat
  *         for node in rest:             # <<<<<<<<<<<<<<
  *             nodes.add(node)
  *             row = self.prepareEmptyRow(nrOfClasses)
@@ -4169,7 +4169,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
     __pyx_t_3 = 0;
 
     /* "graph\method\lbp\LBPTools.pyx":142
- *         cdef np.ndarray adjMat
+ *         cdef adjMat
  *         for node in rest:
  *             nodes.add(node)             # <<<<<<<<<<<<<<
  *             row = self.prepareEmptyRow(nrOfClasses)
@@ -4246,7 +4246,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
 
     /* "graph\method\lbp\LBPTools.pyx":141
  *         cdef list sortedNodes
- *         cdef np.ndarray adjMat
+ *         cdef adjMat
  *         for node in rest:             # <<<<<<<<<<<<<<
  *             nodes.add(node)
  *             row = self.prepareEmptyRow(nrOfClasses)
@@ -4318,8 +4318,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_8) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_8, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_v_adjMat = ((PyArrayObject *)__pyx_t_8);
+  __pyx_v_adjMat = __pyx_t_8;
   __pyx_t_8 = 0;
 
   /* "graph\method\lbp\LBPTools.pyx":149
@@ -4407,9 +4406,9 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
   __Pyx_INCREF(((PyObject *)__pyx_v_classMat));
   PyTuple_SET_ITEM(__pyx_t_8, 0, ((PyObject *)__pyx_v_classMat));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_classMat));
-  __Pyx_INCREF(((PyObject *)__pyx_v_adjMat));
-  PyTuple_SET_ITEM(__pyx_t_8, 1, ((PyObject *)__pyx_v_adjMat));
-  __Pyx_GIVEREF(((PyObject *)__pyx_v_adjMat));
+  __Pyx_INCREF(__pyx_v_adjMat);
+  PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_v_adjMat);
+  __Pyx_GIVEREF(__pyx_v_adjMat);
   __Pyx_INCREF(((PyObject *)__pyx_v_out_nodes));
   PyTuple_SET_ITEM(__pyx_t_8, 2, ((PyObject *)__pyx_v_out_nodes));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_out_nodes));
@@ -4438,7 +4437,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_row);
   __Pyx_XDECREF(__pyx_v_sortedNodes);
-  __Pyx_XDECREF((PyObject *)__pyx_v_adjMat);
+  __Pyx_XDECREF(__pyx_v_adjMat);
   __Pyx_XDECREF(__pyx_v_node);
   __Pyx_XDECREF((PyObject *)__pyx_v_out_nodes);
   __Pyx_XGIVEREF(__pyx_r);

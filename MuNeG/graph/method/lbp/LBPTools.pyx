@@ -137,7 +137,7 @@ cdef class LBPTools:
     cdef fillEmptyRow(self, g, set rest, set nodes, int nrOfClasses, np.ndarray classMat):
         cdef list row
         cdef list sortedNodes
-        cdef np.ndarray adjMat
+        cdef adjMat
         for node in rest:
             nodes.add(node)
             row = self.prepareEmptyRow(nrOfClasses)
