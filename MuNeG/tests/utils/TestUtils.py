@@ -52,6 +52,15 @@ class TestUtils():
         defaultClassMat[4] = [0, 1]
         return defaultClassMat
 
+    def prepareTestClassMatWithUnknownNodes(self):
+        testClassMat = np.ndarray(shape=(5, 2))
+        testClassMat[0] = [0, 1]
+        testClassMat[1] = [1, 0]
+        testClassMat[2] = [0, 1]
+        testClassMat[3] = [1, 0]
+        testClassMat[4] = [0.5, 0.5]
+        return testClassMat
+
     def prepareEdgesList(self, edges, nodesList):
         edgesList = [(nodesList[0], nodesList[2], edges[0]),
                      (nodesList[1], nodesList[3], edges[0]),
