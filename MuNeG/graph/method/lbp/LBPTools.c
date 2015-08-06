@@ -1215,6 +1215,8 @@ static PyObject *__pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_9classMats___g
 static int __pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_9classMats_2__set__(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_6graphs___get__(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_v_self); /* proto */
 static int __pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_6graphs_2__set__(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static PyObject *__pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds___get__(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_v_self); /* proto */
+static int __pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds_2__set__(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_tp_new_5graph_6method_3lbp_8LBPTools_LBPTools(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -5425,6 +5427,7 @@ static PyObject *__pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_6graphs___get_
  *           return self.graphs
  *         def __set__(self, dict value):             # <<<<<<<<<<<<<<
  *           self.graphs = value
+ * 
  */
 
 /* Python wrapper */
@@ -5457,6 +5460,8 @@ static int __pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_6graphs_2__set__(str
  *           return self.graphs
  *         def __set__(self, dict value):
  *           self.graphs = value             # <<<<<<<<<<<<<<
+ * 
+ *     property folds:
  */
   __Pyx_INCREF(__pyx_v_value);
   __Pyx_GIVEREF(__pyx_v_value);
@@ -5469,6 +5474,117 @@ static int __pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_6graphs_2__set__(str
  *           return self.graphs
  *         def __set__(self, dict value):             # <<<<<<<<<<<<<<
  *           self.graphs = value
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "graph\method\lbp\LBPTools.pyx":185
+ * 
+ *     property folds:
+ *         def __get__(self):             # <<<<<<<<<<<<<<
+ *           return self.folds
+ *         def __set__(self, dict value):
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds___get__(((struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds___get__(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__", 0);
+
+  /* "graph\method\lbp\LBPTools.pyx":186
+ *     property folds:
+ *         def __get__(self):
+ *           return self.folds             # <<<<<<<<<<<<<<
+ *         def __set__(self, dict value):
+ *           self.folds = value
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_self->folds);
+  __pyx_r = __pyx_v_self->folds;
+  goto __pyx_L0;
+
+  /* "graph\method\lbp\LBPTools.pyx":185
+ * 
+ *     property folds:
+ *         def __get__(self):             # <<<<<<<<<<<<<<
+ *           return self.folds
+ *         def __set__(self, dict value):
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "graph\method\lbp\LBPTools.pyx":187
+ *         def __get__(self):
+ *           return self.folds
+ *         def __set__(self, dict value):             # <<<<<<<<<<<<<<
+ *           self.folds = value
+ */
+
+/* Python wrapper */
+static int __pyx_pw_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+  CYTHON_UNUSED int __pyx_lineno = 0;
+  CYTHON_UNUSED const char *__pyx_filename = NULL;
+  CYTHON_UNUSED int __pyx_clineno = 0;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_value), (&PyDict_Type), 1, "value", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_r = __pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds_2__set__(((struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *)__pyx_v_self), ((PyObject*)__pyx_v_value));
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds_2__set__(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_v_self, PyObject *__pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__", 0);
+
+  /* "graph\method\lbp\LBPTools.pyx":188
+ *           return self.folds
+ *         def __set__(self, dict value):
+ *           self.folds = value             # <<<<<<<<<<<<<<
+ */
+  __Pyx_INCREF(__pyx_v_value);
+  __Pyx_GIVEREF(__pyx_v_value);
+  __Pyx_GOTREF(__pyx_v_self->folds);
+  __Pyx_DECREF(__pyx_v_self->folds);
+  __pyx_v_self->folds = __pyx_v_value;
+
+  /* "graph\method\lbp\LBPTools.pyx":187
+ *         def __get__(self):
+ *           return self.folds
+ *         def __set__(self, dict value):             # <<<<<<<<<<<<<<
+ *           self.folds = value
  */
 
   /* function exit code */
@@ -7612,6 +7728,20 @@ static int __pyx_setprop_5graph_6method_3lbp_8LBPTools_8LBPTools_graphs(PyObject
   }
 }
 
+static PyObject *__pyx_getprop_5graph_6method_3lbp_8LBPTools_8LBPTools_folds(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds_1__get__(o);
+}
+
+static int __pyx_setprop_5graph_6method_3lbp_8LBPTools_8LBPTools_folds(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5graph_6method_3lbp_8LBPTools_8LBPTools_5folds_3__set__(o, v);
+  }
+  else {
+    PyErr_SetString(PyExc_NotImplementedError, "__del__");
+    return -1;
+  }
+}
+
 static PyMethodDef __pyx_methods_5graph_6method_3lbp_8LBPTools_LBPTools[] = {
   {"giveCorrectData", (PyCFunction)__pyx_pw_5graph_6method_3lbp_8LBPTools_8LBPTools_3giveCorrectData, METH_O, 0},
   {"giveCorrectClassMat", (PyCFunction)__pyx_pw_5graph_6method_3lbp_8LBPTools_8LBPTools_5giveCorrectClassMat, METH_O, 0},
@@ -7625,6 +7755,7 @@ static PyMethodDef __pyx_methods_5graph_6method_3lbp_8LBPTools_LBPTools[] = {
 static struct PyGetSetDef __pyx_getsets_5graph_6method_3lbp_8LBPTools_LBPTools[] = {
   {(char *)"classMats", __pyx_getprop_5graph_6method_3lbp_8LBPTools_8LBPTools_classMats, __pyx_setprop_5graph_6method_3lbp_8LBPTools_8LBPTools_classMats, 0, 0},
   {(char *)"graphs", __pyx_getprop_5graph_6method_3lbp_8LBPTools_8LBPTools_graphs, __pyx_setprop_5graph_6method_3lbp_8LBPTools_8LBPTools_graphs, 0, 0},
+  {(char *)"folds", __pyx_getprop_5graph_6method_3lbp_8LBPTools_8LBPTools_folds, __pyx_setprop_5graph_6method_3lbp_8LBPTools_8LBPTools_folds, 0, 0},
   {0, 0, 0, 0, 0}
 };
 

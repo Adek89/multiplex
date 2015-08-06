@@ -11,7 +11,7 @@ cdef class LBPTools:
     cdef float lbpThreshold
 
     cdef int percentOfTrainingNodes
-    cdef dict folds
+    cpdef dict folds
     cdef dict adjMats
     cdef dict nodes
     cdef dict classMats

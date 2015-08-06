@@ -180,3 +180,9 @@ cdef class LBPTools:
           return self.graphs
         def __set__(self, dict value):
           self.graphs = value
+
+    property folds:
+        def __get__(self):
+          return self.folds
+        def __set__(self, dict value):
+          self.folds = value
