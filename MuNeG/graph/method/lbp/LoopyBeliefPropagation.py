@@ -37,7 +37,6 @@ class LoopyBeliefPropagation:
             '''
             Normalizacja
             '''
-            # adjMatPy = np.array(adjMat)
             self.normalize(adjMat, testingInstances, np.finfo(np.double).tiny, res)
             
             '''
