@@ -186,3 +186,9 @@ cdef class LBPTools:
           return self.folds
         def __set__(self, dict value):
           self.folds = value
+
+    property adjMats:
+        def __get__(self):
+          return self.adjMats
+        def __set__(self, dict value):
+          self.adjMats = value

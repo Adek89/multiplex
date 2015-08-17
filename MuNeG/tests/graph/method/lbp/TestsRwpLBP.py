@@ -2,10 +2,12 @@ __author__ = 'Adrian'
 import unittest
 import mockito
 import networkx as nx
+import numpy as np
 
 from graph.method.lbp.RwpLBP import RwpLBP
 from graph.evaluation.EvaluationTools import EvaluationTools
 from tests.utils.TestUtils import TestUtils
+from graph.method.lbp.LBPTools import LBPTools
 
 ORIGINAL_LABELS = [1, 0, 1, 0, 1]
 MEAN_EXPECTED_RESULT = 0.286
@@ -43,8 +45,30 @@ class TestsRwpLBP(unittest.TestCase):
 
     def test_propagation(self):
         graph = mockito.mock(nx.MultiGraph)
+        nrOfNodes = 5
+        lbpSteps = 1000
+        lbpThreshold = 0.001
+        percentOfKnownNodes = 0.2
+        defaultClassMat = utils.prepareTestClassMat()
         edgesData, nodes, nodeList = utils.prepareNodesAndEdges()
+        edgesList = utils.prepareEdgesList(edgesData, nodeList)
         sortedNodes = sorted(nodes, key=lambda node: node.id)
-        adjacency_matrix = nx.adjacency_matrix(graph, sortedNodes, weight=None)
-        matrices = [adjacency_matrix]
-        self.method.propagation(matrices)
+
+        mockito.when(graph).edges(data=True).thenReturn(edgesList)
+        mockito.when(graph).nodes().thenReturn(nodes)
+
+        tools = LBPTools(nrOfNodes, graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfKnownNodes)
+        tools.separate_layer(graph, [1, 2], defaultClassMat, [4])
+        adjMatL1 = tools.adjMats["1"]
+        adjMatL2 = tools.adjMats["2"]
+
+        res = np.ndarray(shape=(5, 2))
+        res[0] = [0, 0]
+        res[1] = [0, 0]
+        res[2] = [0, 0]
+        res[3] = [0, 0]
+        res[4] = [2, 2]
+
+        matrices = [adjMatL1, adjMatL2]
+        newRes = self.method.propagation(matrices, [], defaultClassMat, [4], lbpSteps, lbpThreshold)
+        print newRes
