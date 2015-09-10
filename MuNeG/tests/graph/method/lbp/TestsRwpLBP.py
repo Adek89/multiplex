@@ -71,4 +71,9 @@ class TestsRwpLBP(unittest.TestCase):
 
         matrices = [adjMatL1, adjMatL2]
         newRes = self.method.propagation(matrices, [], defaultClassMat, [4], lbpSteps, lbpThreshold)
-        print newRes
+        assert newRes[0][0] < newRes[0][1]
+        assert newRes[1][0] < newRes[1][1]
+        assert newRes[2][0] < newRes[2][1]
+        assert newRes[3][0] < newRes[3][1]
+        assert newRes[4][0] == 0
+        assert newRes[4][1] == 1
