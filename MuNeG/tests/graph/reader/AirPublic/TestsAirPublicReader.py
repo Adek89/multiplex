@@ -8,4 +8,7 @@ class TestsAirPublicReader(unittest.TestCase):
         reader = AirPublicReader()
         reader.read()
         graph = reader.graph
-        pass
+        nodes = graph.nodes()
+        sortedNodes = sorted(nodes, key=lambda node: node.id)
+        assert nodes.__len__() == 450
+        assert sortedNodes[258].name == 'XXXX'
