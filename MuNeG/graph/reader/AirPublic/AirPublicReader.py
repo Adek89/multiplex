@@ -48,3 +48,4 @@ class AirPublicReader:
             tokens.next()
             tokens.next()
             self.prepare_airports(layer, nr_of_airports_in_layer, tokens)
+            tokens.next()

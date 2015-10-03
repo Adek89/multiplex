@@ -7,4 +7,5 @@ class TestsAirPublicReader(unittest.TestCase):
     def test_read(self):
         reader = AirPublicReader()
         reader.read()
+        graph = reader.graph
         pass
