@@ -7,8 +7,9 @@ class AirPublicNode:
     name = ''
     longitude = 0.0
     latitude = 0.0
+    is_hub = 0
 
-    def __init__(self, id, name='', longitude=0.0, latitude=0.0):
+    def __init__(self, id, name='', longitude=0.0, latitude=0.0, is_hub = 0):
         self.id = id
         self.name = name
         self.longitude = longitude

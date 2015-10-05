@@ -72,3 +72,9 @@ class AirPublicReader:
             self.calculate_longitude(node, tokens, value)
             node.latitude = float(tokens.next()[1])
             tokens.next()
+
+    def calculate_classes(self):
+        edges = self.graph.edge
+        for _, values in edges.items():
+            if values.__len__() > 5:
+                pass#todo
