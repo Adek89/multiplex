@@ -24,3 +24,16 @@ class TestsAirPublicReader(unittest.TestCase):
                 i = i + 1
         assert i == 202
 
+    def test_assign_classes(self):
+        reader = AirPublicReader()
+        reader.read()
+        reader.calculate_classes()
+        graph = reader.graph
+        i = 0
+        for node in graph.nodes():
+            if node.label == 1:
+                i = i +1
+        assert i == 202
+
+
+

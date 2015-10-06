@@ -18,6 +18,7 @@ class AirPublicReader:
         self.prepare_layers(tokens)
         tokens = self.prepare_file(PATH_TO_AIRPORTS)
         self.decorate_nodes(tokens)
+        self.calculate_classes()
 
 
     def prepare_file(self, path):
@@ -75,6 +76,6 @@ class AirPublicReader:
 
     def calculate_classes(self):
         edges = self.graph.edge
-        for _, values in edges.items():
+        for node, values in edges.items():
             if values.__len__() > 5:
-                pass#todo
+                node.label = 1
