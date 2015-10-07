@@ -13,7 +13,7 @@ from graph.method.lbp.NetworkUtils import NetworkUtils
 from graph.method.lbp.FlatLBP import FlatLBP
 from graph.method.lbp.RwpLBP import RwpLBP
 from graph.evaluation.EvaluationTools import EvaluationTools
-from graph.reader.AirPublic.AirPublicReader import AirPublicReaders
+from graph.reader.AirPublic.AirPublicReader import AirPublicReader
 from graph.method.ensamble.EnsambleLearning import EnsambleLearning
 from graph.analyser.GraphAnalyser import GraphAnalyser
 import matplotlib.pyplot as plt
@@ -41,7 +41,7 @@ class DecisionFusion:
     training = []
     validation = []
     
-    FILE_PATH = ""
+    file_path = ""
     
     nu = NetworkUtils()
     training = []
@@ -75,15 +75,11 @@ class DecisionFusion:
     nrOfLayers = 0
     percentOfTrainignNodes = 0.0
     counter = 0
-    sampledNodes = 0
-    limit = 0
 
-    def __init__(self, percentOfTrainignNodes, counter, sampledNodes, limit, path):
+    def __init__(self, percentOfTrainignNodes, counter, path):
         self.percentOfTrainignNodes = percentOfTrainignNodes
         self.counter = counter
-        self.sampledNodes = sampledNodes
-        self.limit = limit
-        self.FILE_PATH = path
+        self.file_path = path
 
     def initLayers(self, nrOfLayers):
         for i in xrange(0, nrOfLayers):
@@ -113,21 +109,11 @@ class DecisionFusion:
     Prepare data
     '''      
     def readRealData(self):
-        reader = Salon24Reader(self.limit)
-        self.realGraph = reader.createNetwork()
-        ensamble = EnsambleLearning(self.realGraph, 1, self.sampledNodes)
-        self.realGraph = ensamble.sampleGraph()
+        reader = AirPublicReader()
+        reader.read()
+        self.realGraph = reader.graph
         ga = GraphAnalyser(self.realGraph, self.percentOfTrainignNodes, self.counter)
         ga.analyse()
-
-    def generateSyntheticData(self):
-        start_time = time.time()
-        self.gg = GraphGenerator(self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.LAYERS_WEIGHTS,
-                                 self.GROUP_LABEL_HOMOGENITY, self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP,
-                                 self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS, self.LAYERS_NAME)
-        self.synthetic = self.gg.generate()
-        print("---generation time: %s seconds ---" % str(time.time() - start_time))
-        
     '''
     Preprocessing
     '''
@@ -172,11 +158,11 @@ class DecisionFusion:
         fMacroRWPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realRWPFoldSum, self.realNrOfClasses)
         fMacroRWPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realRWPFusionMean, self.realNrOfClasses)
         
-        with open(self.FILE_PATH + str(self.counter) + 'real.csv', 'ab') as csvfile:
+        with open(self.file_path + str(self.counter) + 'real.csv', 'ab') as csvfile:
             writer = csv.writer(csvfile)
         
             writer.writerow([
-                self.realGraph.nodes().__len__(),self.percentOfTrainignNodes, self.sampledNodes, self.limit,
+                self.realGraph.nodes().__len__(),self.percentOfTrainignNodes,
                             fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMacroRWPRealFoldSum,
                             fMacroRWPRealFusionMean])
         
@@ -189,6 +175,3 @@ class DecisionFusion:
                     maxi = j
             classMatForEv.append(maxi)
         return classMatForEv
-    
-    if __name__ == '__main__':        
-        print 

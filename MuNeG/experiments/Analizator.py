@@ -15,5 +15,5 @@ if __name__ == '__main__':
     percentOfTrainingNodes = float(sys.argv[7])
     counter = float(sys.argv[8])
 
-    ga = GraphAnalyser(nodes, size, label, probIn, probBetween, nrOfLayers, percentOfTrainingNodes, counter)
+    ga = GraphAnalyser(None, 0.2, 1)
     ga.analyse()

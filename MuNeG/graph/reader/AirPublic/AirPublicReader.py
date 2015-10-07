@@ -38,14 +38,14 @@ class AirPublicReader:
 
     def prepare_connections_for_airport(self, layer, node, nr_of_connections, tokens):
         for k in xrange(0, nr_of_connections):
-            neighbor_id = int(tokens.next()[1])
+            neighbor_id = int(tokens.next()[1]) - 1
             neighbor = self.load_or_prepare_node(neighbor_id)
             self.graph.add_edge(node, neighbor, weight=layer, layer='L' + str(layer), conWeight=0.5)
         tokens.next()
 
     def prepare_airports(self, layer, nr_of_airports_in_layer, tokens):
         for i in xrange(0, nr_of_airports_in_layer):
-            airport_id = int(tokens.next()[1])
+            airport_id = int(tokens.next()[1]) - 1
             node = self.load_or_prepare_node(airport_id)
             nr_of_connections = int(tokens.next()[1])
             self.prepare_connections_for_airport(layer, node, nr_of_connections, tokens)
@@ -66,7 +66,7 @@ class AirPublicReader:
 
     def decorate_nodes(self, tokens):
         for i in xrange(0, NR_OF_AIRPORTS):
-            airport_id = int(tokens.next()[1])
+            airport_id = int(tokens.next()[1]) - 1
             node = self.load_or_prepare_node(airport_id)
             node.name = tokens.next()[1]
             value = tokens.next()[1]

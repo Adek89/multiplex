@@ -9,18 +9,20 @@ from graph.method.ensamble.EnsambleLearning import EnsambleLearning
 import csv
 import time
 import matplotlib.pyplot as plt
+import scipy.stats as stats
+import numpy as np
 class GraphAnalyser:
 
-    # nrOfNodes = 10
-    # nrOfGroups = 1
-    # avgNrOfGroups = 1
-    # grLabelHomogenity = 0
-    # probOfEdgeInSameGroup = 1
-    # probOfEdgeInOtherGrops = 1
-    layerWeights = []
-    layerName = []
-    # nrOfLayers = 1
-    percentOfTrainingNodes = 0
+    nrOfNodes = 500
+    nrOfGroups = 9
+    avgNrOfGroups = 9
+    grLabelHomogenity = 5
+    probOfEdgeInSameGroup = 5
+    probOfEdgeInOtherGrops = 0.1
+    layerWeights = [1, 2]
+    layerName = ["L1", "L2"]
+    nrOfLayers = 2
+    percentOfTrainingNodes = 0.2
     counter = 0
     graph = None
     # FILE_PATH = "/home/apopiel/tmp_local/"
@@ -85,10 +87,10 @@ class GraphAnalyser:
         return diameter, shortestPath
 
     def analyse(self):
-        # gg =  GraphGenerator(self.nrOfNodes, self.avgNrOfGroups, self.layerWeights,
-        #                          self.grLabelHomogenity, self.probOfEdgeInSameGroup,
-        #                          self.probOfEdgeInOtherGrops, self.layerName)
-        graph = self.graph
+        gg =  GraphGenerator(self.nrOfNodes, self.avgNrOfGroups, self.layerWeights,
+                                 self.grLabelHomogenity, self.probOfEdgeInSameGroup,
+                                 self.probOfEdgeInOtherGrops, self.layerName)
+        graph = gg.generate()
         degree_sequence, dmax = self.drawDegreeDistribution(graph) #1
         nrOfEdges = graph.number_of_edges() #2
         avgDegree = float(sum(degree_sequence))/float(len(degree_sequence)) #3
@@ -116,17 +118,6 @@ class GraphAnalyser:
     def drawDegreeDistribution(self, graph):
         degree_sequence = sorted(nx.degree(graph).values(), reverse=True)  # degree sequence
         dmax = max(degree_sequence)
-        # plt.loglog(degree_sequence, 'b-', marker='o')
-        # plt.title("Degree rank plot")
-        # plt.ylabel("degree")
-        # plt.xlabel("rank")
-        # plt.axes([0.45, 0.45, 0.45, 0.45])
-        # Gcc = sorted(nx.connected_component_subgraphs(graph), key=len, reverse=True)[0]
-        # pos = nx.spring_layout(Gcc)
-        # plt.axis('off')
-        # nx.draw_networkx_nodes(Gcc, pos, node_size=20)
-        # nx.draw_networkx_edges(Gcc, pos, alpha=0.4)
-        # plt.savefig("degree_histogram.png")
-        # plt.show()
+        stats.mstats.normaltest(degree_sequence)
         return degree_sequence, dmax
 
