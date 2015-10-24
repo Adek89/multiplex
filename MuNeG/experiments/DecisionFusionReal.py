@@ -13,7 +13,7 @@ from graph.method.lbp.NetworkUtils import NetworkUtils
 from graph.method.lbp.FlatLBP import FlatLBP
 from graph.method.lbp.RwpLBP import RwpLBP
 from graph.evaluation.EvaluationTools import EvaluationTools
-from graph.reader.AirPublic.AirPublicReader import AirPublicReader
+from graph.reader.DanioRerio.DanioRerioReader import DanioRerioReader
 from graph.method.ensamble.EnsambleLearning import EnsambleLearning
 from graph.analyser.GraphAnalyser import GraphAnalyser
 import matplotlib.pyplot as plt
@@ -109,8 +109,8 @@ class DecisionFusion:
     Prepare data
     '''      
     def readRealData(self):
-        reader = AirPublicReader()
-        reader.read()
+        reader = DanioRerioReader()
+        reader.read('GO:0005634')
         self.realGraph = reader.graph
         ga = GraphAnalyser(self.realGraph, self.percentOfTrainignNodes, self.counter)
         ga.analyse()

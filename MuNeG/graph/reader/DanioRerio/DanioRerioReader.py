@@ -24,7 +24,7 @@ class DanioRerioReader():
                     node = self.load_or_prepare_node(id)
                     neighbor_id = int(tokens.next()[1]) - 1
                     neighbor = self.load_or_prepare_node(neighbor_id)
-                    self.graph.add_edge(node, neighbor, weight=i, layer='L' + str(i), conWeight=0.5)
+                    self.graph.add_edge(node, neighbor, weight=6-i, layer='L' + str(6-i), conWeight=0.5)
                     tokens.next()
                     tokens.next()
                 except:
@@ -50,9 +50,7 @@ class DanioRerioReader():
             node.name = name
             tokens.next()
 
-    def read(self):
-        self.prepare_graph()
-        self.decorate_nodes()
+    def assign_functions(self):
         tokens = self.prepare_file(PATH_TO_FUNCTIONS)
         for i in xrange(0, 155):
             id = int(tokens.next()[1])
@@ -64,8 +62,7 @@ class DanioRerioReader():
                 while next_token <> 'GO' and next_token <> '\n':
                     go_term = go_term + next_token
                     next_token = tokens.next()[1]
-                node.functions(go_term)
-
+                node.functions.add(go_term)
 
     def prepare_file(self, path):
         path = os.path.join(os.path.dirname(__file__), '%s' % path)
@@ -81,3 +78,32 @@ class DanioRerioReader():
             self.nodes.update({id: node})
             self.graph.add_node(node)
         return node
+
+    def assign_labels(self, label_fun):
+        if not label_fun == '':
+            for node in self.graph.nodes():
+                if label_fun in node.functions:
+                    node.label = 1
+
+    def read(self, label_fun=''):
+        self.prepare_graph()
+        self.decorate_nodes()
+        self.assign_functions()
+        self.assign_labels(label_fun)
+
+
+    def create_go_terms_map(self):
+        map = dict([])
+        for (id, node) in self.nodes.items():
+            functions = node.functions
+            for fun in functions:
+                if not map.has_key(fun):
+                    map.update({fun : 1})
+                else:
+                    count = map.get(fun)
+                    map.update({fun : count + 1})
+        return map
+
+
+
+
