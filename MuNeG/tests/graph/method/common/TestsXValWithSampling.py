@@ -9,23 +9,19 @@ from graph.method.common.XValWithSampling import XValMethods
 
 class TestsXValWithSampling(unittest.TestCase):
 
-    graph = mockito.mock(nx.MultiGraph)
+    graph = nx.MultiGraph()
     utils = TestUtils()
 
     def test_loading(self):
         edges, nodes, nodesList = self.utils.prepareNodesAndEdges()
         edgesList = self.utils.prepareEdgesList(edges, nodesList)
 
-        mockito.when(self.graph).edges_iter(mockito.any(), data=True)\
-            .thenReturn(self.utils.generateEdges(10, nodesList, edges))\
-            .thenReturn(self.utils.generateEdges(10, nodesList, edges))\
-            .thenReturn(self.utils.generateEdges(10, nodesList, edges))\
-            .thenReturn(self.utils.generateEdges(10, nodesList, edges))\
-            .thenReturn(self.utils.generateEdges(10, nodesList, edges))
-        mockito.when(self.graph).nodes().thenReturn(nodes)
-        mockito.when(self.graph).edges(data=True).thenReturn(edgesList)
-        mockito.when(self.graph).degree_iter().thenReturn(iter([(0,4)]))
+        self.graph.add_nodes_from(nodesList)
+        self.graph.add_edges_from(edgesList)
+
+        #mix more clustering then in default data
+        self.graph.add_edge(nodesList[1], nodesList[2], layer='L1', conWeight=0.5, weight=1)
 
         methods = XValMethods(self.graph)
 
-        methods.loading()
+        methods.loading_whole_graph()
