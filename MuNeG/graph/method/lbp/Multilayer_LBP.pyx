@@ -24,6 +24,7 @@ from graph.reader.ExcelReader import ExcelReader
 cimport graph.method.lbp.CrossValMethods as cvm
 cimport graph.method.lbp.LBPTools as tool
 cimport graph.method.common.CommonUtils as commonUtils
+from graph.method.common.XValWithSampling import XValMethods
 cdef class Multilayer_LBP:
     
     
@@ -43,7 +44,7 @@ cdef class Multilayer_LBP:
         
         
         cdef int fold_number = 1
-        cdef list items = range(nrOfNodes)
+        cdef list items = graph.nodes()
         timer = time.time()
         
         
@@ -52,9 +53,10 @@ cdef class Multilayer_LBP:
         
         cdef tools = tool.LBPTools(nrOfNodes, graph, defaultClassMat, lbpMaxSteps, lbpThreshold, percentOfTrainingNodes)
         cdef common = commonUtils.CommonUtils()
+        x_val_methods = XValMethods(graph)
         fold_sum, fuz_mean_occ, sum = tools.crossVal(items, nrOfFolds, graph, nrOfNodes, 
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
-                       common.k_fold_cross_validation, tools.giveCorrectData,
+                       x_val_methods.stratifies_x_val, tools.giveCorrectData,
                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)
             
         #cross validation summary

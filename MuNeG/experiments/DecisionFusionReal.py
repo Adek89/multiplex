@@ -75,11 +75,14 @@ class DecisionFusion:
     nrOfLayers = 0
     percentOfTrainignNodes = 0.0
     counter = 0
+    method = 0
+    fold = 0
 
-    def __init__(self, percentOfTrainignNodes, counter, path):
+    def __init__(self, method, fold, percentOfTrainignNodes):
         self.percentOfTrainignNodes = percentOfTrainignNodes
-        self.counter = counter
-        self.file_path = path
+        self.method = method
+        self.fold = fold
+
 
     def initLayers(self, nrOfLayers):
         for i in xrange(0, nrOfLayers):
@@ -110,7 +113,7 @@ class DecisionFusion:
     '''      
     def readRealData(self):
         reader = DanioRerioReader()
-        reader.read('GO:0005634')
+        reader.read('GO:0000059')
         self.realGraph = reader.graph
         ga = GraphAnalyser(self.realGraph, self.percentOfTrainignNodes, self.counter)
         ga.analyse()
@@ -125,7 +128,7 @@ class DecisionFusion:
     def flatLBP(self):
         flatLBP = FlatLBP()
         nrOfNodes = self.realGraph.nodes().__len__()
-        self.realFlatResult = flatLBP.start(self.realGraph, nrOfNodes, self.realGraphClassMat, self.realNrOfClasses, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.NUMBER_OF_FOLDS, self.percentOfTrainignNodes)
+        self.realFlatResult = flatLBP.start(self.realGraph, nrOfNodes, self.realGraphClassMat, self.realNrOfClasses, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.NUMBER_OF_FOLDS, self.percentOfTrainignNodes, self.method)
         
         
         

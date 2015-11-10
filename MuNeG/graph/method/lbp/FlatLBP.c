@@ -707,8 +707,8 @@ typedef __pyx_t_5numpy_int_t __pyx_t_5graph_6method_3lbp_7FlatLBP_DTYPE_t;
  * ctypedef np.int_t DTYPE_t
  * DOUBTYPE = np.float
  * ctypedef np.float_t DOUBTYPE_t             # <<<<<<<<<<<<<<
+ * from graph.method.common.XValWithSampling import XValMethods
  * cdef class FlatLBP:
- * 
  */
 typedef __pyx_t_5numpy_float_t __pyx_t_5graph_6method_3lbp_7FlatLBP_DOUBTYPE_t;
 #if CYTHON_CCOMPLEX
@@ -851,9 +851,9 @@ struct __pyx_obj_5graph_6method_6common_11CommonUtils_CommonUtils {
 };
 
 
-/* "graph\method\lbp\FlatLBP.pyx":20
- * DOUBTYPE = np.float
+/* "graph\method\lbp\FlatLBP.pyx":21
  * ctypedef np.float_t DOUBTYPE_t
+ * from graph.method.common.XValWithSampling import XValMethods
  * cdef class FlatLBP:             # <<<<<<<<<<<<<<
  * 
  *     def __cinit__(self):
@@ -902,9 +902,9 @@ struct __pyx_vtabstruct_5graph_6method_3lbp_8LBPTools_LBPTools {
 static struct __pyx_vtabstruct_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_vtabptr_5graph_6method_3lbp_8LBPTools_LBPTools;
 
 
-/* "graph\method\lbp\FlatLBP.pyx":20
- * DOUBTYPE = np.float
+/* "graph\method\lbp\FlatLBP.pyx":21
  * ctypedef np.float_t DOUBTYPE_t
+ * from graph.method.common.XValWithSampling import XValMethods
  * cdef class FlatLBP:             # <<<<<<<<<<<<<<
  * 
  *     def __cinit__(self):
@@ -912,7 +912,7 @@ static struct __pyx_vtabstruct_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_vta
 
 struct __pyx_vtabstruct_5graph_6method_3lbp_7FlatLBP_FlatLBP {
   PyObject *(*prepareFoldClassMat)(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *, PyObject *, PyArrayObject *, PyObject *, int __pyx_skip_dispatch);
-  PyObject *(*start)(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *, PyObject *, int, PyArrayObject *, int, int, float, int, float, int __pyx_skip_dispatch);
+  PyObject *(*start)(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *, PyObject *, int, PyArrayObject *, int, int, float, int, float, int, int __pyx_skip_dispatch);
   PyObject *(*prepareUnobservdRow)(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *, int);
 };
 static struct __pyx_vtabstruct_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_vtabptr_5graph_6method_3lbp_7FlatLBP_FlatLBP;
@@ -1292,7 +1292,7 @@ static PyTypeObject *__Pyx_ImportType(const char *module_name, const char *class
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassMat(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, PyObject *__pyx_v_validation, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, int __pyx_v_nrOfNodes, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_lbpSteps, float __pyx_v_lbpThreshold, int __pyx_v_numberOfFolds, float __pyx_v_percentOfTrainignNodes, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, int __pyx_v_nrOfNodes, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_lbpSteps, float __pyx_v_lbpThreshold, int __pyx_v_numberOfFolds, float __pyx_v_percentOfTrainignNodes, int __pyx_v_method_type, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareUnobservdRow(CYTHON_UNUSED struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, int __pyx_v_nrOfClasses); /* proto*/
 
 /* Module declarations from 'cpython.buffer' */
@@ -1351,7 +1351,7 @@ static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_RuntimeError;
 static int __pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP___cinit__(CYTHON_UNUSED struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_2prepareFoldClassMat(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, PyObject *__pyx_v_validation); /* proto */
-static PyObject *__pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_4start(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, int __pyx_v_nrOfNodes, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_lbpSteps, float __pyx_v_lbpThreshold, int __pyx_v_numberOfFolds, float __pyx_v_percentOfTrainignNodes); /* proto */
+static PyObject *__pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_4start(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, int __pyx_v_nrOfNodes, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_lbpSteps, float __pyx_v_lbpThreshold, int __pyx_v_numberOfFolds, float __pyx_v_percentOfTrainignNodes, int __pyx_v_method_type); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_tp_new_5graph_6method_3lbp_7FlatLBP_FlatLBP(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -1402,6 +1402,8 @@ static char __pyx_k_nrOfNodes[] = "nrOfNodes";
 static char __pyx_k_ValueError[] = "ValueError";
 static char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static char __pyx_k_validation[] = "validation";
+static char __pyx_k_XValMethods[] = "XValMethods";
+static char __pyx_k_method_type[] = "method_type";
 static char __pyx_k_nrOfClasses[] = "nrOfClasses";
 static char __pyx_k_RuntimeError[] = "RuntimeError";
 static char __pyx_k_flatCrossVal[] = "flatCrossVal";
@@ -1409,6 +1411,7 @@ static char __pyx_k_lbpThreshold[] = "lbpThreshold";
 static char __pyx_k_numberOfFolds[] = "numberOfFolds";
 static char __pyx_k_defaultClassMat[] = "defaultClassMat";
 static char __pyx_k_adjacency_matrix[] = "adjacency_matrix";
+static char __pyx_k_stratifies_x_val[] = "stratifies_x_val";
 static char __pyx_k_prepareFoldClassMat[] = "prepareFoldClassMat";
 static char __pyx_k_LoopyBeliefPropagation[] = "LoopyBeliefPropagation";
 static char __pyx_k_percentOfTrainignNodes[] = "percentOfTrainignNodes";
@@ -1418,6 +1421,7 @@ static char __pyx_k_Created_on_18_mar_2014_author_A[] = "\nCreated on 18 mar 201
 static char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
 static char __pyx_k_Format_string_allocated_too_shor[] = "Format string allocated too short, see comment in numpy.pxd";
 static char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte order not supported";
+static char __pyx_k_graph_method_common_XValWithSamp[] = "graph.method.common.XValWithSampling";
 static char __pyx_k_graph_method_lbp_LoopyBeliefProp[] = "graph.method.lbp.LoopyBeliefPropagation";
 static char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not Fortran contiguous";
 static char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
@@ -1429,6 +1433,7 @@ static PyObject *__pyx_n_s_LoopyBeliefPropagation;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_ValueError;
+static PyObject *__pyx_n_s_XValMethods;
 static PyObject *__pyx_n_s_adjacency_matrix;
 static PyObject *__pyx_n_s_array;
 static PyObject *__pyx_n_s_copy;
@@ -1438,6 +1443,7 @@ static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_flatCrossVal;
 static PyObject *__pyx_n_s_float;
 static PyObject *__pyx_n_s_graph;
+static PyObject *__pyx_n_s_graph_method_common_XValWithSamp;
 static PyObject *__pyx_n_s_graph_method_lbp_LoopyBeliefProp;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_int;
@@ -1447,6 +1453,7 @@ static PyObject *__pyx_n_s_lbpSteps;
 static PyObject *__pyx_n_s_lbpThreshold;
 static PyObject *__pyx_n_s_len;
 static PyObject *__pyx_n_s_main;
+static PyObject *__pyx_n_s_method_type;
 static PyObject *__pyx_kp_u_ndarray_is_not_C_contiguous;
 static PyObject *__pyx_kp_u_ndarray_is_not_Fortran_contiguou;
 static PyObject *__pyx_n_s_networkx;
@@ -1465,6 +1472,7 @@ static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_shape;
 static PyObject *__pyx_n_s_shuffle;
 static PyObject *__pyx_n_s_start;
+static PyObject *__pyx_n_s_stratifies_x_val;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_time;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
@@ -1478,7 +1486,7 @@ static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
 static PyObject *__pyx_tuple__6;
 
-/* "graph\method\lbp\FlatLBP.pyx":22
+/* "graph\method\lbp\FlatLBP.pyx":23
  * cdef class FlatLBP:
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1513,7 +1521,7 @@ static int __pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP___cinit__(CYTHON_UNUSE
   return __pyx_r;
 }
 
-/* "graph\method\lbp\FlatLBP.pyx":27
+/* "graph\method\lbp\FlatLBP.pyx":28
  *         '''
  * 
  *     cpdef prepareFoldClassMat(self, graph, np.ndarray  defaultClassMat, list validation):             # <<<<<<<<<<<<<<
@@ -1550,7 +1558,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_prepareFoldClassMat); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_prepareFoldClassMat); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_3prepareFoldClassMat)) {
       __Pyx_XDECREF(__pyx_r);
@@ -1567,7 +1575,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
           __pyx_t_5 = 1;
         }
       }
-      __pyx_t_6 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       if (__pyx_t_4) {
         PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __Pyx_GIVEREF(__pyx_t_4); __pyx_t_4 = NULL;
@@ -1581,7 +1589,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
       __Pyx_INCREF(__pyx_v_validation);
       PyTuple_SET_ITEM(__pyx_t_6, 2+__pyx_t_5, __pyx_v_validation);
       __Pyx_GIVEREF(__pyx_v_validation);
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -1593,14 +1601,14 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "graph\method\lbp\FlatLBP.pyx":28
+  /* "graph\method\lbp\FlatLBP.pyx":29
  * 
  *     cpdef prepareFoldClassMat(self, graph, np.ndarray  defaultClassMat, list validation):
  *         cdef classMat = defaultClassMat.copy()             # <<<<<<<<<<<<<<
  *         cdef int nrOfClasses = classMat.shape[1]
  *         cdef int i
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_defaultClassMat), __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_defaultClassMat), __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1613,40 +1621,40 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_classMat = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":29
+  /* "graph\method\lbp\FlatLBP.pyx":30
  *     cpdef prepareFoldClassMat(self, graph, np.ndarray  defaultClassMat, list validation):
  *         cdef classMat = defaultClassMat.copy()
  *         cdef int nrOfClasses = classMat.shape[1]             # <<<<<<<<<<<<<<
  *         cdef int i
  *         cdef list row
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_classMat, __pyx_n_s_shape); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_classMat, __pyx_n_s_shape); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 30; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 30; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 30; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_nrOfClasses = __pyx_t_7;
 
-  /* "graph\method\lbp\FlatLBP.pyx":34
+  /* "graph\method\lbp\FlatLBP.pyx":35
  *         cdef list sortedNodes
  *         cdef adjMat
  *         for i in range(0, defaultClassMat.__len__()):             # <<<<<<<<<<<<<<
  *             if i in validation:
  *                 row = self.prepareUnobservdRow(nrOfClasses)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_defaultClassMat), __pyx_n_s_len); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_defaultClassMat), __pyx_n_s_len); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_1))) {
@@ -1659,65 +1667,65 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_8; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "graph\method\lbp\FlatLBP.pyx":35
+    /* "graph\method\lbp\FlatLBP.pyx":36
  *         cdef adjMat
  *         for i in range(0, defaultClassMat.__len__()):
  *             if i in validation:             # <<<<<<<<<<<<<<
  *                 row = self.prepareUnobservdRow(nrOfClasses)
  *                 classMat[i] = row
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 36; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = (__Pyx_PySequence_Contains(__pyx_t_2, __pyx_v_validation, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = (__Pyx_PySequence_Contains(__pyx_t_2, __pyx_v_validation, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 36; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_10 = (__pyx_t_9 != 0);
     if (__pyx_t_10) {
 
-      /* "graph\method\lbp\FlatLBP.pyx":36
+      /* "graph\method\lbp\FlatLBP.pyx":37
  *         for i in range(0, defaultClassMat.__len__()):
  *             if i in validation:
  *                 row = self.prepareUnobservdRow(nrOfClasses)             # <<<<<<<<<<<<<<
  *                 classMat[i] = row
  * 
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_5graph_6method_3lbp_7FlatLBP_FlatLBP *)__pyx_v_self->__pyx_vtab)->prepareUnobservdRow(__pyx_v_self, __pyx_v_nrOfClasses); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 36; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = ((struct __pyx_vtabstruct_5graph_6method_3lbp_7FlatLBP_FlatLBP *)__pyx_v_self->__pyx_vtab)->prepareUnobservdRow(__pyx_v_self, __pyx_v_nrOfClasses); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 37; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_XDECREF_SET(__pyx_v_row, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "graph\method\lbp\FlatLBP.pyx":37
+      /* "graph\method\lbp\FlatLBP.pyx":38
  *             if i in validation:
  *                 row = self.prepareUnobservdRow(nrOfClasses)
  *                 classMat[i] = row             # <<<<<<<<<<<<<<
  * 
  *         sortedNodes = sorted(graph.nodes())
  */
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_classMat, __pyx_v_i, __pyx_v_row, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 37; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__Pyx_SetItemInt(__pyx_v_classMat, __pyx_v_i, __pyx_v_row, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       goto __pyx_L5;
     }
     __pyx_L5:;
   }
 
-  /* "graph\method\lbp\FlatLBP.pyx":39
+  /* "graph\method\lbp\FlatLBP.pyx":40
  *                 classMat[i] = row
  * 
  *         sortedNodes = sorted(graph.nodes())             # <<<<<<<<<<<<<<
  *         adjMat = nx.adjacency_matrix(graph, sortedNodes)
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_6 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
@@ -1730,32 +1738,32 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
     }
   }
   if (__pyx_t_6) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PySequence_List(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PySequence_List(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_2 = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_11 = PyList_Sort(__pyx_t_2); if (unlikely(__pyx_t_11 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = PyList_Sort(__pyx_t_2); if (unlikely(__pyx_t_11 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_sortedNodes = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":40
+  /* "graph\method\lbp\FlatLBP.pyx":41
  * 
  *         sortedNodes = sorted(graph.nodes())
  *         adjMat = nx.adjacency_matrix(graph, sortedNodes)             # <<<<<<<<<<<<<<
  * 
  *         return classMat, adjMat, sortedNodes
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 41; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_adjacency_matrix); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_adjacency_matrix); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 41; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -1770,7 +1778,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
       __pyx_t_5 = 1;
     }
   }
-  __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 41; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   if (__pyx_t_3) {
     PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3); __Pyx_GIVEREF(__pyx_t_3); __pyx_t_3 = NULL;
@@ -1781,14 +1789,14 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
   __Pyx_INCREF(__pyx_v_sortedNodes);
   PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_sortedNodes);
   __Pyx_GIVEREF(__pyx_v_sortedNodes);
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 40; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 41; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_adjMat = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":42
+  /* "graph\method\lbp\FlatLBP.pyx":43
  *         adjMat = nx.adjacency_matrix(graph, sortedNodes)
  * 
  *         return classMat, adjMat, sortedNodes             # <<<<<<<<<<<<<<
@@ -1796,7 +1804,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
  *     cpdef list start(self, graph, int nrOfNodes, np.ndarray defaultClassMat, int nrOfClasses, int lbpSteps, float lbpThreshold, int numberOfFolds,
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 42; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 43; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_classMat);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_classMat);
@@ -1811,7 +1819,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassM
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":27
+  /* "graph\method\lbp\FlatLBP.pyx":28
  *         '''
  * 
  *     cpdef prepareFoldClassMat(self, graph, np.ndarray  defaultClassMat, list validation):             # <<<<<<<<<<<<<<
@@ -1871,16 +1879,16 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_3prepareFoldClas
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_defaultClassMat)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("prepareFoldClassMat", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("prepareFoldClassMat", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_validation)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("prepareFoldClassMat", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("prepareFoldClassMat", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "prepareFoldClassMat") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "prepareFoldClassMat") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -1895,14 +1903,14 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_3prepareFoldClas
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("prepareFoldClassMat", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("prepareFoldClassMat", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("graph.method.lbp.FlatLBP.FlatLBP.prepareFoldClassMat", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_defaultClassMat), __pyx_ptype_5numpy_ndarray, 1, "defaultClassMat", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_validation), (&PyList_Type), 1, "validation", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_defaultClassMat), __pyx_ptype_5numpy_ndarray, 1, "defaultClassMat", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_validation), (&PyList_Type), 1, "validation", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_2prepareFoldClassMat(((struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *)__pyx_v_self), __pyx_v_graph, __pyx_v_defaultClassMat, __pyx_v_validation);
 
   /* function exit code */
@@ -1923,7 +1931,7 @@ static PyObject *__pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_2prepareFoldClas
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("prepareFoldClassMat", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassMat(__pyx_v_self, __pyx_v_graph, __pyx_v_defaultClassMat, __pyx_v_validation, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassMat(__pyx_v_self, __pyx_v_graph, __pyx_v_defaultClassMat, __pyx_v_validation, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1940,16 +1948,16 @@ static PyObject *__pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_2prepareFoldClas
   return __pyx_r;
 }
 
-/* "graph\method\lbp\FlatLBP.pyx":44
+/* "graph\method\lbp\FlatLBP.pyx":45
  *         return classMat, adjMat, sortedNodes
  * 
  *     cpdef list start(self, graph, int nrOfNodes, np.ndarray defaultClassMat, int nrOfClasses, int lbpSteps, float lbpThreshold, int numberOfFolds,             # <<<<<<<<<<<<<<
- *                         float percentOfTrainignNodes):
+ *                         float percentOfTrainignNodes, int method_type):
  *         cdef list fold_sum = []
  */
 
 static PyObject *__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_5start(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, int __pyx_v_nrOfNodes, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_lbpSteps, float __pyx_v_lbpThreshold, int __pyx_v_numberOfFolds, float __pyx_v_percentOfTrainignNodes, int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, int __pyx_v_nrOfNodes, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_lbpSteps, float __pyx_v_lbpThreshold, int __pyx_v_numberOfFolds, float __pyx_v_percentOfTrainignNodes, int __pyx_v_method_type, int __pyx_skip_dispatch) {
   PyObject *__pyx_v_fold_sum = 0;
   int __pyx_v_i;
   CYTHON_UNUSED int __pyx_v_fold_number;
@@ -1960,6 +1968,8 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __py
   PyObject *__pyx_v_lbp = NULL;
   struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *__pyx_v_tools = 0;
   PyObject *__pyx_v_common = NULL;
+  PyObject *__pyx_v_x_val_methods = NULL;
+  PyObject *__pyx_v_x_val = NULL;
   PyObject *__pyx_v_foldSumEstimated = 0;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_fuz_mean_occ;
   __Pyx_Buffer __pyx_pybuffer_fuz_mean_occ;
@@ -1975,13 +1985,14 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __py
   PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
-  Py_ssize_t __pyx_t_11;
-  PyObject *__pyx_t_12 = NULL;
-  long __pyx_t_13;
-  int __pyx_t_14;
+  PyObject *__pyx_t_11 = NULL;
+  Py_ssize_t __pyx_t_12;
+  PyObject *__pyx_t_13 = NULL;
+  long __pyx_t_14;
   int __pyx_t_15;
-  float __pyx_t_16;
-  PyArrayObject *__pyx_t_17 = NULL;
+  int __pyx_t_16;
+  float __pyx_t_17;
+  PyArrayObject *__pyx_t_18 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1994,69 +2005,74 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __py
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_start); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_start); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_5start)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_nrOfNodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_nrOfNodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_nrOfClasses); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_nrOfClasses); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_lbpSteps); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_lbpSteps); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = PyFloat_FromDouble(__pyx_v_lbpThreshold); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyFloat_FromDouble(__pyx_v_lbpThreshold); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_numberOfFolds); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_numberOfFolds); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_8 = PyFloat_FromDouble(__pyx_v_percentOfTrainignNodes); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = PyFloat_FromDouble(__pyx_v_percentOfTrainignNodes); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_8);
+      __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_method_type); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_9);
       __Pyx_INCREF(__pyx_t_1);
-      __pyx_t_9 = __pyx_t_1; __pyx_t_10 = NULL;
-      __pyx_t_11 = 0;
-      if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_9))) {
-        __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_9);
-        if (likely(__pyx_t_10)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
-          __Pyx_INCREF(__pyx_t_10);
+      __pyx_t_10 = __pyx_t_1; __pyx_t_11 = NULL;
+      __pyx_t_12 = 0;
+      if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_10))) {
+        __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_10);
+        if (likely(__pyx_t_11)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+          __Pyx_INCREF(__pyx_t_11);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_9, function);
-          __pyx_t_11 = 1;
+          __Pyx_DECREF_SET(__pyx_t_10, function);
+          __pyx_t_12 = 1;
         }
       }
-      __pyx_t_12 = PyTuple_New(8+__pyx_t_11); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_12);
-      if (__pyx_t_10) {
-        PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_10); __Pyx_GIVEREF(__pyx_t_10); __pyx_t_10 = NULL;
+      __pyx_t_13 = PyTuple_New(9+__pyx_t_12); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_13);
+      if (__pyx_t_11) {
+        PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_11); __Pyx_GIVEREF(__pyx_t_11); __pyx_t_11 = NULL;
       }
       __Pyx_INCREF(__pyx_v_graph);
-      PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_11, __pyx_v_graph);
+      PyTuple_SET_ITEM(__pyx_t_13, 0+__pyx_t_12, __pyx_v_graph);
       __Pyx_GIVEREF(__pyx_v_graph);
-      PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_11, __pyx_t_3);
+      PyTuple_SET_ITEM(__pyx_t_13, 1+__pyx_t_12, __pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       __Pyx_INCREF(((PyObject *)__pyx_v_defaultClassMat));
-      PyTuple_SET_ITEM(__pyx_t_12, 2+__pyx_t_11, ((PyObject *)__pyx_v_defaultClassMat));
+      PyTuple_SET_ITEM(__pyx_t_13, 2+__pyx_t_12, ((PyObject *)__pyx_v_defaultClassMat));
       __Pyx_GIVEREF(((PyObject *)__pyx_v_defaultClassMat));
-      PyTuple_SET_ITEM(__pyx_t_12, 3+__pyx_t_11, __pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_13, 3+__pyx_t_12, __pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_4);
-      PyTuple_SET_ITEM(__pyx_t_12, 4+__pyx_t_11, __pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_13, 4+__pyx_t_12, __pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_5);
-      PyTuple_SET_ITEM(__pyx_t_12, 5+__pyx_t_11, __pyx_t_6);
+      PyTuple_SET_ITEM(__pyx_t_13, 5+__pyx_t_12, __pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_6);
-      PyTuple_SET_ITEM(__pyx_t_12, 6+__pyx_t_11, __pyx_t_7);
+      PyTuple_SET_ITEM(__pyx_t_13, 6+__pyx_t_12, __pyx_t_7);
       __Pyx_GIVEREF(__pyx_t_7);
-      PyTuple_SET_ITEM(__pyx_t_12, 7+__pyx_t_11, __pyx_t_8);
+      PyTuple_SET_ITEM(__pyx_t_13, 7+__pyx_t_12, __pyx_t_8);
       __Pyx_GIVEREF(__pyx_t_8);
+      PyTuple_SET_ITEM(__pyx_t_13, 8+__pyx_t_12, __pyx_t_9);
+      __Pyx_GIVEREF(__pyx_t_9);
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
       __pyx_t_6 = 0;
       __pyx_t_7 = 0;
       __pyx_t_8 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_12, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_13, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_r = ((PyObject*)__pyx_t_2);
       __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2065,39 +2081,39 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __py
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "graph\method\lbp\FlatLBP.pyx":46
+  /* "graph\method\lbp\FlatLBP.pyx":47
  *     cpdef list start(self, graph, int nrOfNodes, np.ndarray defaultClassMat, int nrOfClasses, int lbpSteps, float lbpThreshold, int numberOfFolds,
- *                         float percentOfTrainignNodes):
+ *                         float percentOfTrainignNodes, int method_type):
  *         cdef list fold_sum = []             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(1,nrOfNodes+1,1):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 47; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_fold_sum = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":48
+  /* "graph\method\lbp\FlatLBP.pyx":49
  *         cdef list fold_sum = []
  *         cdef int i
  *         for i in range(1,nrOfNodes+1,1):             # <<<<<<<<<<<<<<
  *             fold_sum.append([i,0,0])
  * 
  */
-  __pyx_t_13 = (__pyx_v_nrOfNodes + 1);
-  for (__pyx_t_14 = 1; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
-    __pyx_v_i = __pyx_t_14;
+  __pyx_t_14 = (__pyx_v_nrOfNodes + 1);
+  for (__pyx_t_15 = 1; __pyx_t_15 < __pyx_t_14; __pyx_t_15+=1) {
+    __pyx_v_i = __pyx_t_15;
 
-    /* "graph\method\lbp\FlatLBP.pyx":49
+    /* "graph\method\lbp\FlatLBP.pyx":50
  *         cdef int i
  *         for i in range(1,nrOfNodes+1,1):
  *             fold_sum.append([i,0,0])             # <<<<<<<<<<<<<<
  * 
  * 
  */
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyList_New(3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyList_New(3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
@@ -2108,138 +2124,166 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __py
     PyList_SET_ITEM(__pyx_t_2, 2, __pyx_int_0);
     __Pyx_GIVEREF(__pyx_int_0);
     __pyx_t_1 = 0;
-    __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_fold_sum, __pyx_t_2); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_16 = __Pyx_PyList_Append(__pyx_v_fold_sum, __pyx_t_2); if (unlikely(__pyx_t_16 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
 
-  /* "graph\method\lbp\FlatLBP.pyx":52
+  /* "graph\method\lbp\FlatLBP.pyx":53
  * 
  * 
  *         cdef int fold_number = 1             # <<<<<<<<<<<<<<
- *         cdef list items = range(nrOfNodes)
+ *         cdef list items = graph.nodes() if method_type == 1 else range(nrOfNodes)
  *         cdef float timer = time.time()
  */
   __pyx_v_fold_number = 1;
 
-  /* "graph\method\lbp\FlatLBP.pyx":53
+  /* "graph\method\lbp\FlatLBP.pyx":54
  * 
  *         cdef int fold_number = 1
- *         cdef list items = range(nrOfNodes)             # <<<<<<<<<<<<<<
+ *         cdef list items = graph.nodes() if method_type == 1 else range(nrOfNodes)             # <<<<<<<<<<<<<<
  *         cdef float timer = time.time()
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_nrOfNodes); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_2);
-  __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (((__pyx_v_method_type == 1) != 0)) {
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_nodes); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_10);
+    __pyx_t_13 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_10))) {
+      __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_10);
+      if (likely(__pyx_t_13)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+        __Pyx_INCREF(__pyx_t_13);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_10, function);
+      }
+    }
+    if (__pyx_t_13) {
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_13); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+    } else {
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_10); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __pyx_t_1;
+    __pyx_t_1 = 0;
+  } else {
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_nrOfNodes); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_10);
+    PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __pyx_t_1;
+    __pyx_t_1 = 0;
+  }
   __pyx_v_items = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":54
+  /* "graph\method\lbp\FlatLBP.pyx":55
  *         cdef int fold_number = 1
- *         cdef list items = range(nrOfNodes)
+ *         cdef list items = graph.nodes() if method_type == 1 else range(nrOfNodes)
  *         cdef float timer = time.time()             # <<<<<<<<<<<<<<
  * 
  *         cdef np.ndarray[DTYPE_t, ndim=1] fuz_mean_occ = np.array([], dtype=DTYPE)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_time); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_9))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_9);
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_10))) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_10);
     if (likely(__pyx_t_1)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
       __Pyx_INCREF(__pyx_t_1);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_9, function);
+      __Pyx_DECREF_SET(__pyx_t_10, function);
     }
   }
   if (__pyx_t_1) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_9); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_10); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_16 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_16 == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __pyx_t_17 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_17 == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_timer = __pyx_t_16;
+  __pyx_v_timer = __pyx_t_17;
 
-  /* "graph\method\lbp\FlatLBP.pyx":56
+  /* "graph\method\lbp\FlatLBP.pyx":57
  *         cdef float timer = time.time()
  * 
  *         cdef np.ndarray[DTYPE_t, ndim=1] fuz_mean_occ = np.array([], dtype=DTYPE)             # <<<<<<<<<<<<<<
  * 
  *         cdef method = crossValMethods.CrossValMethods()
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_12 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_12);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_12) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_13 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_13);
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_13) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+  __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_13);
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_12) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_12, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_17 = ((PyArrayObject *)__pyx_t_12);
+  if (!(likely(((__pyx_t_13) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_13, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_18 = ((PyArrayObject *)__pyx_t_13);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_fuz_mean_occ.rcbuffer->pybuffer, (PyObject*)__pyx_t_17, &__Pyx_TypeInfo_nn___pyx_t_5graph_6method_3lbp_7FlatLBP_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_fuz_mean_occ.rcbuffer->pybuffer, (PyObject*)__pyx_t_18, &__Pyx_TypeInfo_nn___pyx_t_5graph_6method_3lbp_7FlatLBP_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_fuz_mean_occ = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_fuz_mean_occ.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_fuz_mean_occ.diminfo[0].strides = __pyx_pybuffernd_fuz_mean_occ.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_fuz_mean_occ.diminfo[0].shape = __pyx_pybuffernd_fuz_mean_occ.rcbuffer->pybuffer.shape[0];
     }
   }
-  __pyx_t_17 = 0;
-  __pyx_v_fuz_mean_occ = ((PyArrayObject *)__pyx_t_12);
-  __pyx_t_12 = 0;
+  __pyx_t_18 = 0;
+  __pyx_v_fuz_mean_occ = ((PyArrayObject *)__pyx_t_13);
+  __pyx_t_13 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":58
+  /* "graph\method\lbp\FlatLBP.pyx":59
  *         cdef np.ndarray[DTYPE_t, ndim=1] fuz_mean_occ = np.array([], dtype=DTYPE)
  * 
  *         cdef method = crossValMethods.CrossValMethods()             # <<<<<<<<<<<<<<
  *         #TODO add tzpe when changed to cdef class
  *         lbp = LoopyBeliefPropagation()
  */
-  __pyx_t_12 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_5graph_6method_3lbp_15CrossValMethods_CrossValMethods)), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_v_method = __pyx_t_12;
-  __pyx_t_12 = 0;
+  __pyx_t_13 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_5graph_6method_3lbp_15CrossValMethods_CrossValMethods)), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_v_method = __pyx_t_13;
+  __pyx_t_13 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":60
+  /* "graph\method\lbp\FlatLBP.pyx":61
  *         cdef method = crossValMethods.CrossValMethods()
  *         #TODO add tzpe when changed to cdef class
  *         lbp = LoopyBeliefPropagation()             # <<<<<<<<<<<<<<
  *         cdef tool.LBPTools tools = tool.LBPTools(nrOfNodes, graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfTrainignNodes)
  *         common = commonUtils.CommonUtils()
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_LoopyBeliefPropagation); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_LoopyBeliefPropagation); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -2252,126 +2296,181 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __py
     }
   }
   if (__pyx_t_1) {
-    __pyx_t_12 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_13 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
-    __pyx_t_12 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_13 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __Pyx_GOTREF(__pyx_t_12);
+  __Pyx_GOTREF(__pyx_t_13);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_lbp = __pyx_t_12;
-  __pyx_t_12 = 0;
+  __pyx_v_lbp = __pyx_t_13;
+  __pyx_t_13 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":61
+  /* "graph\method\lbp\FlatLBP.pyx":62
  *         #TODO add tzpe when changed to cdef class
  *         lbp = LoopyBeliefPropagation()
  *         cdef tool.LBPTools tools = tool.LBPTools(nrOfNodes, graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfTrainignNodes)             # <<<<<<<<<<<<<<
  *         common = commonUtils.CommonUtils()
- * 
+ *         x_val_methods = XValMethods(graph)
  */
-  __pyx_t_12 = __Pyx_PyInt_From_int(__pyx_v_nrOfNodes); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_lbpSteps); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_13 = __Pyx_PyInt_From_int(__pyx_v_nrOfNodes); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_lbpSteps); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_lbpThreshold); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_lbpThreshold); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = PyFloat_FromDouble(__pyx_v_percentOfTrainignNodes); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = PyFloat_FromDouble(__pyx_v_percentOfTrainignNodes); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_9 = PyTuple_New(6); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_8 = PyTuple_New(6); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_8);
-  PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_12);
-  __Pyx_GIVEREF(__pyx_t_12);
+  PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_13);
+  __Pyx_GIVEREF(__pyx_t_13);
   __Pyx_INCREF(__pyx_v_graph);
-  PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_v_graph);
+  PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_v_graph);
   __Pyx_GIVEREF(__pyx_v_graph);
   __Pyx_INCREF(((PyObject *)__pyx_v_defaultClassMat));
-  PyTuple_SET_ITEM(__pyx_t_8, 2, ((PyObject *)__pyx_v_defaultClassMat));
+  PyTuple_SET_ITEM(__pyx_t_9, 2, ((PyObject *)__pyx_v_defaultClassMat));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_defaultClassMat));
-  PyTuple_SET_ITEM(__pyx_t_8, 3, __pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_9, 3, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_8, 4, __pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_9, 4, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_8, 5, __pyx_t_9);
-  __Pyx_GIVEREF(__pyx_t_9);
-  __pyx_t_12 = 0;
+  PyTuple_SET_ITEM(__pyx_t_9, 5, __pyx_t_10);
+  __Pyx_GIVEREF(__pyx_t_10);
+  __pyx_t_13 = 0;
   __pyx_t_2 = 0;
   __pyx_t_1 = 0;
-  __pyx_t_9 = 0;
-  __pyx_t_9 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_5graph_6method_3lbp_8LBPTools_LBPTools)), __pyx_t_8, NULL); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_v_tools = ((struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *)__pyx_t_9);
-  __pyx_t_9 = 0;
+  __pyx_t_10 = 0;
+  __pyx_t_10 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_5graph_6method_3lbp_8LBPTools_LBPTools)), __pyx_t_9, NULL); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_10);
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_v_tools = ((struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *)__pyx_t_10);
+  __pyx_t_10 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":62
+  /* "graph\method\lbp\FlatLBP.pyx":63
  *         lbp = LoopyBeliefPropagation()
  *         cdef tool.LBPTools tools = tool.LBPTools(nrOfNodes, graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfTrainignNodes)
  *         common = commonUtils.CommonUtils()             # <<<<<<<<<<<<<<
- * 
+ *         x_val_methods = XValMethods(graph)
+ *         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
+ */
+  __pyx_t_10 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_5graph_6method_6common_11CommonUtils_CommonUtils)), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_v_common = __pyx_t_10;
+  __pyx_t_10 = 0;
+
+  /* "graph\method\lbp\FlatLBP.pyx":64
+ *         cdef tool.LBPTools tools = tool.LBPTools(nrOfNodes, graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfTrainignNodes)
+ *         common = commonUtils.CommonUtils()
+ *         x_val_methods = XValMethods(graph)             # <<<<<<<<<<<<<<
+ *         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
  *         fold_sum = tools.crossVal(items, numberOfFolds, graph, nrOfNodes,
  */
-  __pyx_t_9 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_5graph_6method_6common_11CommonUtils_CommonUtils)), __pyx_empty_tuple, NULL); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_XValMethods); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_v_common = __pyx_t_9;
-  __pyx_t_9 = 0;
+  __pyx_t_1 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_9))) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_9);
+    if (likely(__pyx_t_1)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
+      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_9, function);
+    }
+  }
+  if (!__pyx_t_1) {
+    __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_v_graph); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_10);
+  } else {
+    __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1); __Pyx_GIVEREF(__pyx_t_1); __pyx_t_1 = NULL;
+    __Pyx_INCREF(__pyx_v_graph);
+    PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_v_graph);
+    __Pyx_GIVEREF(__pyx_v_graph);
+    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_2, NULL); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_10);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_v_x_val_methods = __pyx_t_10;
+  __pyx_t_10 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":66
+  /* "graph\method\lbp\FlatLBP.pyx":65
+ *         common = commonUtils.CommonUtils()
+ *         x_val_methods = XValMethods(graph)
+ *         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation             # <<<<<<<<<<<<<<
  *         fold_sum = tools.crossVal(items, numberOfFolds, graph, nrOfNodes,
  *                        defaultClassMat, lbpSteps, lbpThreshold,
- *                        common.k_fold_cross_validation, self.prepareFoldClassMat,             # <<<<<<<<<<<<<<
+ */
+  if (((__pyx_v_method_type == 1) != 0)) {
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_x_val_methods, __pyx_n_s_stratifies_x_val); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_10 = __pyx_t_9;
+    __pyx_t_9 = 0;
+  } else {
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_common, __pyx_n_s_k_fold_cross_validation); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_10 = __pyx_t_9;
+    __pyx_t_9 = 0;
+  }
+  __pyx_v_x_val = __pyx_t_10;
+  __pyx_t_10 = 0;
+
+  /* "graph\method\lbp\FlatLBP.pyx":68
+ *         fold_sum = tools.crossVal(items, numberOfFolds, graph, nrOfNodes,
+ *                        defaultClassMat, lbpSteps, lbpThreshold,
+ *                        x_val, self.prepareFoldClassMat,             # <<<<<<<<<<<<<<
  *                        lbp.lbp, None, method.flatCrossVal, False, percentOfTrainignNodes, None, None, None)
  * 
  */
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_common, __pyx_n_s_k_fold_cross_validation); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_prepareFoldClassMat); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_prepareFoldClassMat); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_10);
 
-  /* "graph\method\lbp\FlatLBP.pyx":67
+  /* "graph\method\lbp\FlatLBP.pyx":69
  *                        defaultClassMat, lbpSteps, lbpThreshold,
- *                        common.k_fold_cross_validation, self.prepareFoldClassMat,
+ *                        x_val, self.prepareFoldClassMat,
  *                        lbp.lbp, None, method.flatCrossVal, False, percentOfTrainignNodes, None, None, None)             # <<<<<<<<<<<<<<
  * 
  *         cdef list foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_lbp, __pyx_n_s_lbp); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_method, __pyx_n_s_flatCrossVal); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_lbp, __pyx_n_s_lbp); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_method, __pyx_n_s_flatCrossVal); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_12 = PyFloat_FromDouble(__pyx_v_percentOfTrainignNodes); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_percentOfTrainignNodes); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
 
-  /* "graph\method\lbp\FlatLBP.pyx":64
- *         common = commonUtils.CommonUtils()
- * 
+  /* "graph\method\lbp\FlatLBP.pyx":66
+ *         x_val_methods = XValMethods(graph)
+ *         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
  *         fold_sum = tools.crossVal(items, numberOfFolds, graph, nrOfNodes,             # <<<<<<<<<<<<<<
  *                        defaultClassMat, lbpSteps, lbpThreshold,
- *                        common.k_fold_cross_validation, self.prepareFoldClassMat,
+ *                        x_val, self.prepareFoldClassMat,
  */
-  __pyx_t_7 = ((struct __pyx_vtabstruct_5graph_6method_3lbp_8LBPTools_LBPTools *)__pyx_v_tools->__pyx_vtab)->crossVal(__pyx_v_tools, __pyx_v_items, __pyx_v_numberOfFolds, __pyx_v_graph, __pyx_v_nrOfNodes, __pyx_v_defaultClassMat, __pyx_v_lbpSteps, __pyx_v_lbpThreshold, __pyx_t_9, __pyx_t_8, __pyx_t_1, ((PyObject*)Py_None), __pyx_t_2, Py_False, __pyx_t_12, Py_None, Py_None, Py_None, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_13 = ((struct __pyx_vtabstruct_5graph_6method_3lbp_8LBPTools_LBPTools *)__pyx_v_tools->__pyx_vtab)->crossVal(__pyx_v_tools, __pyx_v_items, __pyx_v_numberOfFolds, __pyx_v_graph, __pyx_v_nrOfNodes, __pyx_v_defaultClassMat, __pyx_v_lbpSteps, __pyx_v_lbpThreshold, __pyx_v_x_val, __pyx_t_10, __pyx_t_9, ((PyObject*)Py_None), __pyx_t_2, Py_False, __pyx_t_1, Py_None, Py_None, Py_None, 0); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_13);
+  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (!(likely(PyList_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_7)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF_SET(__pyx_v_fold_sum, ((PyObject*)__pyx_t_7));
-  __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (!(likely(PyList_CheckExact(__pyx_t_13))||((__pyx_t_13) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_13)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF_SET(__pyx_v_fold_sum, ((PyObject*)__pyx_t_13));
+  __pyx_t_13 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":69
+  /* "graph\method\lbp\FlatLBP.pyx":71
  *                        lbp.lbp, None, method.flatCrossVal, False, percentOfTrainignNodes, None, None, None)
  * 
  *         cdef list foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)             # <<<<<<<<<<<<<<
  *         return foldSumEstimated
  * 
  */
-  __pyx_t_7 = ((struct __pyx_vtabstruct_5graph_6method_3lbp_8LBPTools_LBPTools *)__pyx_v_tools->__pyx_vtab)->prepareToEvaluate(__pyx_v_tools, __pyx_v_fold_sum, __pyx_v_nrOfClasses, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_v_foldSumEstimated = ((PyObject*)__pyx_t_7);
-  __pyx_t_7 = 0;
+  __pyx_t_13 = ((struct __pyx_vtabstruct_5graph_6method_3lbp_8LBPTools_LBPTools *)__pyx_v_tools->__pyx_vtab)->prepareToEvaluate(__pyx_v_tools, __pyx_v_fold_sum, __pyx_v_nrOfClasses, 0); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_v_foldSumEstimated = ((PyObject*)__pyx_t_13);
+  __pyx_t_13 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":70
+  /* "graph\method\lbp\FlatLBP.pyx":72
  * 
  *         cdef list foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)
  *         return foldSumEstimated             # <<<<<<<<<<<<<<
@@ -2383,11 +2482,11 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __py
   __pyx_r = __pyx_v_foldSumEstimated;
   goto __pyx_L0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":44
+  /* "graph\method\lbp\FlatLBP.pyx":45
  *         return classMat, adjMat, sortedNodes
  * 
  *     cpdef list start(self, graph, int nrOfNodes, np.ndarray defaultClassMat, int nrOfClasses, int lbpSteps, float lbpThreshold, int numberOfFolds,             # <<<<<<<<<<<<<<
- *                         float percentOfTrainignNodes):
+ *                         float percentOfTrainignNodes, int method_type):
  *         cdef list fold_sum = []
  */
 
@@ -2403,7 +2502,8 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __py
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_13);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_fuz_mean_occ.rcbuffer->pybuffer);
@@ -2421,6 +2521,8 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(struct __py
   __Pyx_XDECREF(__pyx_v_lbp);
   __Pyx_XDECREF((PyObject *)__pyx_v_tools);
   __Pyx_XDECREF(__pyx_v_common);
+  __Pyx_XDECREF(__pyx_v_x_val_methods);
+  __Pyx_XDECREF(__pyx_v_x_val);
   __Pyx_XDECREF(__pyx_v_foldSumEstimated);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -2438,6 +2540,7 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_5start(PyObject 
   float __pyx_v_lbpThreshold;
   int __pyx_v_numberOfFolds;
   float __pyx_v_percentOfTrainignNodes;
+  int __pyx_v_method_type;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2445,12 +2548,13 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_5start(PyObject 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("start (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_graph,&__pyx_n_s_nrOfNodes,&__pyx_n_s_defaultClassMat,&__pyx_n_s_nrOfClasses,&__pyx_n_s_lbpSteps,&__pyx_n_s_lbpThreshold,&__pyx_n_s_numberOfFolds,&__pyx_n_s_percentOfTrainignNodes,0};
-    PyObject* values[8] = {0,0,0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_graph,&__pyx_n_s_nrOfNodes,&__pyx_n_s_defaultClassMat,&__pyx_n_s_nrOfClasses,&__pyx_n_s_lbpSteps,&__pyx_n_s_lbpThreshold,&__pyx_n_s_numberOfFolds,&__pyx_n_s_percentOfTrainignNodes,&__pyx_n_s_method_type,0};
+    PyObject* values[9] = {0,0,0,0,0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  9: values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
         case  8: values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
         case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
         case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
@@ -2470,43 +2574,48 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_5start(PyObject 
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_nrOfNodes)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 8, 8, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 9, 9, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_defaultClassMat)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 8, 8, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 9, 9, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_nrOfClasses)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 8, 8, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 9, 9, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_lbpSteps)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 8, 8, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 9, 9, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_lbpThreshold)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 8, 8, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 9, 9, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  6:
         if (likely((values[6] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_numberOfFolds)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 8, 8, 6); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 9, 9, 6); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  7:
         if (likely((values[7] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_percentOfTrainignNodes)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 8, 8, 7); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 9, 9, 7); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        }
+        case  8:
+        if (likely((values[8] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_method_type)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("start", 1, 9, 9, 8); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "start") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "start") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 8) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 9) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -2517,26 +2626,28 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_5start(PyObject 
       values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
       values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
       values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
+      values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
     }
     __pyx_v_graph = values[0];
-    __pyx_v_nrOfNodes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_nrOfNodes == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_nrOfNodes = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_nrOfNodes == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     __pyx_v_defaultClassMat = ((PyArrayObject *)values[2]);
-    __pyx_v_nrOfClasses = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_nrOfClasses == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_lbpSteps = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_lbpSteps == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_lbpThreshold = __pyx_PyFloat_AsFloat(values[5]); if (unlikely((__pyx_v_lbpThreshold == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_numberOfFolds = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_numberOfFolds == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_percentOfTrainignNodes = __pyx_PyFloat_AsFloat(values[7]); if (unlikely((__pyx_v_percentOfTrainignNodes == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_nrOfClasses = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_nrOfClasses == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_lbpSteps = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_lbpSteps == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_lbpThreshold = __pyx_PyFloat_AsFloat(values[5]); if (unlikely((__pyx_v_lbpThreshold == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_numberOfFolds = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_numberOfFolds == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_percentOfTrainignNodes = __pyx_PyFloat_AsFloat(values[7]); if (unlikely((__pyx_v_percentOfTrainignNodes == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_method_type = __Pyx_PyInt_As_int(values[8]); if (unlikely((__pyx_v_method_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("start", 1, 8, 8, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("start", 1, 9, 9, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("graph.method.lbp.FlatLBP.FlatLBP.start", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_defaultClassMat), __pyx_ptype_5numpy_ndarray, 1, "defaultClassMat", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_r = __pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_4start(((struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *)__pyx_v_self), __pyx_v_graph, __pyx_v_nrOfNodes, __pyx_v_defaultClassMat, __pyx_v_nrOfClasses, __pyx_v_lbpSteps, __pyx_v_lbpThreshold, __pyx_v_numberOfFolds, __pyx_v_percentOfTrainignNodes);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_defaultClassMat), __pyx_ptype_5numpy_ndarray, 1, "defaultClassMat", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_r = __pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_4start(((struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *)__pyx_v_self), __pyx_v_graph, __pyx_v_nrOfNodes, __pyx_v_defaultClassMat, __pyx_v_nrOfClasses, __pyx_v_lbpSteps, __pyx_v_lbpThreshold, __pyx_v_numberOfFolds, __pyx_v_percentOfTrainignNodes, __pyx_v_method_type);
 
   /* function exit code */
   goto __pyx_L0;
@@ -2547,7 +2658,7 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_7FlatLBP_7FlatLBP_5start(PyObject 
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_4start(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, int __pyx_v_nrOfNodes, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_lbpSteps, float __pyx_v_lbpThreshold, int __pyx_v_numberOfFolds, float __pyx_v_percentOfTrainignNodes) {
+static PyObject *__pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_4start(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *__pyx_v_self, PyObject *__pyx_v_graph, int __pyx_v_nrOfNodes, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_lbpSteps, float __pyx_v_lbpThreshold, int __pyx_v_numberOfFolds, float __pyx_v_percentOfTrainignNodes, int __pyx_v_method_type) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2556,7 +2667,7 @@ static PyObject *__pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_4start(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("start", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(__pyx_v_self, __pyx_v_graph, __pyx_v_nrOfNodes, __pyx_v_defaultClassMat, __pyx_v_nrOfClasses, __pyx_v_lbpSteps, __pyx_v_lbpThreshold, __pyx_v_numberOfFolds, __pyx_v_percentOfTrainignNodes, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 44; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start(__pyx_v_self, __pyx_v_graph, __pyx_v_nrOfNodes, __pyx_v_defaultClassMat, __pyx_v_nrOfClasses, __pyx_v_lbpSteps, __pyx_v_lbpThreshold, __pyx_v_numberOfFolds, __pyx_v_percentOfTrainignNodes, __pyx_v_method_type, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2573,7 +2684,7 @@ static PyObject *__pyx_pf_5graph_6method_3lbp_7FlatLBP_7FlatLBP_4start(struct __
   return __pyx_r;
 }
 
-/* "graph\method\lbp\FlatLBP.pyx":73
+/* "graph\method\lbp\FlatLBP.pyx":75
  * 
  * 
  *     cdef list prepareUnobservdRow(self, int nrOfClasses):             # <<<<<<<<<<<<<<
@@ -2595,19 +2706,19 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareUnobservdR
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("prepareUnobservdRow", 0);
 
-  /* "graph\method\lbp\FlatLBP.pyx":74
+  /* "graph\method\lbp\FlatLBP.pyx":76
  * 
  *     cdef list prepareUnobservdRow(self, int nrOfClasses):
  *         cdef list row = []             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(0, nrOfClasses):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_row = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":76
+  /* "graph\method\lbp\FlatLBP.pyx":78
  *         cdef list row = []
  *         cdef int i
  *         for i in range(0, nrOfClasses):             # <<<<<<<<<<<<<<
@@ -2618,16 +2729,16 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareUnobservdR
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "graph\method\lbp\FlatLBP.pyx":77
+    /* "graph\method\lbp\FlatLBP.pyx":79
  *         cdef int i
  *         for i in range(0, nrOfClasses):
  *             row.append(0.5)             # <<<<<<<<<<<<<<
  *         return row
  */
-    __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_row, __pyx_float_0_5); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_row, __pyx_float_0_5); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "graph\method\lbp\FlatLBP.pyx":78
+  /* "graph\method\lbp\FlatLBP.pyx":80
  *         for i in range(0, nrOfClasses):
  *             row.append(0.5)
  *         return row             # <<<<<<<<<<<<<<
@@ -2637,7 +2748,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareUnobservdR
   __pyx_r = __pyx_v_row;
   goto __pyx_L0;
 
-  /* "graph\method\lbp\FlatLBP.pyx":73
+  /* "graph\method\lbp\FlatLBP.pyx":75
  * 
  * 
  *     cdef list prepareUnobservdRow(self, int nrOfClasses):             # <<<<<<<<<<<<<<
@@ -4780,6 +4891,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
+  {&__pyx_n_s_XValMethods, __pyx_k_XValMethods, sizeof(__pyx_k_XValMethods), 0, 0, 1, 1},
   {&__pyx_n_s_adjacency_matrix, __pyx_k_adjacency_matrix, sizeof(__pyx_k_adjacency_matrix), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
   {&__pyx_n_s_copy, __pyx_k_copy, sizeof(__pyx_k_copy), 0, 0, 1, 1},
@@ -4789,6 +4901,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_flatCrossVal, __pyx_k_flatCrossVal, sizeof(__pyx_k_flatCrossVal), 0, 0, 1, 1},
   {&__pyx_n_s_float, __pyx_k_float, sizeof(__pyx_k_float), 0, 0, 1, 1},
   {&__pyx_n_s_graph, __pyx_k_graph, sizeof(__pyx_k_graph), 0, 0, 1, 1},
+  {&__pyx_n_s_graph_method_common_XValWithSamp, __pyx_k_graph_method_common_XValWithSamp, sizeof(__pyx_k_graph_method_common_XValWithSamp), 0, 0, 1, 1},
   {&__pyx_n_s_graph_method_lbp_LoopyBeliefProp, __pyx_k_graph_method_lbp_LoopyBeliefProp, sizeof(__pyx_k_graph_method_lbp_LoopyBeliefProp), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_int, __pyx_k_int, sizeof(__pyx_k_int), 0, 0, 1, 1},
@@ -4798,6 +4911,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_lbpThreshold, __pyx_k_lbpThreshold, sizeof(__pyx_k_lbpThreshold), 0, 0, 1, 1},
   {&__pyx_n_s_len, __pyx_k_len, sizeof(__pyx_k_len), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+  {&__pyx_n_s_method_type, __pyx_k_method_type, sizeof(__pyx_k_method_type), 0, 0, 1, 1},
   {&__pyx_kp_u_ndarray_is_not_C_contiguous, __pyx_k_ndarray_is_not_C_contiguous, sizeof(__pyx_k_ndarray_is_not_C_contiguous), 0, 1, 0, 0},
   {&__pyx_kp_u_ndarray_is_not_Fortran_contiguou, __pyx_k_ndarray_is_not_Fortran_contiguou, sizeof(__pyx_k_ndarray_is_not_Fortran_contiguou), 0, 1, 0, 0},
   {&__pyx_n_s_networkx, __pyx_k_networkx, sizeof(__pyx_k_networkx), 0, 0, 1, 1},
@@ -4816,6 +4930,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_shape, __pyx_k_shape, sizeof(__pyx_k_shape), 0, 0, 1, 1},
   {&__pyx_n_s_shuffle, __pyx_k_shuffle, sizeof(__pyx_k_shuffle), 0, 0, 1, 1},
   {&__pyx_n_s_start, __pyx_k_start, sizeof(__pyx_k_start), 0, 0, 1, 1},
+  {&__pyx_n_s_stratifies_x_val, __pyx_k_stratifies_x_val, sizeof(__pyx_k_stratifies_x_val), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_time, __pyx_k_time, sizeof(__pyx_k_time), 0, 0, 1, 1},
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
@@ -4823,7 +4938,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 35; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
@@ -4999,12 +5114,12 @@ PyMODINIT_FUNC PyInit_FlatLBP(void)
   /*--- Type init code ---*/
   __pyx_vtabptr_5graph_6method_3lbp_7FlatLBP_FlatLBP = &__pyx_vtable_5graph_6method_3lbp_7FlatLBP_FlatLBP;
   __pyx_vtable_5graph_6method_3lbp_7FlatLBP_FlatLBP.prepareFoldClassMat = (PyObject *(*)(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *, PyObject *, PyArrayObject *, PyObject *, int __pyx_skip_dispatch))__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareFoldClassMat;
-  __pyx_vtable_5graph_6method_3lbp_7FlatLBP_FlatLBP.start = (PyObject *(*)(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *, PyObject *, int, PyArrayObject *, int, int, float, int, float, int __pyx_skip_dispatch))__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start;
+  __pyx_vtable_5graph_6method_3lbp_7FlatLBP_FlatLBP.start = (PyObject *(*)(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *, PyObject *, int, PyArrayObject *, int, int, float, int, float, int, int __pyx_skip_dispatch))__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_start;
   __pyx_vtable_5graph_6method_3lbp_7FlatLBP_FlatLBP.prepareUnobservdRow = (PyObject *(*)(struct __pyx_obj_5graph_6method_3lbp_7FlatLBP_FlatLBP *, int))__pyx_f_5graph_6method_3lbp_7FlatLBP_7FlatLBP_prepareUnobservdRow;
-  if (PyType_Ready(&__pyx_type_5graph_6method_3lbp_7FlatLBP_FlatLBP) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_5graph_6method_3lbp_7FlatLBP_FlatLBP) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_5graph_6method_3lbp_7FlatLBP_FlatLBP.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_5graph_6method_3lbp_7FlatLBP_FlatLBP.tp_dict, __pyx_vtabptr_5graph_6method_3lbp_7FlatLBP_FlatLBP) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyObject_SetAttrString(__pyx_m, "FlatLBP", (PyObject *)&__pyx_type_5graph_6method_3lbp_7FlatLBP_FlatLBP) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_SetVtable(__pyx_type_5graph_6method_3lbp_7FlatLBP_FlatLBP.tp_dict, __pyx_vtabptr_5graph_6method_3lbp_7FlatLBP_FlatLBP) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "FlatLBP", (PyObject *)&__pyx_type_5graph_6method_3lbp_7FlatLBP_FlatLBP) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_5graph_6method_3lbp_7FlatLBP_FlatLBP = &__pyx_type_5graph_6method_3lbp_7FlatLBP_FlatLBP;
   /*--- Type import code ---*/
   __pyx_ptype_7cpython_4type_type = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "type", 
@@ -5140,7 +5255,7 @@ PyMODINIT_FUNC PyInit_FlatLBP(void)
  * ctypedef np.int_t DTYPE_t
  * DOUBTYPE = np.float             # <<<<<<<<<<<<<<
  * ctypedef np.float_t DOUBTYPE_t
- * cdef class FlatLBP:
+ * from graph.method.common.XValWithSampling import XValMethods
  */
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
@@ -5150,15 +5265,36 @@ PyMODINIT_FUNC PyInit_FlatLBP(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_DOUBTYPE, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
+  /* "graph\method\lbp\FlatLBP.pyx":20
+ * DOUBTYPE = np.float
+ * ctypedef np.float_t DOUBTYPE_t
+ * from graph.method.common.XValWithSampling import XValMethods             # <<<<<<<<<<<<<<
+ * cdef class FlatLBP:
+ * 
+ */
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_INCREF(__pyx_n_s_XValMethods);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_XValMethods);
+  __Pyx_GIVEREF(__pyx_n_s_XValMethods);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_graph_method_common_XValWithSamp, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_XValMethods); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_XValMethods, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
   /* "graph\method\lbp\FlatLBP.pyx":1
  * '''             # <<<<<<<<<<<<<<
  * Created on 18 mar 2014
  * 
  */
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "..\..\..\..\..\..\..\Anaconda_x32\lib\site-packages\Cython\Includes\numpy\__init__.pxd":979
  *      arr.base = baseptr

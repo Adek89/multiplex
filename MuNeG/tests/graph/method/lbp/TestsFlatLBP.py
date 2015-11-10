@@ -47,7 +47,8 @@ class TestsFlatLBP(unittest.TestCase):
         nrOfClasses,\
         nrOfFolds,\
         nrOfNodes,\
-        percentOfKnownNodes = self.prepareExperimentData()
+        percentOfKnownNodes,\
+        method_type = self.prepareExperimentData()
         #when
         mockito.when(graph).nodes().thenReturn(nodes)
         mockito.when(graph).edges_iter(mockito.any(), data=True)\
@@ -58,7 +59,7 @@ class TestsFlatLBP(unittest.TestCase):
             .thenReturn(self.utils.generateEdges(10, nodeList, edgesData))
         #then
         foldSumEstimated = self.methods.start(graph, nrOfFolds, defaultClassMat,
-                                              nrOfClasses, lbpLoops, lbpThreshold, nrOfNodes, percentOfKnownNodes)
+                                              nrOfClasses, lbpLoops, lbpThreshold, nrOfNodes, percentOfKnownNodes, method_type)
         mockito.verify(graph, times=5).nodes()
         mockito.verify(graph, times=5).edges_iter(mockito.any(), data=True)
         assert foldSumEstimated.__len__() == NUMBER_OF_ELEMENTS
@@ -76,4 +77,5 @@ class TestsFlatLBP(unittest.TestCase):
         lbpThreshold = 0.01
         nrOfNodes = 5
         percentOfKnownNodes = 0.2
-        return defaultClassMat, edgesData, graph, lbpLoops, lbpThreshold, nodeList, nodes, nrOfClasses, nrOfFolds, nrOfNodes, percentOfKnownNodes
+        method_type = 2
+        return defaultClassMat, edgesData, graph, lbpLoops, lbpThreshold, nodeList, nodes, nrOfClasses, nrOfFolds, nrOfNodes, percentOfKnownNodes, method_type

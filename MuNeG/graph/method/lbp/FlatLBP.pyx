@@ -17,6 +17,7 @@ DTYPE = np.int
 ctypedef np.int_t DTYPE_t
 DOUBTYPE = np.float
 ctypedef np.float_t DOUBTYPE_t
+from graph.method.common.XValWithSampling import XValMethods
 cdef class FlatLBP:
 
     def __cinit__(self):
@@ -42,7 +43,7 @@ cdef class FlatLBP:
         return classMat, adjMat, sortedNodes
         
     cpdef list start(self, graph, int nrOfNodes, np.ndarray defaultClassMat, int nrOfClasses, int lbpSteps, float lbpThreshold, int numberOfFolds,
-                        float percentOfTrainignNodes):
+                        float percentOfTrainignNodes, int method_type):
         cdef list fold_sum = []
         cdef int i
         for i in range(1,nrOfNodes+1,1):
@@ -50,7 +51,7 @@ cdef class FlatLBP:
         
         
         cdef int fold_number = 1
-        cdef list items = range(nrOfNodes)
+        cdef list items = graph.nodes() if method_type == 1 else range(nrOfNodes)
         cdef float timer = time.time()
         
         cdef np.ndarray[DTYPE_t, ndim=1] fuz_mean_occ = np.array([], dtype=DTYPE)
@@ -60,10 +61,11 @@ cdef class FlatLBP:
         lbp = LoopyBeliefPropagation()
         cdef tool.LBPTools tools = tool.LBPTools(nrOfNodes, graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfTrainignNodes)
         common = commonUtils.CommonUtils()
-
-        fold_sum = tools.crossVal(items, numberOfFolds, graph, nrOfNodes, 
-                       defaultClassMat, lbpSteps, lbpThreshold, 
-                       common.k_fold_cross_validation, self.prepareFoldClassMat,
+        x_val_methods = XValMethods(graph)
+        x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
+        fold_sum = tools.crossVal(items, numberOfFolds, graph, nrOfNodes,
+                       defaultClassMat, lbpSteps, lbpThreshold,
+                       x_val, self.prepareFoldClassMat,
                        lbp.lbp, None, method.flatCrossVal, False, percentOfTrainignNodes, None, None, None)
         
         cdef list foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)

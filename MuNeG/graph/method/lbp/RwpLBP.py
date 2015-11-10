@@ -12,6 +12,7 @@ import scipy.sparse as sp
 from graph.method.lbp import CrossValMethods
 from graph.method.lbp.LBPTools import LBPTools
 from graph.method.common.CommonUtils import CommonUtils
+from graph.method.common.XValWithSampling import XValMethods
 
 
 class RwpLBP:
@@ -29,16 +30,17 @@ class RwpLBP:
         results = []    #
         nrOfLayers = layerWeights.__len__()
         tools = LBPTools(nrOfNodes, graph, defaultClassMat, lbpMaxSteps, lbpThreshold, percentOfKnownNodes)
-        items = range(nrOfNodes)
+        items = graph.nodes()
         
         # print "start class matrix"
         # print defaultClassMat.T
         
         method = CrossValMethods.CrossValMethods()
         common = CommonUtils()
+        x_val_methods = XValMethods(graph)
         fold_sum, fuz_mean_occ, sum = tools.crossVal(items, nrOfFolds, graph, nrOfNodes, 
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
-                       common.k_fold_cross_validation, tools.giveCorrectData,
+                       x_val_methods.stratifies_x_val, tools.giveCorrectData,
                        self.propagation, layerWeights, method.multiLayerCrossVal, True, percentOfKnownNodes, self.prepare_adjetency_matrix, tools.separate_layer, tools.prepareClassMatForFold)
 
         fusion_mean = copy.deepcopy(sum)
