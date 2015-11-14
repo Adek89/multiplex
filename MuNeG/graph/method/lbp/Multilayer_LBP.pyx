@@ -39,12 +39,12 @@ cdef class Multilayer_LBP:
         pass
 
 
-    cpdef start(self, graph, np.ndarray defaultClassMat, int nrOfClasses, int nrOfNodes, int nrOfFolds, int lbpMaxSteps, float lbpThreshold, list layerWeights, float percentOfTrainingNodes):
+    cpdef start(self, graph, np.ndarray defaultClassMat, int nrOfClasses, int nrOfNodes, int nrOfFolds, int lbpMaxSteps, float lbpThreshold, list layerWeights, float percentOfTrainingNodes, int method_type):
         
         
         
         cdef int fold_number = 1
-        cdef list items = graph.nodes()
+        cdef list items = graph.nodes() if method_type == 1 else range(nrOfNodes)
         timer = time.time()
         
         
@@ -54,9 +54,10 @@ cdef class Multilayer_LBP:
         cdef tools = tool.LBPTools(nrOfNodes, graph, defaultClassMat, lbpMaxSteps, lbpThreshold, percentOfTrainingNodes)
         cdef common = commonUtils.CommonUtils()
         x_val_methods = XValMethods(graph)
+        x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
         fold_sum, fuz_mean_occ, sum = tools.crossVal(items, nrOfFolds, graph, nrOfNodes, 
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
-                       x_val_methods.stratifies_x_val, tools.giveCorrectData,
+                       x_val, tools.giveCorrectData,
                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)
             
         #cross validation summary

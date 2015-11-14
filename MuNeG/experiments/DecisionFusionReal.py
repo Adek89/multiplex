@@ -76,12 +76,17 @@ class DecisionFusion:
     percentOfTrainignNodes = 0.0
     counter = 0
     method = 0
-    fold = 0
+    fun = 0
+    terms_map = dict([])
 
-    def __init__(self, method, fold, percentOfTrainignNodes):
-        self.percentOfTrainignNodes = percentOfTrainignNodes
+    def __init__(self, method, fold, fun):
+        if method == 1:
+            self.NUMBER_OF_FOLDS = fold
+        else:
+            self.percentOfTrainignNodes = fold
+        self.fun = fun
         self.method = method
-        self.fold = fold
+
 
 
     def initLayers(self, nrOfLayers):
@@ -113,10 +118,12 @@ class DecisionFusion:
     '''      
     def readRealData(self):
         reader = DanioRerioReader()
-        reader.read('GO:0000059')
+        reader.read(self.fun)
         self.realGraph = reader.graph
         ga = GraphAnalyser(self.realGraph, self.percentOfTrainignNodes, self.counter)
         ga.analyse()
+        self.terms_map = reader.create_go_terms_map()
+
     '''
     Preprocessing
     '''
@@ -137,7 +144,7 @@ class DecisionFusion:
         nrOfNodes = self.realGraph.nodes().__len__()
         self.realLBPFoldSum, self.realLBPFusionMean = multiLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses,
                                                                      nrOfNodes, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS,
-                                                                     self.percentOfTrainignNodes)
+                                                                     self.percentOfTrainignNodes, self.method)
 
         
         
@@ -146,7 +153,7 @@ class DecisionFusion:
         nrOfNodes = self.realGraph.nodes().__len__()
         self.realRWPFoldSum, self.realRWPFusionMean = rwpLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses,
                                                                    nrOfNodes, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS,
-                                                                   self.percentOfTrainignNodes)
+                                                                   self.percentOfTrainignNodes, self.method)
 
     '''
     Evaluation
@@ -165,7 +172,7 @@ class DecisionFusion:
             writer = csv.writer(csvfile)
         
             writer.writerow([
-                self.realGraph.nodes().__len__(),self.percentOfTrainignNodes,
+                self.realGraph.nodes().__len__(),self.fun, self.terms_map[self.fun], self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
                             fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMacroRWPRealFoldSum,
                             fMacroRWPRealFusionMean])
         

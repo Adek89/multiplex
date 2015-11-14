@@ -29,12 +29,13 @@ class TestsMultilayerLBP(unittest.TestCase):
         lbpThreshold = 0.001
         layerWeights = [1, 2]
         percentOfTrainingNodes = 0.2
+        method_type = 2
         #when
         mockito.when(graph).edges(data=True).thenReturn(edges)
         mockito.when(graph).nodes().thenReturn(nodes)
         foldSumEstimated, fusionMeanEstimated = self.method.start(graph, defaultClassMat, nrOfClasses, nrOfNodes,
                                                                   nrOfFolds, lbpMaxSteps, lbpThreshold, layerWeights,
-                                                                  percentOfTrainingNodes)
+                                                                  percentOfTrainingNodes, method_type)
         #then
         foldSumResult = evaluation.calculateFMacro(ORIGINAL_LABELS, foldSumEstimated, nrOfClasses)
         fusionMeanResult = evaluation.calculateFMacro(ORIGINAL_LABELS, fusionMeanEstimated, nrOfClasses)
