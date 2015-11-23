@@ -14,9 +14,9 @@ from graph.method.lbp.RwpLBP import RwpLBP
 from tests.utils.TestUtils import TestUtils
 
 EXPECTED_RW_MEAN_RESULT = 0.286
-EXPECTED_RW_SUM_RESULT = 1.0
+EXPECTED_RW_SUM_RESULT = 0.583
 EXPECTED_FUSION_MEAN_RESULT = 0.286
-EXPECTED_FUSION_SUM_RESULT = 0.375
+EXPECTED_FUSION_SUM_RESULT = 0.167
 EXPECTED_FLAT_RESULT = 0.17
 NUMBER_OF_CLASSES = 2
 DEFAULT_ASSIGN = [1, 0, 1, 0, 1]
@@ -102,8 +102,9 @@ class TestStringMethods(unittest.TestCase):
         #then
         resultMean, resultSum = self.prepareFusionResults(fold_sum, fuz_mean_occ, sum, tools)
         roundedResultMean = round(resultMean, 3)
+        roundedResultSum = round(resultSum, 3)
 
-        assert resultSum == EXPECTED_FUSION_SUM_RESULT
+        assert roundedResultSum == EXPECTED_FUSION_SUM_RESULT
         assert roundedResultMean == EXPECTED_FUSION_MEAN_RESULT
 
     def test_rwcCrossVal(self):
@@ -142,8 +143,9 @@ class TestStringMethods(unittest.TestCase):
         #then
         resultMean, resultSum = self.prepareFusionResults(fold_sum, fuz_mean_occ, sum, tools)
         roundedResultMean = round(resultMean, 3)
+        roundedResultSum = round(resultSum, 3)
 
-        assert resultSum == EXPECTED_RW_SUM_RESULT
+        assert roundedResultSum == EXPECTED_RW_SUM_RESULT
         assert roundedResultMean == EXPECTED_RW_MEAN_RESULT
 
 

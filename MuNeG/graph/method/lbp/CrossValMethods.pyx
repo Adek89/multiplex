@@ -169,8 +169,9 @@ cdef class CrossValMethods:
                     sum[i][1]+=result[i][1]
                     sum[i][2]+=result[i][2]
             for i in range(0,nrOfNodes,1):
-                fold_sum[i][1]+=sum[i][1]
-                fold_sum[i][2]+=sum[i][2]
+                if i in validation:
+                    fold_sum[i][1]+=sum[i][1]
+                    fold_sum[i][2]+=sum[i][2]
             # print sum
             
             #fusion - mean part1
