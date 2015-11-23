@@ -20,16 +20,12 @@ def execute_experiment(fun, method, folds):
 
 if __name__ == '__main__':
 
-    reader = DanioRerioReader()
-    reader.read()
-    map = reader.create_go_terms_map()
-    for fun in map.iterkeys():
-        for x_val_method in [1, 2]:
-            if x_val_method == 1:
-                for fold in [2.0, 3.0, 4.0, 5.0, 10.0, 20.0]:
-                    execute_experiment(fun, x_val_method, fold)
-            else:
-                for percent_known_nodes in [0.2, 0.4, 0.6, 0.8]:
-                    execute_experiment(fun, x_val_method, percent_known_nodes)
+    for x_val_method in [1, 2]:
+        if x_val_method == 1:
+            for fold in [2.0, 3.0, 4.0, 5.0, 10.0, 20.0]:
+                execute_experiment(sys.argv[1], x_val_method, fold)
+        else:
+            for percent_known_nodes in [0.2, 0.4, 0.6, 0.8]:
+                execute_experiment(sys.argv[1], x_val_method, percent_known_nodes)
 
 
