@@ -11,7 +11,12 @@ from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.method.lbp.LBPTools import LBPTools
 from graph.method.lbp.RwpLBP import RwpLBP
+from graph.method.common.XValWithSampling import XValMethods
 from tests.utils.TestUtils import TestUtils
+
+STRATIFIED_RESULT_MEAN = 1.0
+
+STRATIFIED_RESULT_SUM = 0.583
 
 EXPECTED_RW_MEAN_RESULT = 0.286
 EXPECTED_RW_SUM_RESULT = 0.583
@@ -147,6 +152,50 @@ class TestStringMethods(unittest.TestCase):
 
         assert roundedResultSum == EXPECTED_RW_SUM_RESULT
         assert roundedResultMean == EXPECTED_RW_MEAN_RESULT
+
+    def test_multiCrossVal_for_stratified_xval(self):
+        #given
+        graph, \
+        nrOfNodes, \
+        adjMatPrep, \
+        defaultClassMat, \
+        isRandomWalk, \
+        items, \
+        commonUtils, \
+        layerWeights, \
+        lbp, \
+        lbpSteps, \
+        lbpThreshold, \
+        nrOfFolds, \
+        percentOfKnownNodes, \
+        prepareClassMat, \
+        prepareLayers, \
+        flatLBP,\
+        tools,\
+        rwp = self.prepareExperimentData()
+        edges, nodes, nodesList = self.utils.prepareNodesAndEdges()
+        edgesList = self.utils.prepareEdgesList(edges, nodesList)
+        x_val_methods = XValMethods(graph)
+        x_val = x_val_methods.stratifies_x_val
+        #when
+        mockito.when(graph).edges_iter(mockito.any(), data=True)\
+            .thenReturn(self.utils.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.utils.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.utils.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.utils.generateEdges(10, nodesList, edges))\
+            .thenReturn(self.utils.generateEdges(10, nodesList, edges))
+        mockito.when(graph).nodes().thenReturn(nodes)
+        mockito.when(graph).edges(data=True).thenReturn(edgesList)
+        fold_sum, fuz_mean_occ, sum = self.methods.multiLayerCrossVal(nodesList, nrOfFolds, graph, nrOfNodes, defaultClassMat, lbpSteps, lbpThreshold, x_val,
+                                  tools.giveCorrectData, lbp.lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, tools.separate_layer, tools.prepareClassMatForFold)
+        #then
+        resultMean, resultSum = self.prepareFusionResults(fold_sum, fuz_mean_occ, sum, tools)
+        roundedResultMean = round(resultMean, 3)
+        roundedResultSum = round(resultSum, 3)
+
+        print str(roundedResultSum)
+        assert roundedResultSum == STRATIFIED_RESULT_SUM
+        assert roundedResultMean == STRATIFIED_RESULT_MEAN
 
 
     def prepareFusionResults(self, fold_sum, fuz_mean_occ, sum, tools):
