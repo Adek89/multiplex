@@ -4,16 +4,11 @@ import time
 import sys
 sys.path.append('/home/apopiel/MuNeG')
 from graph.analyser.GraphAnalyser import GraphAnalyser
+from graph.reader.DanioRerio.DanioRerioReader import DanioRerioReader
 if __name__ == '__main__':
-    start_time = time.time()
-    nodes = int(sys.argv[1])
-    size = int(sys.argv[2])
-    label = float(sys.argv[3])
-    probIn = int(sys.argv[4])
-    probBetween = float(sys.argv[5])
-    nrOfLayers = int(sys.argv[6])
-    percentOfTrainingNodes = float(sys.argv[7])
-    counter = float(sys.argv[8])
+    reader = DanioRerioReader()
+    reader.read()
 
-    ga = GraphAnalyser(None, 0.2, 1)
+    graph = reader.graph
+    ga = GraphAnalyser(graph)
     ga.analyse()

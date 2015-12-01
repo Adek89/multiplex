@@ -3,14 +3,11 @@ from sqlalchemy.sql.functions import coalesce
 
 __author__ = 'Adek'
 import networkx as nx
-from graph.gen.GraphGenerator import GraphGenerator
-from graph.reader.Salon24.Salon24Reader import Salon24Reader
-from graph.method.ensamble.EnsambleLearning import EnsambleLearning
 import csv
-import time
-import matplotlib.pyplot as plt
 import scipy.stats as stats
-import numpy as np
+
+from graph.method.lbp.LBPTools import LBPTools
+from graph.method.lbp.NetworkUtils import NetworkUtils
 class GraphAnalyser:
 
     nrOfNodes = 500
@@ -22,15 +19,11 @@ class GraphAnalyser:
     layerWeights = [1, 2]
     layerName = ["L1", "L2"]
     nrOfLayers = 2
-    percentOfTrainingNodes = 0.2
-    counter = 0
     graph = None
     # FILE_PATH = "/home/apopiel/tmp_local/"
     FILE_PATH = ""
 
-    def __init__(self, graph, percentOfTrainignNodes, counter):
-        self.percentOfTrainingNodes = percentOfTrainignNodes
-        self.counter = counter
+    def __init__(self, graph):
         self.graph = graph
 
     def prepareNumberOfGroups(self, nrOfNodes, nrOfGroups):
@@ -83,36 +76,45 @@ class GraphAnalyser:
             component = connComponents.next()
             graph_subgraph = graph.subgraph(component)
             diameter.append(nx.diameter(graph_subgraph))
-            shortestPath.append(nx.average_shortest_path_length(graph_subgraph))
+            if component.__len__() != 1:
+                shortestPath.append(nx.average_shortest_path_length(graph_subgraph))
+            else:
+                shortestPath.append(0.0)
         return diameter, shortestPath
 
-    def analyse(self):
-        gg =  GraphGenerator(self.nrOfNodes, self.avgNrOfGroups, self.layerWeights,
-                                 self.grLabelHomogenity, self.probOfEdgeInSameGroup,
-                                 self.probOfEdgeInOtherGrops, self.layerName)
-        graph = gg.generate()
-        degree_sequence, dmax = self.drawDegreeDistribution(graph) #1
-        nrOfEdges = graph.number_of_edges() #2
-        avgDegree = float(sum(degree_sequence))/float(len(degree_sequence)) #3
-        G = self.flatGraph(graph)
-        trianglesList = self.getTrianglesList(G)
-        nrOfTriangles = sum(trianglesList) #4
-        clusteringList = self.getClustering(G)
-        avgClustering = sum(clusteringList)/len(clusteringList) #6
+    def analyze_graph_or_layer(self, graph, layer, full=False):
+        degree_sequence, dmax = self.drawDegreeDistribution(graph)  # 1
+        nrOfEdges = graph.number_of_edges()  # 2
+        avgDegree = float(sum(degree_sequence)) / float(len(degree_sequence))  # 3
+        if full:
+            graph = self.flatGraph(self.graph)
+        trianglesList = self.getTrianglesList(graph)
+        nrOfTriangles = sum(trianglesList)  # 4
+        clusteringList = self.getClustering(graph)
+        avgClustering = sum(clusteringList) / len(clusteringList)  # 6
         diameter, shortestPath = self.getDiameterAndShortestPath(graph)
-        avgDiameter = float(sum(diameter))/float(len(diameter))
-        avgShortestPath = sum(shortestPath)/len(shortestPath)
-        layers = set([ (edata['layer']) for u,v,edata in graph.edges(data=True)])
-
-        with open(self.FILE_PATH + 'graphparams' + str(self.counter) + '.csv', 'ab') as csvfile:
+        avgDiameter = float(sum(diameter)) / float(len(diameter))
+        avgShortestPath = sum(shortestPath) / len(shortestPath)
+        # layers = set([ (edata['layer']) for u,v,edata in self.graph.edges(data=True)])
+        with open(self.FILE_PATH + 'graphparams_daniorerio' + '.csv', 'ab') as csvfile:
             writer = csv.writer(csvfile)
 
-            writer.writerow([graph.nodes().__len__(), layers.__len__(), self.percentOfTrainingNodes, nrOfEdges, avgDegree,
-                                dmax,
-                                nrOfTriangles,
-                                0, # avgSquareCount,
-                                avgClustering,
-                                avgDiameter, avgShortestPath, degree_sequence])
+            writer.writerow([graph.nodes().__len__(), layer, nrOfEdges, avgDegree,
+                             dmax,
+                             nrOfTriangles,
+                             avgClustering,
+                             avgDiameter, avgShortestPath, degree_sequence])
+
+    def analyse(self):
+        nu = NetworkUtils()
+        class_mat, nr_of_classes = nu.createClassMat(self.graph)
+        tools = LBPTools(self.graph.nodes().__len__(), self.graph, class_mat, 0, 0.0, 0.0)
+        tools.separate_layer(self.graph, [1, 2, 3, 4, 5], class_mat, [])
+
+        graphs = [graphs for graphs in tools.graphs.iteritems()]
+        for (layer, graph) in graphs:
+            self.analyze_graph_or_layer(graph, layer)
+        self.analyze_graph_or_layer(self.graph, 'full', True)
 
 
     def drawDegreeDistribution(self, graph):
