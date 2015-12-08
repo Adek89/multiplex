@@ -1,0 +1,29 @@
+__author__ = 'Adrian'
+import unittest
+import mockito
+import networkx as nx
+
+from graph.evaluation.EvaluationTools import EvaluationTools
+from tests.utils.TestUtils import TestUtils
+from graph.method.lbp.RwpIterative import RwpIterative
+
+utils = TestUtils()
+evaluation = EvaluationTools()
+
+class TestsRwpLBP(unittest.TestCase):
+
+    method = RwpIterative()
+
+    def test_random_walk(self):
+         #given
+        graph = mockito.mock(nx.MultiGraph)
+
+        edgesData, nodes, nodeList = utils.prepareNodesAndEdges()
+        edgesList = utils.prepareEdgesList(edgesData, nodeList)
+        class_mat = utils.prepareTestClassMatWithUnknownNodes()
+
+        mockito.when(graph).edges(data=True).thenReturn(edgesList)
+        mockito.when(graph).nodes().thenReturn(nodes)
+
+        results = self.method.random_walk(graph, class_mat, 100, 10)
+        pass

@@ -26,7 +26,7 @@ class DecisionFusion:
     AVERAGE_GROUP_SIZE = 50
      
     LAYERS_WEIGHTS = []
-    REAL_LAYERS_WEIGHTS = [1, 2, 3]
+    REAL_LAYERS_WEIGHTS = [1, 2, 3, 4, 5]
     LAYERS_NAME = []
      
     GROUP_LABEL_HOMOGENITY = 1
@@ -120,7 +120,7 @@ class DecisionFusion:
         reader = DanioRerioReader()
         reader.read(self.fun)
         self.realGraph = reader.graph
-        ga = GraphAnalyser(self.realGraph, self.percentOfTrainignNodes, self.counter)
+        ga = GraphAnalyser(self.realGraph)
         ga.analyse()
         self.terms_map = reader.create_go_terms_map()
 
