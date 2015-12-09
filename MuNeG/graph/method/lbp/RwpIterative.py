@@ -1,12 +1,28 @@
 __author__ = 'Adrian'
 import networkx as nx
+import numpy as np
 import random
+
+
 class RwpIterative():
 
-    def __init__(self):
-        pass
+    d = dict()
+    separated_networks = dict()
+
+    def __init__(self, separated_networks):
+        self.separated_networks = separated_networks
+
+
+    def init_d_matrix(self, network):
+        layer_number = self.separated_networks.__len__()
+        for node in network.nodes():
+            d_matrix_for_node = np.ndarray(shape=(layer_number, layer_number), dtype=np.double)
+            for separated_network in self.separated_networks.iteritems():
+                pass
+
 
     def random_walk(self, network, class_mat, number_repetitions, depth):
+        self.init_d_matrix(network)
         results=dict()
 
         unknown_filter = [i if class_mat[i][0] == 0.5 and class_mat[i][1] == 0.5 else -1  for i in xrange(0, class_mat.__len__())]
