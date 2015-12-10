@@ -2,6 +2,7 @@ __author__ = 'Adrian'
 import networkx as nx
 import numpy as np
 import random
+import scipy.sparse as sp
 
 
 class RwpIterative():
@@ -17,8 +18,11 @@ class RwpIterative():
         layer_number = self.separated_networks.__len__()
         for node in network.nodes():
             d_matrix_for_node = np.ndarray(shape=(layer_number, layer_number), dtype=np.double)
-            for separated_network in self.separated_networks.iteritems():
-                pass
+            for i, separated_network in self.separated_networks.items():
+                for j in xrange(0, layer_number):
+                    d_matrix_for_node[j][int(i)-1] = separated_network.degree(node.id)
+            csr_d_matrix_for_node = sp.csr_matrix(d_matrix_for_node)
+            self.d.update({node : csr_d_matrix_for_node})
 
 
     def random_walk(self, network, class_mat, number_repetitions, depth):

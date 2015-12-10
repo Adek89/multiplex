@@ -14,7 +14,7 @@ evaluation = EvaluationTools()
 
 class TestsRwpLBP(unittest.TestCase):
 
-    method = RwpIterative()
+
 
 
     def test_random_walk(self):
@@ -30,5 +30,6 @@ class TestsRwpLBP(unittest.TestCase):
         mockito.when(graph).edges(data=True).thenReturn(edgesList)
         mockito.when(graph).nodes().thenReturn(nodes)
         tools.separate_layer(graph, [1, 2], default_class_mat, [4])
-        results = self.method.random_walk(graph, class_mat, 100, 10)
+        method = RwpIterative(tools.graphs)
+        results = method.random_walk(graph, class_mat, 100, 10)
         pass
