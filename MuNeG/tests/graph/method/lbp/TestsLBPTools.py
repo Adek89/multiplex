@@ -43,7 +43,7 @@ class LBPTools(unittest.TestCase):
         #when
         mockito.when(graph).edges(data=True).thenReturn(edges)
         mockito.when(graph).nodes().thenReturn(nodes)
-        self.tools.separate_layer(graph, layers, defaultClassMat, training)
+        self.tools.separate_layer(graph, layers, defaultClassMat)
         #then
         class_mats = self.tools.classMats
         graphs = self.tools.graphs

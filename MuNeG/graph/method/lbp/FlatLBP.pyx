@@ -24,23 +24,6 @@ cdef class FlatLBP:
         '''
         Constructor
         '''
-
-    cpdef prepareFoldClassMat(self, graph, np.ndarray  defaultClassMat, list validation):
-        cdef classMat = defaultClassMat.copy()
-        cdef int nrOfClasses = classMat.shape[1]
-        cdef int i
-        cdef list row
-        cdef list sortedNodes
-        cdef adjMat
-        for i in range(0, defaultClassMat.__len__()):
-            if i in validation:
-                row = self.prepareUnobservdRow(nrOfClasses)
-                classMat[i] = row
-                
-        sortedNodes = sorted(graph.nodes())
-        adjMat = nx.adjacency_matrix(graph, sortedNodes)
-        
-        return classMat, adjMat, sortedNodes
         
     cpdef list start(self, graph, int nrOfNodes, np.ndarray defaultClassMat, int nrOfClasses, int lbpSteps, float lbpThreshold, int numberOfFolds,
                         float percentOfTrainignNodes, int method_type):
@@ -65,16 +48,8 @@ cdef class FlatLBP:
         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
         fold_sum = tools.crossVal(items, numberOfFolds, graph, nrOfNodes,
                        defaultClassMat, lbpSteps, lbpThreshold,
-                       x_val, self.prepareFoldClassMat,
+                       x_val, common.prepareFoldClassMat,
                        lbp.lbp, None, method.flatCrossVal, False, percentOfTrainignNodes, None, None, None)
         
         cdef list foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)
         return foldSumEstimated
-        
-        
-    cdef list prepareUnobservdRow(self, int nrOfClasses):
-        cdef list row = []
-        cdef int i
-        for i in range(0, nrOfClasses):
-            row.append(0.5)
-        return row

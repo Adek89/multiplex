@@ -1,13 +1,14 @@
 __author__ = 'Adrian'
 import unittest
+
 import mockito
 import networkx as nx
 
 from graph.evaluation.EvaluationTools import EvaluationTools
 from tests.utils.TestUtils import TestUtils
 from graph.method.lbp.LBPTools import LBPTools
+from graph.method.random_walk.RwpIterative import RwpIterative
 
-from graph.method.lbp.RwpIterative import RwpIterative
 
 utils = TestUtils()
 evaluation = EvaluationTools()
@@ -27,7 +28,8 @@ class TestsRwpLBP(unittest.TestCase):
         default_class_mat = utils.prepareTestClassMat()
         tools = LBPTools(nodes.__len__(), graph, default_class_mat, 100, 0.1, 0.8)
 
-        mockito.when(graph).edges_iter(nodeList[4], data=True)\
+        test_node = nodeList[4]
+        mockito.when(graph).edges_iter(test_node, data=True)\
             .thenReturn(utils.generateEdges(10, nodeList, edgesData))\
             .thenReturn(utils.generateEdges(10, nodeList, edgesData))\
             .thenReturn(utils.generateEdges(10, nodeList, edgesData))\
@@ -35,10 +37,10 @@ class TestsRwpLBP(unittest.TestCase):
             .thenReturn(utils.generateEdges(10, nodeList, edgesData))
         mockito.when(graph).edges(data=True).thenReturn(edgesList)
         mockito.when(graph).nodes().thenReturn(nodes)
-        tools.separate_layer(graph, [1, 2], default_class_mat, [4])
+        tools.separate_layer(graph, [1, 2], default_class_mat)
         method = RwpIterative(tools.graphs)
         results = method.random_walk(graph, class_mat, 1, 100, 10)
-        pass
+        assert len(results[test_node]) == 100
 
     def generateEdges(self, nrOfEdges, nodes, edgesData):
             i = 0

@@ -18,7 +18,7 @@ cdef class LBPTools:
 
     
 
-    def __cinit__(self, int nrOfNodes, graph, np.ndarray defaultClassMat, int lbpMaxSteps, float lbpThreshold, int percentOfTrainingNodes):
+    def __cinit__(self, int nrOfNodes, graph, np.ndarray defaultClassMat, int lbpMaxSteps=0, float lbpThreshold=0.0, int percentOfTrainingNodes=0):
         self.nrOfNodes = nrOfNodes
         self.graph = graph
         self.defaultClassMat = defaultClassMat
@@ -64,7 +64,7 @@ cdef class LBPTools:
         # print self.folds[str(label)]
         return self.folds[str(label)]
     
-    cdef void addToGraph(self, g, n0, n1, set nodes, np.ndarray classMat, list training, int nrOfClasses, edge):
+    cdef void addToGraph(self, g, n0, n1, set nodes, np.ndarray classMat, int nrOfClasses, edge):
 
         if not g.has_node(n0):
             nodes.add(n0)
@@ -100,7 +100,7 @@ cdef class LBPTools:
         print 'prepare classmat'
         print classMat
          
-    cpdef separate_layer(self, graph, list layers, np.ndarray defaultClassMat, list training):
+    cpdef separate_layer(self, graph, list layers, np.ndarray defaultClassMat):
         print 'Enter separate layer'
         print self.folds
         for i in layers:
@@ -118,7 +118,7 @@ cdef class LBPTools:
                     break
             n0 = edge[0]
             n1 = edge[1]
-            self.addToGraph(self.graphs[str(label)], n0, n1, self.nodes[str(label)], self.classMats[str(label)], training, nrOfClasses, edge)
+            self.addToGraph(self.graphs[str(label)], n0, n1, self.nodes[str(label)], self.classMats[str(label)], nrOfClasses, edge)
           
         cdef set gNodes = set(graph.nodes())
 

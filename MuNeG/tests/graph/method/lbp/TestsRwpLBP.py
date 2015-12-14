@@ -11,7 +11,7 @@ from graph.method.lbp.LBPTools import LBPTools
 
 ORIGINAL_LABELS = [1, 0, 1, 0, 1]
 MEAN_EXPECTED_RESULT = 0.286
-SUM_EXPECTED_RESULT = 1.0
+SUM_EXPECTED_RESULT = 0.8
 
 utils = TestUtils()
 evaluation = EvaluationTools()
@@ -60,7 +60,7 @@ class TestsRwpLBP(unittest.TestCase):
         mockito.when(graph).nodes().thenReturn(nodes)
 
         tools = LBPTools(nrOfNodes, graph, defaultClassMat, lbpSteps, lbpThreshold, percentOfKnownNodes)
-        tools.separate_layer(graph, [1, 2], defaultClassMat, [4])
+        tools.separate_layer(graph, [1, 2], defaultClassMat)
         adjMatL1 = tools.adjMats["1"]
         adjMatL2 = tools.adjMats["2"]
 

@@ -65,7 +65,7 @@ class TestStringMethods(unittest.TestCase):
             .thenReturn(self.utils.generateEdges(10, nodesList, edges))
         mockito.when(graph).nodes().thenReturn(nodes)
         fold_sum = self.methods.flatCrossVal(items, nrOfFolds, graph, nrOfNodes, defaultClassMat, lbpSteps, lbpThreshold, commonUtils.k_fold_cross_validation,
-                                  flatLBP.prepareFoldClassMat, lbp.lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, prepareLayers, prepareClassMat)
+                                  commonUtils.prepareFoldClassMat, lbp.lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMatPrep, prepareLayers, prepareClassMat)
         #then
         roundedResult = self.prepareFlatResult(fold_sum, tools)
 

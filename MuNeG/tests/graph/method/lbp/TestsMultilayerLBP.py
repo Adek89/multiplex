@@ -8,7 +8,7 @@ from tests.utils.TestUtils import TestUtils
 
 ORIGINAL_LABELS = [1, 0, 1, 0, 1]
 EXPECTED_FUSION_MEAN_RESULT = 0.286
-EXPECTED_FOLD_SUM_RESULT = 0.375
+EXPECTED_FOLD_SUM_RESULT = 0.286
 
 utils = TestUtils()
 evaluation = EvaluationTools()
@@ -40,5 +40,6 @@ class TestsMultilayerLBP(unittest.TestCase):
         foldSumResult = evaluation.calculateFMacro(ORIGINAL_LABELS, foldSumEstimated, nrOfClasses)
         fusionMeanResult = evaluation.calculateFMacro(ORIGINAL_LABELS, fusionMeanEstimated, nrOfClasses)
         fusionMeanRounded = round(fusionMeanResult, 3)
-        assert foldSumResult == EXPECTED_FOLD_SUM_RESULT
+        foldSumResultRounded = round(foldSumResult, 3)
+        assert foldSumResultRounded == EXPECTED_FOLD_SUM_RESULT
         assert fusionMeanRounded == EXPECTED_FUSION_MEAN_RESULT

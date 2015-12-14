@@ -82,7 +82,7 @@ cdef class CrossValMethods:
             fold_sum.append([i,0,0])
             
         cdef np.ndarray fuz_mean_occ = np.array([])
-        prepareLayers(graph, layerWeights, defaultClassMat, [])
+        prepareLayers(graph, layerWeights, defaultClassMat)
         cdef list training
         cdef list validation
         cdef list results_agregator

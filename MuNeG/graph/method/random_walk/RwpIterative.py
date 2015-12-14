@@ -45,7 +45,7 @@ class RwpIterative():
     def random_walk_recursive(self, network, unknown_nodes, current_node, visited, start_layer, depth, counter):
         decided_layer = self.decide_layer_change(current_node, start_layer)
         if (decided_layer != start_layer):
-            return self.random_walk_recursive(network, current_node, visited, decided_layer, depth-1, counter+1)
+            return self.random_walk_recursive(network, unknown_nodes, current_node, visited, decided_layer, depth-1, counter+1)
         else:
             edge=self.draw_connection_at_node(self.separated_networks[str(start_layer)],current_node)
 
@@ -68,7 +68,7 @@ class RwpIterative():
                     #print 'Recursive sampling. Depth: '+str(depth)
                     #print 'Going to: '+str(edge[1])
                     #print 'recursion'
-                    return self.random_walk_recursive(network, edge[1], visited, start_layer, depth-1, counter+1)
+                    return self.random_walk_recursive(network, unknown_nodes, edge[1], visited, start_layer, depth-1, counter+1)
 
     def draw_connection_at_node(self, network, node):
         result=None
@@ -82,3 +82,37 @@ class RwpIterative():
         row = layer_matrix[start_layer - 1, :]
         index = row.data.argmax()
         return index + 1
+
+    def prepare_classification_results(self, results):
+    #{u'1041': [('C', 2), ('C', 2)]}
+    #selects most often appearing class
+    #print results
+
+        return dict(map(lambda x: (x[0], self.most_common_but_none([item[0] for item in x[1]])),results.iteritems()))
+
+    def prepare_walk_length_results(self, results):
+        #dlugosci wszystkich przejsc
+        all_lenghts_list=list(map(lambda x: ([item[1] for item in x[1] if item[0]!=None]),results.iteritems()))
+        return [val for list_item in all_lenghts_list for val in list_item]
+
+    def most_common_but_none(self, lst):
+        lst=filter(lambda a: a != None, lst)
+        if len(lst)==0: lst.append(None)
+        return max(lst, key=lst.count)
+
+
+    def calculate_accuracy(self, net_original, results):
+        #results dictionary {node_id: class_result}
+        counter=0
+        good=0
+        areResults = False
+
+        for item in results.iteritems():
+            areResults = True
+            if(item[0].label==item[1]):
+                good+=1
+            neighbs = [edge for edge in nx.edges_iter(net_original, item[0])]
+            if(len(neighbs)>0):
+                counter+=1
+
+        return good/float(counter) if areResults else -1
