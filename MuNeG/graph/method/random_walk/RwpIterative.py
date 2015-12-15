@@ -25,7 +25,7 @@ class RwpIterative():
             self.d.update({node.id : csr_d_matrix_for_node})
 
 
-    def random_walk(self, network, class_mat, start_layer, number_repetitions, depth):
+    def random_walk(self, network, class_mat, layers, number_repetitions, depth):
         self.init_d_matrix(network)
         results=dict()
 
@@ -35,10 +35,11 @@ class RwpIterative():
 
         for node in unknown_nodes:
             res_node=[]
-            for i in xrange(number_repetitions):
-                res_node.append(self.random_walk_recursive(network, unknown_nodes, node.id, None, start_layer, depth, 1))
-            #print 'Finished for node: '+str(node)+'       Classses: '
-            #print res_node
+            for current_layer in layers:
+                for i in xrange(number_repetitions):
+                    res_node.append(self.random_walk_recursive(network, unknown_nodes, node.id, None, current_layer, depth, 1))
+                #print 'Finished for node: '+str(node)+'       Classses: '
+                #print res_node
             results[node]=res_node
         return results
 
@@ -52,13 +53,13 @@ class RwpIterative():
             #print 'Edge: '+str(edge)
 
             if (depth<=0 or edge is None): # or current_node==visited
-                #print 'Depth: '+str(depth)+'    Visited already: '+str(current_node==visited)
+                # print 'Depth: '+str(depth)+'    Visited already: '+str(current_node==visited)
                 return (None, counter)
             else:
                 nodes_list = list(network.nodes())
                 new_node = filter(lambda n: n.id == edge[1], nodes_list)[0]
                 if (edge is not None) and (new_node not in unknown_nodes):
-                    #print 'Reached node with class: '+ str(network.node[edge[1]]['cls'])
+                    print 'Reached node with class: '+ str(new_node.label)
                     #print 'Class reached: '+str(network.node[edge[1]]['cls'])
                     return (new_node.label,counter)
                 else:
@@ -80,8 +81,16 @@ class RwpIterative():
     def decide_layer_change(self, current_node, start_layer):
         layer_matrix = self.d[current_node]
         row = layer_matrix[start_layer - 1, :]
-        index = row.data.argmax()
-        return index + 1
+        row_np = self.row_to_numpy(row)
+        indexes = np.argwhere(row_np == np.amax(row_np))
+        indexes_list = indexes.flatten().tolist()
+        return indexes_list[0] + 1 if len(indexes_list) == 1 else random.choice(indexes_list) + 1
+
+    def row_to_numpy(self, row):
+        row_np = np.ndarray(shape=row.shape, dtype=np.double)
+        for i in xrange(0, row.shape[1]):
+            row_np[0][i] = row[0, i]
+        return row_np.flatten()
 
     def prepare_classification_results(self, results):
     #{u'1041': [('C', 2), ('C', 2)]}
@@ -97,7 +106,7 @@ class RwpIterative():
 
     def most_common_but_none(self, lst):
         lst=filter(lambda a: a != None, lst)
-        if len(lst)==0: lst.append(None)
+        if len(lst)==0: lst.append(0)# None -> 0
         return max(lst, key=lst.count)
 
 

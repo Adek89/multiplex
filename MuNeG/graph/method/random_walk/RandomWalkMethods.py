@@ -21,9 +21,12 @@ class RandomWalkMethods():
         tools = LBPTools(number_of_folds, graph, default_class_mat)
         tools.separate_layer(graph, layers, default_class_mat)
         method = RwpIterative(tools.graphs)
+        results_dict = {}
         for training, validation in x_val(items, number_of_folds, percent_of_known_nodes):
             classMat, adjMat, sortedNodes = common.prepareFoldClassMat(graph, default_class_mat, validation)
-            results = method.random_walk(graph, classMat, 1, 100, 1000)
-            results_dict = method.prepare_classification_results(results)
-            accuracy = method.calculate_accuracy(graph, results_dict)
-            print accuracy
+            results = method.random_walk(graph, classMat, layers, 10, 10)
+            results_dict.update(results)
+        results_dict = method.prepare_classification_results(results_dict)
+        sorted_results = sorted(results_dict.keys(), key=lambda item : item.id)
+        labels_list = [results_dict[res] for res in sorted_results]
+        return labels_list

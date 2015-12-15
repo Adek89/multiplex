@@ -36,6 +36,6 @@ class TestsRandomWalkMethods(unittest.TestCase):
             .thenReturn(utils.generateEdges(10, nodeList, edgesData))
         mockito.when(graph).edges(data=True).thenReturn(edgesList)
         mockito.when(graph).nodes().thenReturn(nodes)
-        methods.random_walk_classical(graph, default_class_mat, [1, 2], 5, 1)
-        pass
+        result = methods.random_walk_classical(graph, default_class_mat, [1, 2], 5, 1)
+        assert result.__len__() == 5
 

@@ -17,6 +17,7 @@ from graph.reader.DanioRerio.DanioRerioReader import DanioRerioReader
 from graph.method.ensamble.EnsambleLearning import EnsambleLearning
 from graph.analyser.GraphAnalyser import GraphAnalyser
 import matplotlib.pyplot as plt
+from graph.method.random_walk.RandomWalkMethods import RandomWalkMethods
 class DecisionFusion:
     
     #Parameters
@@ -63,7 +64,8 @@ class DecisionFusion:
     syntheticLBPFusionMean = []
     realLBPFoldSum = []
     realLBPFusionMean = []
-    
+    realRwcResult = []
+
     realLabels = []
     syntheticLabels = []
     
@@ -71,6 +73,7 @@ class DecisionFusion:
     realRWPFusionMean = []
     syntheticRWPFoldSum = []
     syntheticRWPFusionMean = []
+
     gg = None
     nrOfLayers = 0
     percentOfTrainignNodes = 0.0
@@ -111,6 +114,7 @@ class DecisionFusion:
         self.flatLBP()
         self.multiLayerLBP()
         self.rwpLBP()
+        self.rwc()
         self.evaluation()
         
     '''
@@ -120,8 +124,8 @@ class DecisionFusion:
         reader = DanioRerioReader()
         reader.read(self.fun)
         self.realGraph = reader.graph
-        ga = GraphAnalyser(self.realGraph)
-        ga.analyse()
+        # ga = GraphAnalyser(self.realGraph)
+        # ga.analyse()
         self.terms_map = reader.create_go_terms_map()
 
     '''
@@ -155,6 +159,11 @@ class DecisionFusion:
                                                                    nrOfNodes, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS,
                                                                    self.percentOfTrainignNodes, self.method)
 
+    def rwc(self):
+        rwc = RandomWalkMethods()
+        self.realRwcResult = rwc.random_walk_classical(self.realGraph, self.realGraphClassMat, self.REAL_LAYERS_WEIGHTS,
+                                                                                self.NUMBER_OF_FOLDS, self.method, self.percentOfTrainignNodes)
+
     '''
     Evaluation
     '''
@@ -167,6 +176,7 @@ class DecisionFusion:
         fMacroLBPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realLBPFusionMean, self.realNrOfClasses)
         fMacroRWPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realRWPFoldSum, self.realNrOfClasses)
         fMacroRWPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realRWPFusionMean, self.realNrOfClasses)
+        fMacroRWCRealResult = ev.calculateFMacro(self.realLabels, self.realRwcResult, self.realNrOfClasses)
         
         with open(self.file_path + str(self.counter) + 'real.csv', 'ab') as csvfile:
             writer = csv.writer(csvfile)
@@ -174,7 +184,7 @@ class DecisionFusion:
             writer.writerow([
                 self.realGraph.nodes().__len__(),self.fun, self.terms_map[self.fun], self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
                             fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMacroRWPRealFoldSum,
-                            fMacroRWPRealFusionMean])
+                            fMacroRWPRealFusionMean, fMacroRWCRealResult])
         
     def prepareOriginalLabels(self, defaultClassMat, nrOfClasses):
         classMatForEv = []
