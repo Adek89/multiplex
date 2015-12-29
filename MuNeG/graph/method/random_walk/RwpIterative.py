@@ -45,9 +45,8 @@ class RwpIterative():
 
     def random_walk_recursive(self, network, unknown_nodes, current_node, visited, current_layer, depth, counter):
         visited = self.init_visited_if_needed(current_layer, visited)
-        decided_layer = self.decide_layer_change(current_node, current_layer)
+        decided_layer = self.decide_layer_change(current_node, current_layer, visited)
         if (decided_layer != current_layer):
-            visited = self.update_visited_before_transition(current_layer, current_node, visited)
             return self.random_walk_recursive(network, unknown_nodes, current_node, visited, decided_layer, depth-1, counter+1)
         else:
             edge=self.draw_connection_at_node(self.separated_networks[str(current_layer)],current_node, visited[current_layer])
@@ -71,7 +70,7 @@ class RwpIterative():
                     #print 'Recursive sampling. Depth: '+str(depth)
                     #print 'Going to: '+str(edge[1])
                     #print 'recursion'
-                    visited = self.update_visited_before_transition(current_layer, edge[0], visited)
+                    visited = self.update_visited_before_transition(current_layer, edge, visited)
                     return self.random_walk_recursive(network, unknown_nodes, edge[1], visited, current_layer, depth-1, counter+1)
 
 
@@ -80,23 +79,31 @@ class RwpIterative():
             visited[current_layer] = list()
         return visited
 
-    def update_visited_before_transition(self, current_layer, node_id, visited):
+    def update_visited_before_transition(self, current_layer, edge, visited):
         visited_on_layer = visited.get(current_layer)
-        visited_on_layer.append(node_id)
+        visited_on_layer.append(edge)
         visited[current_layer] = visited_on_layer
         return visited
 
     def draw_connection_at_node(self, network, node, visited):
         result=None
         neighbs = [edge for edge in nx.edges_iter(network, node)]
-        neighbs = filter(lambda x : x[1] not in visited, neighbs)
+        neighbs = filter(lambda x : x not in visited, neighbs)
         if len(neighbs)>0:
             result = random.choice(neighbs)
         return result
 
-    def decide_layer_change(self, current_node, start_layer):
+    def correct_layer_row(self, original_row, current_node, start_layer, visited):
+        row = original_row.copy()
+        for (i, visited_on_layer) in visited.items():
+            visited_paths = filter(lambda edge: edge[0] == current_node, visited_on_layer)
+            row[0, i - 1] = row[0, i - 1] - visited_paths.__len__()
+        return row
+
+    def decide_layer_change(self, current_node, start_layer, visited):
         layer_matrix = self.d[current_node]
-        row = layer_matrix[start_layer - 1, :]
+        original_row = layer_matrix[start_layer - 1, :]
+        row = self.correct_layer_row(original_row,current_node, start_layer, visited)
         row_np = self.row_to_numpy(row)
         indexes = np.argwhere(row_np == np.amax(row_np))
         indexes_list = indexes.flatten().tolist()
