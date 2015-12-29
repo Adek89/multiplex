@@ -37,18 +37,20 @@ class RwpIterative():
             res_node=[]
             for current_layer in layers:
                 for i in xrange(number_repetitions):
-                    res_node.append(self.random_walk_recursive(network, unknown_nodes, node.id, None, current_layer, depth, 1))
+                    res_node.append(self.random_walk_recursive(network, unknown_nodes, node.id, {}, current_layer, depth, 1))
                 #print 'Finished for node: '+str(node)+'       Classses: '
                 #print res_node
             results[node]=res_node
         return results
 
-    def random_walk_recursive(self, network, unknown_nodes, current_node, visited, start_layer, depth, counter):
-        decided_layer = self.decide_layer_change(current_node, start_layer)
-        if (decided_layer != start_layer):
+    def random_walk_recursive(self, network, unknown_nodes, current_node, visited, current_layer, depth, counter):
+        visited = self.init_visited_if_needed(current_layer, visited)
+        decided_layer = self.decide_layer_change(current_node, current_layer)
+        if (decided_layer != current_layer):
+            visited = self.update_visited_before_transition(current_layer, current_node, visited)
             return self.random_walk_recursive(network, unknown_nodes, current_node, visited, decided_layer, depth-1, counter+1)
         else:
-            edge=self.draw_connection_at_node(self.separated_networks[str(start_layer)],current_node)
+            edge=self.draw_connection_at_node(self.separated_networks[str(current_layer)],current_node, visited[current_layer])
 
             #print 'Edge: '+str(edge)
 
@@ -69,11 +71,25 @@ class RwpIterative():
                     #print 'Recursive sampling. Depth: '+str(depth)
                     #print 'Going to: '+str(edge[1])
                     #print 'recursion'
-                    return self.random_walk_recursive(network, unknown_nodes, edge[1], visited, start_layer, depth-1, counter+1)
+                    visited = self.update_visited_before_transition(current_layer, edge[0], visited)
+                    return self.random_walk_recursive(network, unknown_nodes, edge[1], visited, current_layer, depth-1, counter+1)
 
-    def draw_connection_at_node(self, network, node):
+
+    def init_visited_if_needed(self, current_layer, visited):
+        if not visited.has_key(current_layer):
+            visited[current_layer] = list()
+        return visited
+
+    def update_visited_before_transition(self, current_layer, node_id, visited):
+        visited_on_layer = visited.get(current_layer)
+        visited_on_layer.append(node_id)
+        visited[current_layer] = visited_on_layer
+        return visited
+
+    def draw_connection_at_node(self, network, node, visited):
         result=None
         neighbs = [edge for edge in nx.edges_iter(network, node)]
+        neighbs = filter(lambda x : x[1] not in visited, neighbs)
         if len(neighbs)>0:
             result = random.choice(neighbs)
         return result
@@ -106,7 +122,7 @@ class RwpIterative():
 
     def most_common_but_none(self, lst):
         lst=filter(lambda a: a != None, lst)
-        if len(lst)==0: lst.append(0)# None -> 0
+        if len(lst)==0: lst.append(None)# None -> 0
         return max(lst, key=lst.count)
 
 
