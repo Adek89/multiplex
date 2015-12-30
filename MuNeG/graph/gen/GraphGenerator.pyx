@@ -129,8 +129,9 @@ cdef class GraphGenerator:
                     else:
                         weights = [10-probOthers, probOthers]
                         isEdgeExist = self.weighted_choice(weights)
+                    print "edge exists: " + str(isEdgeExist)
                     if (isEdgeExist == 1):
-                        self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 0.5)  #conWeight - waga polaczenia
+                        self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 1)  #conWeight - waga polaczenia
                         
     cdef int weighted_choice(self, list weights):
         cdef list totals = []

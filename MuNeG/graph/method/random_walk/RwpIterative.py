@@ -24,7 +24,6 @@ class RwpIterative():
             csr_d_matrix_for_node = sp.csr_matrix(d_matrix_for_node)
             self.d.update({node.id : csr_d_matrix_for_node})
 
-
     def random_walk(self, network, class_mat, layers, number_repetitions, depth):
         self.init_d_matrix(network)
         results=dict()
@@ -33,21 +32,25 @@ class RwpIterative():
         filtered_indexes = filter(lambda x : x != -1, unknown_filter)
         unknown_nodes = [node for node in filter(lambda n: n.id in filtered_indexes, network.nodes())]
 
-        for node in unknown_nodes:
-            res_node=[]
-            for current_layer in layers:
-                for i in xrange(number_repetitions):
-                    res_node.append(self.random_walk_recursive(network, unknown_nodes, node.id, {}, current_layer, depth, 1))
-                #print 'Finished for node: '+str(node)+'       Classses: '
-                #print res_node
-            results[node]=res_node
+        founded_nodes = {}
+        for i in xrange(number_repetitions):
+            temp_founded_nodes = {}
+            for node in unknown_nodes:
+                res_node=[]
+                temp_classes_for_node = []
+                for current_layer in layers:
+                    new_class_with_counter = self.random_walk_recursive(network, unknown_nodes, founded_nodes, node, node.id, {}, current_layer, depth, 1)
+                    res_node , temp_classes_for_node = self.collect_temp_information(new_class_with_counter, res_node, temp_classes_for_node)
+                self.update_temp_founded_nodes(node, temp_classes_for_node, temp_founded_nodes)
+                results = self.collect_results(node, res_node, results)
+            founded_nodes = temp_founded_nodes
         return results
 
-    def random_walk_recursive(self, network, unknown_nodes, current_node, visited, current_layer, depth, counter):
+    def random_walk_recursive(self, network, unknown_nodes, founded_nodes, start_node, current_node, visited, current_layer, depth, counter):
         visited = self.init_visited_if_needed(current_layer, visited)
         decided_layer = self.decide_layer_change(current_node, current_layer, visited)
         if (decided_layer != current_layer):
-            return self.random_walk_recursive(network, unknown_nodes, current_node, visited, decided_layer, depth-1, counter+1)
+            return self.random_walk_recursive(network, unknown_nodes, founded_nodes, start_node, current_node, visited, decided_layer, depth-1, counter+1)
         else:
             edge=self.draw_connection_at_node(self.separated_networks[str(current_layer)],current_node, visited[current_layer])
 
@@ -63,6 +66,8 @@ class RwpIterative():
                     print 'Reached node with class: '+ str(new_node.label)
                     #print 'Class reached: '+str(network.node[edge[1]]['cls'])
                     return (new_node.label,counter)
+                if (edge is not None) and (new_node != start_node) and (new_node in founded_nodes.keys()):
+                    return (founded_nodes[new_node],counter)
                 else:
                     #remove comment if renadom walk does not allow retracking
                     #visited=current_node
@@ -71,8 +76,28 @@ class RwpIterative():
                     #print 'Going to: '+str(edge[1])
                     #print 'recursion'
                     visited = self.update_visited_before_transition(current_layer, edge, visited)
-                    return self.random_walk_recursive(network, unknown_nodes, edge[1], visited, current_layer, depth-1, counter+1)
+                    return self.random_walk_recursive(network, unknown_nodes, founded_nodes, start_node, edge[1], visited, current_layer, depth-1, counter+1)
 
+
+    def collect_temp_information(self, new_class_with_counter, res_node, temp_classes_for_node):
+        res_node.append(new_class_with_counter)
+        new_class = new_class_with_counter[0]
+        if new_class != None:
+            temp_classes_for_node.append(new_class)
+        return res_node, temp_classes_for_node
+
+    def update_temp_founded_nodes(self, node, temp_classes_for_node, temp_founded_nodes):
+        temp_list_length = len(temp_classes_for_node)
+        if temp_list_length != 0:
+            temp_founded_nodes[node] = int(round(float(sum(temp_classes_for_node)) / float(temp_list_length)))
+        return temp_founded_nodes
+
+    def collect_results(self, node, res_node, results):
+        if not results.has_key(node):
+            results[node] = res_node
+        else:
+            results[node] = results[node] + res_node
+        return results
 
     def init_visited_if_needed(self, current_layer, visited):
         if not visited.has_key(current_layer):

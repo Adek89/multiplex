@@ -105,11 +105,15 @@ class GraphAnalyser:
                              avgClustering,
                              avgDiameter, avgShortestPath, degree_sequence])
 
-    def analyse(self):
+    def separate_layer(self, layer_list):
         nu = NetworkUtils()
         class_mat, nr_of_classes = nu.createClassMat(self.graph)
         tools = LBPTools(self.graph.nodes().__len__(), self.graph, class_mat, 0, 0.0, 0.0)
-        tools.separate_layer(self.graph, [1, 2, 3, 4, 5], class_mat, [])
+        tools.separate_layer(self.graph, layer_list, class_mat)
+        return tools
+
+    def analyse(self):
+        tools = self.separate_layer()
 
         graphs = [graphs for graphs in tools.graphs.iteritems()]
         for (layer, graph) in graphs:

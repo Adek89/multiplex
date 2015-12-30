@@ -7,7 +7,7 @@ Created on 18 mar 2014
 #2 therefore used xval
 
 import sys
-sys.path.append('/home/adrian/MuNeG_Git')
+sys.path.append('/home/apopiel/multiplex/MuNeG/')
 from experiments.DecisionFusionReal import DecisionFusion
 from graph.reader.DanioRerio.DanioRerioReader import DanioRerioReader
 

@@ -690,6 +690,14 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
+static int __Pyx_Print(PyObject*, PyObject *, int);
+#if CYTHON_COMPILING_IN_PYPY || PY_MAJOR_VERSION >= 3
+static PyObject* __pyx_print = 0;
+static PyObject* __pyx_print_kwargs = 0;
+#endif
+
+static int __Pyx_PrintOne(PyObject* stream, PyObject *o);
+
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
 
 static int __Pyx_check_binary_version(void);
@@ -737,15 +745,18 @@ static PyObject *__pyx_tp_new_5graph_3gen_14GraphGenerator_GraphGenerator(PyType
 static char __pyx_k_gs[] = "gs";
 static char __pyx_k_n0[] = "n0";
 static char __pyx_k_nx[] = "nx";
+static char __pyx_k_end[] = "end";
 static char __pyx_k_len[] = "__len__";
 static char __pyx_k_red[] = "red";
 static char __pyx_k_blue[] = "blue";
+static char __pyx_k_file[] = "file";
 static char __pyx_k_main[] = "__main__";
 static char __pyx_k_rand[] = "rand";
 static char __pyx_k_test[] = "__test__";
 static char __pyx_k_gType[] = "gType";
 static char __pyx_k_group[] = "group";
 static char __pyx_k_layer[] = "layer";
+static char __pyx_k_print[] = "print";
 static char __pyx_k_range[] = "range";
 static char __pyx_k_import[] = "__import__";
 static char __pyx_k_random[] = "random";
@@ -761,6 +772,7 @@ static char __pyx_k_enumerate[] = "enumerate";
 static char __pyx_k_layerName[] = "layerName";
 static char __pyx_k_MultiGraph[] = "MultiGraph";
 static char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
+static char __pyx_k_edge_exists[] = "edge exists: ";
 static char __pyx_k_layerWeights[] = "layerWeights";
 static char __pyx_k_grLabelHomogenity[] = "grLabelHomogenity";
 static char __pyx_k_probEdgeInSameGroup[] = "probEdgeInSameGroup";
@@ -771,7 +783,10 @@ static PyObject *__pyx_n_s_add_edge;
 static PyObject *__pyx_n_s_add_node;
 static PyObject *__pyx_n_s_blue;
 static PyObject *__pyx_n_s_conWeight;
+static PyObject *__pyx_kp_s_edge_exists;
+static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_enumerate;
+static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_gType;
 static PyObject *__pyx_n_s_generate;
 static PyObject *__pyx_n_s_getitem;
@@ -787,6 +802,7 @@ static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_n0;
 static PyObject *__pyx_n_s_networkx;
 static PyObject *__pyx_n_s_nx;
+static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_probEdgeBetweenOtherGroups;
 static PyObject *__pyx_n_s_probEdgeInSameGroup;
 static PyObject *__pyx_n_s_pyx_vtable;
@@ -797,7 +813,6 @@ static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_red;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_weight;
-static PyObject *__pyx_float_0_5;
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_tuple_;
@@ -2177,7 +2192,7 @@ static PyObject *__pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_generateE
  *                     else:
  *                         weights = [10-probOthers, probOthers]             # <<<<<<<<<<<<<<
  *                         isEdgeExist = self.weighted_choice(weights)
- *                     if (isEdgeExist == 1):
+ *                     print "edge exists: " + str(isEdgeExist)
  */
           __pyx_t_1 = PyFloat_FromDouble((10.0 - __pyx_v_probOthers)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_1);
@@ -2198,8 +2213,8 @@ static PyObject *__pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_generateE
  *                     else:
  *                         weights = [10-probOthers, probOthers]
  *                         isEdgeExist = self.weighted_choice(weights)             # <<<<<<<<<<<<<<
+ *                     print "edge exists: " + str(isEdgeExist)
  *                     if (isEdgeExist == 1):
- *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 0.5)  #conWeight - waga polaczenia
  */
           __pyx_v_isEdgeExist = ((struct __pyx_vtabstruct_5graph_3gen_14GraphGenerator_GraphGenerator *)__pyx_v_self->__pyx_vtab)->weighted_choice(__pyx_v_self, __pyx_v_weights);
         }
@@ -2208,42 +2223,65 @@ static PyObject *__pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_generateE
         /* "graph\gen\GraphGenerator.pyx":132
  *                         weights = [10-probOthers, probOthers]
  *                         isEdgeExist = self.weighted_choice(weights)
+ *                     print "edge exists: " + str(isEdgeExist)             # <<<<<<<<<<<<<<
+ *                     if (isEdgeExist == 1):
+ *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 1)  #conWeight - waga polaczenia
+ */
+        __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_isEdgeExist); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_8);
+        __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_2);
+        PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_8);
+        __Pyx_GIVEREF(__pyx_t_8);
+        __pyx_t_8 = 0;
+        __pyx_t_8 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)(&PyString_Type))), __pyx_t_2, NULL); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_8);
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_2 = PyNumber_Add(__pyx_kp_s_edge_exists, __pyx_t_8); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+        if (__Pyx_PrintOne(0, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+        /* "graph\gen\GraphGenerator.pyx":133
+ *                         isEdgeExist = self.weighted_choice(weights)
+ *                     print "edge exists: " + str(isEdgeExist)
  *                     if (isEdgeExist == 1):             # <<<<<<<<<<<<<<
- *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 0.5)  #conWeight - waga polaczenia
+ *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 1)  #conWeight - waga polaczenia
  * 
  */
         __pyx_t_12 = ((__pyx_v_isEdgeExist == 1) != 0);
         if (__pyx_t_12) {
 
-          /* "graph\gen\GraphGenerator.pyx":133
- *                         isEdgeExist = self.weighted_choice(weights)
+          /* "graph\gen\GraphGenerator.pyx":134
+ *                     print "edge exists: " + str(isEdgeExist)
  *                     if (isEdgeExist == 1):
- *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 0.5)  #conWeight - waga polaczenia             # <<<<<<<<<<<<<<
+ *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 1)  #conWeight - waga polaczenia             # <<<<<<<<<<<<<<
  * 
  *     cdef int weighted_choice(self, list weights):
  */
-          __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->graph, __pyx_n_s_add_edge); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_8);
-          __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->graph, __pyx_n_s_add_edge); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_2);
+          __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_8);
           __Pyx_INCREF(__pyx_v_node1);
-          PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_node1);
+          PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_v_node1);
           __Pyx_GIVEREF(__pyx_v_node1);
           __Pyx_INCREF(__pyx_v_node2);
-          PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_node2);
+          PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_v_node2);
           __Pyx_GIVEREF(__pyx_v_node2);
-          __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_currentLayerWeight); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_currentLayerWeight); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_3);
-          if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_weight, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_weight, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_layer, __pyx_v_currentLayerName) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_conWeight, __pyx_float_0_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_layer, __pyx_v_currentLayerName) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_conWeight, __pyx_int_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_8, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_3);
-          __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+          __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           goto __pyx_L10;
@@ -2282,8 +2320,8 @@ static PyObject *__pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_generateE
   return __pyx_r;
 }
 
-/* "graph\gen\GraphGenerator.pyx":135
- *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 0.5)  #conWeight - waga polaczenia
+/* "graph\gen\GraphGenerator.pyx":136
+ *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 1)  #conWeight - waga polaczenia
  * 
  *     cdef int weighted_choice(self, list weights):             # <<<<<<<<<<<<<<
  *         cdef list totals = []
@@ -2313,19 +2351,19 @@ static int __pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_weighted_choice
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("weighted_choice", 0);
 
-  /* "graph\gen\GraphGenerator.pyx":136
+  /* "graph\gen\GraphGenerator.pyx":137
  * 
  *     cdef int weighted_choice(self, list weights):
  *         cdef list totals = []             # <<<<<<<<<<<<<<
  *         cdef int running_total = 0
  *         cdef int w
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_totals = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "graph\gen\GraphGenerator.pyx":137
+  /* "graph\gen\GraphGenerator.pyx":138
  *     cdef int weighted_choice(self, list weights):
  *         cdef list totals = []
  *         cdef int running_total = 0             # <<<<<<<<<<<<<<
@@ -2334,7 +2372,7 @@ static int __pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_weighted_choice
  */
   __pyx_v_running_total = 0;
 
-  /* "graph\gen\GraphGenerator.pyx":140
+  /* "graph\gen\GraphGenerator.pyx":141
  *         cdef int w
  *         cdef float rnd
  *         for w in weights:             # <<<<<<<<<<<<<<
@@ -2343,21 +2381,21 @@ static int __pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_weighted_choice
  */
   if (unlikely(__pyx_v_weights == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_1 = __pyx_v_weights; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #endif
-    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_w = __pyx_t_4;
 
-    /* "graph\gen\GraphGenerator.pyx":141
+    /* "graph\gen\GraphGenerator.pyx":142
  *         cdef float rnd
  *         for w in weights:
  *             running_total += w             # <<<<<<<<<<<<<<
@@ -2366,19 +2404,19 @@ static int __pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_weighted_choice
  */
     __pyx_v_running_total = (__pyx_v_running_total + __pyx_v_w);
 
-    /* "graph\gen\GraphGenerator.pyx":142
+    /* "graph\gen\GraphGenerator.pyx":143
  *         for w in weights:
  *             running_total += w
  *             totals.append(running_total)             # <<<<<<<<<<<<<<
  * 
  *         rnd = rand.random() * running_total
  */
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_running_total); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_running_total); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_totals, __pyx_t_3); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_totals, __pyx_t_3); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "graph\gen\GraphGenerator.pyx":140
+    /* "graph\gen\GraphGenerator.pyx":141
  *         cdef int w
  *         cdef float rnd
  *         for w in weights:             # <<<<<<<<<<<<<<
@@ -2388,16 +2426,16 @@ static int __pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_weighted_choice
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "graph\gen\GraphGenerator.pyx":144
+  /* "graph\gen\GraphGenerator.pyx":145
  *             totals.append(running_total)
  * 
  *         rnd = rand.random() * running_total             # <<<<<<<<<<<<<<
  *         for i, total in enumerate(totals):
  *             if rnd < total:
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_rand); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_rand); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_random); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_random); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -2411,24 +2449,24 @@ static int __pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_weighted_choice
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_running_total); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_running_total); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_7 = __pyx_PyFloat_AsFloat(__pyx_t_3); if (unlikely((__pyx_t_7 == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __pyx_PyFloat_AsFloat(__pyx_t_3); if (unlikely((__pyx_t_7 == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_rnd = __pyx_t_7;
 
-  /* "graph\gen\GraphGenerator.pyx":145
+  /* "graph\gen\GraphGenerator.pyx":146
  * 
  *         rnd = rand.random() * running_total
  *         for i, total in enumerate(totals):             # <<<<<<<<<<<<<<
@@ -2440,31 +2478,31 @@ static int __pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_weighted_choice
   for (;;) {
     if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_3)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_6 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_6); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #endif
     __Pyx_XDECREF_SET(__pyx_v_total, __pyx_t_6);
     __pyx_t_6 = 0;
     __pyx_v_i = __pyx_t_2;
     __pyx_t_2 = (__pyx_t_2 + 1);
 
-    /* "graph\gen\GraphGenerator.pyx":146
+    /* "graph\gen\GraphGenerator.pyx":147
  *         rnd = rand.random() * running_total
  *         for i, total in enumerate(totals):
  *             if rnd < total:             # <<<<<<<<<<<<<<
  *                 return i
  * 
  */
-    __pyx_t_6 = PyFloat_FromDouble(__pyx_v_rnd); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyFloat_FromDouble(__pyx_v_rnd); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_1 = PyObject_RichCompare(__pyx_t_6, __pyx_v_total, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyObject_RichCompare(__pyx_t_6, __pyx_v_total, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_9) {
 
-      /* "graph\gen\GraphGenerator.pyx":147
+      /* "graph\gen\GraphGenerator.pyx":148
  *         for i, total in enumerate(totals):
  *             if rnd < total:
  *                 return i             # <<<<<<<<<<<<<<
@@ -2476,7 +2514,7 @@ static int __pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_weighted_choice
       goto __pyx_L0;
     }
 
-    /* "graph\gen\GraphGenerator.pyx":145
+    /* "graph\gen\GraphGenerator.pyx":146
  * 
  *         rnd = rand.random() * running_total
  *         for i, total in enumerate(totals):             # <<<<<<<<<<<<<<
@@ -2486,8 +2524,8 @@ static int __pyx_f_5graph_3gen_14GraphGenerator_14GraphGenerator_weighted_choice
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "graph\gen\GraphGenerator.pyx":135
- *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 0.5)  #conWeight - waga polaczenia
+  /* "graph\gen\GraphGenerator.pyx":136
+ *                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 1)  #conWeight - waga polaczenia
  * 
  *     cdef int weighted_choice(self, list weights):             # <<<<<<<<<<<<<<
  *         cdef list totals = []
@@ -2697,7 +2735,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_add_node, __pyx_k_add_node, sizeof(__pyx_k_add_node), 0, 0, 1, 1},
   {&__pyx_n_s_blue, __pyx_k_blue, sizeof(__pyx_k_blue), 0, 0, 1, 1},
   {&__pyx_n_s_conWeight, __pyx_k_conWeight, sizeof(__pyx_k_conWeight), 0, 0, 1, 1},
+  {&__pyx_kp_s_edge_exists, __pyx_k_edge_exists, sizeof(__pyx_k_edge_exists), 0, 0, 1, 0},
+  {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
+  {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_s_gType, __pyx_k_gType, sizeof(__pyx_k_gType), 0, 0, 1, 1},
   {&__pyx_n_s_generate, __pyx_k_generate, sizeof(__pyx_k_generate), 0, 0, 1, 1},
   {&__pyx_n_s_getitem, __pyx_k_getitem, sizeof(__pyx_k_getitem), 0, 0, 1, 1},
@@ -2713,6 +2754,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_n0, __pyx_k_n0, sizeof(__pyx_k_n0), 0, 0, 1, 1},
   {&__pyx_n_s_networkx, __pyx_k_networkx, sizeof(__pyx_k_networkx), 0, 0, 1, 1},
   {&__pyx_n_s_nx, __pyx_k_nx, sizeof(__pyx_k_nx), 0, 0, 1, 1},
+  {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_probEdgeBetweenOtherGroups, __pyx_k_probEdgeBetweenOtherGroups, sizeof(__pyx_k_probEdgeBetweenOtherGroups), 0, 0, 1, 1},
   {&__pyx_n_s_probEdgeInSameGroup, __pyx_k_probEdgeInSameGroup, sizeof(__pyx_k_probEdgeInSameGroup), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
@@ -2727,7 +2769,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2756,7 +2798,6 @@ static int __Pyx_InitCachedConstants(void) {
 
 static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-  __pyx_float_0_5 = PyFloat_FromDouble(0.5); if (unlikely(!__pyx_float_0_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
@@ -3827,6 +3868,147 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
                                      little, !is_unsigned);
     }
 }
+
+#if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
+static PyObject *__Pyx_GetStdout(void) {
+    PyObject *f = PySys_GetObject((char *)"stdout");
+    if (!f) {
+        PyErr_SetString(PyExc_RuntimeError, "lost sys.stdout");
+    }
+    return f;
+}
+static int __Pyx_Print(PyObject* f, PyObject *arg_tuple, int newline) {
+    int i;
+    if (!f) {
+        if (!(f = __Pyx_GetStdout()))
+            return -1;
+    }
+    Py_INCREF(f);
+    for (i=0; i < PyTuple_GET_SIZE(arg_tuple); i++) {
+        PyObject* v;
+        if (PyFile_SoftSpace(f, 1)) {
+            if (PyFile_WriteString(" ", f) < 0)
+                goto error;
+        }
+        v = PyTuple_GET_ITEM(arg_tuple, i);
+        if (PyFile_WriteObject(v, f, Py_PRINT_RAW) < 0)
+            goto error;
+        if (PyString_Check(v)) {
+            char *s = PyString_AsString(v);
+            Py_ssize_t len = PyString_Size(v);
+            if (len > 0) {
+                switch (s[len-1]) {
+                    case ' ': break;
+                    case '\f': case '\r': case '\n': case '\t': case '\v':
+                        PyFile_SoftSpace(f, 0);
+                        break;
+                    default:  break;
+                }
+            }
+        }
+    }
+    if (newline) {
+        if (PyFile_WriteString("\n", f) < 0)
+            goto error;
+        PyFile_SoftSpace(f, 0);
+    }
+    Py_DECREF(f);
+    return 0;
+error:
+    Py_DECREF(f);
+    return -1;
+}
+#else
+static int __Pyx_Print(PyObject* stream, PyObject *arg_tuple, int newline) {
+    PyObject* kwargs = 0;
+    PyObject* result = 0;
+    PyObject* end_string;
+    if (unlikely(!__pyx_print)) {
+        __pyx_print = PyObject_GetAttr(__pyx_b, __pyx_n_s_print);
+        if (!__pyx_print)
+            return -1;
+    }
+    if (stream) {
+        kwargs = PyDict_New();
+        if (unlikely(!kwargs))
+            return -1;
+        if (unlikely(PyDict_SetItem(kwargs, __pyx_n_s_file, stream) < 0))
+            goto bad;
+        if (!newline) {
+            end_string = PyUnicode_FromStringAndSize(" ", 1);
+            if (unlikely(!end_string))
+                goto bad;
+            if (PyDict_SetItem(kwargs, __pyx_n_s_end, end_string) < 0) {
+                Py_DECREF(end_string);
+                goto bad;
+            }
+            Py_DECREF(end_string);
+        }
+    } else if (!newline) {
+        if (unlikely(!__pyx_print_kwargs)) {
+            __pyx_print_kwargs = PyDict_New();
+            if (unlikely(!__pyx_print_kwargs))
+                return -1;
+            end_string = PyUnicode_FromStringAndSize(" ", 1);
+            if (unlikely(!end_string))
+                return -1;
+            if (PyDict_SetItem(__pyx_print_kwargs, __pyx_n_s_end, end_string) < 0) {
+                Py_DECREF(end_string);
+                return -1;
+            }
+            Py_DECREF(end_string);
+        }
+        kwargs = __pyx_print_kwargs;
+    }
+    result = PyObject_Call(__pyx_print, arg_tuple, kwargs);
+    if (unlikely(kwargs) && (kwargs != __pyx_print_kwargs))
+        Py_DECREF(kwargs);
+    if (!result)
+        return -1;
+    Py_DECREF(result);
+    return 0;
+bad:
+    if (kwargs != __pyx_print_kwargs)
+        Py_XDECREF(kwargs);
+    return -1;
+}
+#endif
+
+#if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
+static int __Pyx_PrintOne(PyObject* f, PyObject *o) {
+    if (!f) {
+        if (!(f = __Pyx_GetStdout()))
+            return -1;
+    }
+    Py_INCREF(f);
+    if (PyFile_SoftSpace(f, 0)) {
+        if (PyFile_WriteString(" ", f) < 0)
+            goto error;
+    }
+    if (PyFile_WriteObject(o, f, Py_PRINT_RAW) < 0)
+        goto error;
+    if (PyFile_WriteString("\n", f) < 0)
+        goto error;
+    Py_DECREF(f);
+    return 0;
+error:
+    Py_DECREF(f);
+    return -1;
+    /* the line below is just to avoid C compiler
+     * warnings about unused functions */
+    return __Pyx_Print(f, NULL, 0);
+}
+#else
+static int __Pyx_PrintOne(PyObject* stream, PyObject *o) {
+    int res;
+    PyObject* arg_tuple = PyTuple_Pack(1, o);
+    if (unlikely(!arg_tuple))
+        return -1;
+    res = __Pyx_Print(stream, arg_tuple, 1);
+    Py_DECREF(arg_tuple);
+    return res;
+}
+#endif
 
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) -1, const_zero = 0;
