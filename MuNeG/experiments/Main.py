@@ -27,9 +27,10 @@ if __name__ == '__main__':
     probBetween = float(sys.argv[5])
     nrOfLayers = int(sys.argv[6])
     percentOfTrainingNodes = float(sys.argv[7])
-    counter = int(sys.argv[8])
+    method =int(sys.argv[8])
+    counter = int(sys.argv[9])
 
 
-    df = DecisionFusion(nodes, size, label, probIn, probBetween, nrOfLayers, percentOfTrainingNodes, counter)
+    df = DecisionFusion(nodes, size, label, probIn, probBetween, nrOfLayers, percentOfTrainingNodes, method, counter)
     df.processExperiment()
     print("--- %s seconds ---" % str(time.time() - start_time))

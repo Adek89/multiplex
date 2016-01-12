@@ -68,7 +68,7 @@ cdef class CommonUtils:
                 classMat[i] = row
 
         sortedNodes = sorted(graph.nodes())
-        adjMat = nx.adjacency_matrix(graph, sortedNodes)
+        adjMat = nx.adjacency_matrix(graph, sortedNodes, weight=None)
 
         return classMat, adjMat, sortedNodes
 

@@ -48,23 +48,12 @@ cdef class Multilayer_LBP:
         cdef common = commonUtils.CommonUtils()
         x_val_methods = XValMethods(graph)
         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
-        fold_sum, fuz_mean_occ, sum = tools.crossVal(items, nrOfFolds, graph, nrOfNodes, 
+        fold_sum, fusion_mean = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
                        x_val, tools.giveCorrectData,
                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)
-            
-        #cross validation summary
-        #print fold_sum
-        # print fuz_mean_occ
-        
-        #fusion - mean part2 
-        fusion_mean = copy.deepcopy(sum)
-        for iter in range(0, len(sum)):
-            # print sum[iter][1],fuz_mean_occ[iter]
-            fusion_mean[iter][1]=sum[iter][1]/fuz_mean_occ[iter]
-            fusion_mean[iter][2]=sum[iter][2]/fuz_mean_occ[iter]
-        
-        # print fusion_mean
+
+        print 'Variable fusion mean: ' + str(fusion_mean)
         
         print "Writing a file..."
         results_sum_file = open(self.FILE_PATH+"_sum.csv","wb")

@@ -33,8 +33,8 @@ class RwpIterative():
         unknown_nodes = [node for node in filter(lambda n: n.id in filtered_indexes, network.nodes())]
 
         founded_nodes = {}
+        temp_founded_nodes = {}
         for i in xrange(number_repetitions):
-            temp_founded_nodes = {}
             for node in unknown_nodes:
                 res_node=[]
                 temp_classes_for_node = []
@@ -67,7 +67,7 @@ class RwpIterative():
                     #print 'Class reached: '+str(network.node[edge[1]]['cls'])
                     return (new_node.label,counter)
                 if (edge is not None) and (new_node != start_node) and (new_node in founded_nodes.keys()):
-                    return (founded_nodes[new_node],counter)
+                    return (random.choice(founded_nodes[new_node]),counter)
                 else:
                     #remove comment if renadom walk does not allow retracking
                     #visited=current_node
@@ -87,9 +87,13 @@ class RwpIterative():
         return res_node, temp_classes_for_node
 
     def update_temp_founded_nodes(self, node, temp_classes_for_node, temp_founded_nodes):
-        temp_list_length = len(temp_classes_for_node)
-        if temp_list_length != 0:
-            temp_founded_nodes[node] = int(round(float(sum(temp_classes_for_node)) / float(temp_list_length)))
+        if temp_founded_nodes.has_key(node):
+            temp_list = temp_founded_nodes.get(node)
+            temp_list = temp_list + temp_classes_for_node
+            temp_founded_nodes[node] = temp_list
+        else:
+            if len(temp_classes_for_node) != 0:
+                temp_founded_nodes[node] = temp_classes_for_node
         return temp_founded_nodes
 
     def collect_results(self, node, res_node, results):

@@ -70,7 +70,13 @@ cdef class CrossValMethods:
             fold_number = fold_number + 1
             
         return fold_sum
-        
+
+    def prepare_sum_for_fusion_mean(self, nrOfNodes):
+        sum_for_fusion_mean = []
+        for j in xrange(0, nrOfNodes, 1):
+            sum_for_fusion_mean.append([j, 0, 0])
+        return sum_for_fusion_mean
+
     cpdef multiLayerCrossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
                      np.ndarray defaultClassMat, int lbpSteps, float lbpThreshold, k_fold_cross_validation,
                      separationMethod, lbp, list layerWeights, isRandomWalk, float percentOfKnownNodes, prepareAdjMat, prepareLayers, prepareClassMat):
@@ -100,9 +106,14 @@ cdef class CrossValMethods:
         cdef np.float64_t sumElement
         cdef rows
         cdef repmatInput
+        fusion_mean = self.prepare_sum_for_fusion_mean(nrOfNodes)
         for training, validation in k_fold_cross_validation(items, numberOfFolds, percentOfKnownNodes):
+            print 'Multilayer method'
             print "-----FOLD %d-----" % fold_number
-            
+            print "Training: "
+            print training
+            print "Validation: "
+            print validation
             #separate layers
             results_agregator = []
             num_of_res = 0
@@ -173,7 +184,8 @@ cdef class CrossValMethods:
                     fold_sum[i][1]+=sum[i][1]
                     fold_sum[i][2]+=sum[i][2]
             # print sum
-            
+
+            fusion_mean = self.prepare_powered_fusion_mean(results_agregator, separationMethod, layerWeights, nrOfNodes, fusion_mean, validation)
             #fusion - mean part1
             # adjMatPy = np.array(adjMat)
             sumElement = np.finfo(np.double).tiny
@@ -182,6 +194,31 @@ cdef class CrossValMethods:
 #             print "sum ",len(sum)," repmat ",len(repmatInput)
             fuz_mean_occ = np.append(fuz_mean_occ,repmatInput)
             fold_number = fold_number + 1
-            
-        return fold_sum, fuz_mean_occ, sum
-        
+        return fold_sum, fusion_mean
+
+    def prepare_powered_fusion_mean(self, results_agregator, separation_method, layer_weights, nr_of_nodes, fusion_mean, validation):
+        i = 0
+        print 'Start fusion mean: ' + str(fusion_mean)
+        for results_on_layer in results_agregator:
+            fuz_mean_occ = np.array([])
+            layer = layer_weights[i]
+            results_on_layer = filter(lambda res : res[0] in validation, results_on_layer)
+            results_on_layer = sorted(results_on_layer,key=lambda row : row[0])
+            print 'Results on layer variable: ' + str(results_on_layer)
+            class_Mat, adjMat, nodes = separation_method(layer)
+            sumElement = np.finfo(np.double).tiny
+            rows = adjMat[validation,:]
+            repmatInput = rows.sum(axis=1) + sumElement
+            fuz_mean_occ = np.append(fuz_mean_occ,repmatInput)
+
+            print 'Variable fuzz mean occ: ' + str(fuz_mean_occ)
+
+            iter = 0
+            for result in results_on_layer:
+                node_id = result[0]
+                fusion_mean[node_id][1]+=result[1]/fuz_mean_occ[iter]
+                fusion_mean[node_id][2]+=result[2]/fuz_mean_occ[iter]
+                iter += 1
+            i += 1
+            print 'Variable fusion_mean: ' + str(fusion_mean) + ' after layer: ' + str(layer)
+        return fusion_mean

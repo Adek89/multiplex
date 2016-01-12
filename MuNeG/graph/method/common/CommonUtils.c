@@ -1267,6 +1267,7 @@ static char __pyx_k_author[] = "__author__";
 static char __pyx_k_import[] = "__import__";
 static char __pyx_k_random[] = "random";
 static char __pyx_k_slices[] = "slices: ";
+static char __pyx_k_weight[] = "weight";
 static char __pyx_k_xrange[] = "xrange";
 static char __pyx_k_shuffle[] = "shuffle";
 static char __pyx_k_networkx[] = "networkx";
@@ -1339,6 +1340,7 @@ static PyObject *__pyx_kp_s_training_length;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_validation;
 static PyObject *__pyx_kp_s_validation_length;
+static PyObject *__pyx_n_s_weight;
 static PyObject *__pyx_n_s_xrange;
 static PyObject *__pyx_float_0_5;
 static PyObject *__pyx_int_0;
@@ -2371,7 +2373,7 @@ static PyObject *__pyx_f_5graph_6method_6common_11CommonUtils_11CommonUtils_prep
  *                 classMat[i] = row
  * 
  *         sortedNodes = sorted(graph.nodes())             # <<<<<<<<<<<<<<
- *         adjMat = nx.adjacency_matrix(graph, sortedNodes)
+ *         adjMat = nx.adjacency_matrix(graph, sortedNodes, weight=None)
  * 
  */
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_graph, __pyx_n_s_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -2406,66 +2408,55 @@ static PyObject *__pyx_f_5graph_6method_6common_11CommonUtils_11CommonUtils_prep
   /* "graph\method\common\CommonUtils.pyx":71
  * 
  *         sortedNodes = sorted(graph.nodes())
- *         adjMat = nx.adjacency_matrix(graph, sortedNodes)             # <<<<<<<<<<<<<<
+ *         adjMat = nx.adjacency_matrix(graph, sortedNodes, weight=None)             # <<<<<<<<<<<<<<
  * 
  *         return classMat, adjMat, sortedNodes
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_nx); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_adjacency_matrix); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_adjacency_matrix); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = NULL;
-  __pyx_t_5 = 0;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
-      __pyx_t_5 = 1;
-    }
-  }
-  __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_6);
-  if (__pyx_t_3) {
-    PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3); __Pyx_GIVEREF(__pyx_t_3); __pyx_t_3 = NULL;
-  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_graph);
-  PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_5, __pyx_v_graph);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_graph);
   __Pyx_GIVEREF(__pyx_v_graph);
   __Pyx_INCREF(__pyx_v_sortedNodes);
-  PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_sortedNodes);
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_sortedNodes);
   __Pyx_GIVEREF(__pyx_v_sortedNodes);
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_weight, Py_None) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_adjMat = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_v_adjMat = __pyx_t_6;
+  __pyx_t_6 = 0;
 
   /* "graph\method\common\CommonUtils.pyx":73
- *         adjMat = nx.adjacency_matrix(graph, sortedNodes)
+ *         adjMat = nx.adjacency_matrix(graph, sortedNodes, weight=None)
  * 
  *         return classMat, adjMat, sortedNodes             # <<<<<<<<<<<<<<
  * 
  *     cdef list prepareUnobservdRow(self, int nrOfClasses):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_v_classMat);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_classMat);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_v_classMat);
   __Pyx_GIVEREF(__pyx_v_classMat);
   __Pyx_INCREF(__pyx_v_adjMat);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_adjMat);
+  PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_v_adjMat);
   __Pyx_GIVEREF(__pyx_v_adjMat);
   __Pyx_INCREF(__pyx_v_sortedNodes);
-  PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_v_sortedNodes);
+  PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_v_sortedNodes);
   __Pyx_GIVEREF(__pyx_v_sortedNodes);
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_6;
+  __pyx_t_6 = 0;
   goto __pyx_L0;
 
   /* "graph\method\common\CommonUtils.pyx":58
@@ -4988,6 +4979,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
   {&__pyx_n_s_validation, __pyx_k_validation, sizeof(__pyx_k_validation), 0, 0, 1, 1},
   {&__pyx_kp_s_validation_length, __pyx_k_validation_length, sizeof(__pyx_k_validation_length), 0, 0, 1, 0},
+  {&__pyx_n_s_weight, __pyx_k_weight, sizeof(__pyx_k_weight), 0, 0, 1, 1},
   {&__pyx_n_s_xrange, __pyx_k_xrange, sizeof(__pyx_k_xrange), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };

@@ -145,7 +145,7 @@ cdef class LBPTools:
             g.add_node(node.id)
         
         sortedNodes = sorted(g.nodes())
-        adjMat = nx.adjacency_matrix(g, sortedNodes, weight = None)
+        adjMat = nx.adjacency_matrix(g, sortedNodes, weight=None)
         cdef np.ndarray out_nodes = np.asarray(nx.nodes(g))
         return classMat, adjMat, out_nodes
     

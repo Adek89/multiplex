@@ -11,6 +11,7 @@ from graph.method.lbp.NetworkUtils import NetworkUtils
 from graph.method.lbp.FlatLBP import FlatLBP
 from graph.method.lbp.RwpLBP import RwpLBP
 from graph.evaluation.EvaluationTools import EvaluationTools
+from graph.method.random_walk.RandomWalkMethods import RandomWalkMethods
 import csv
 import time
 class DecisionFusion:
@@ -37,7 +38,7 @@ class DecisionFusion:
     training = []
     validation = []
     
-    FILE_PATH = "/home/apopiel/tmp/output"
+    FILE_PATH = ""
     
     
     nu = NetworkUtils()
@@ -72,8 +73,10 @@ class DecisionFusion:
     nrOfLayers = 0
     percentOfTrainignNodes = 0.0
     counter = 0
+    method = 0
+    syntheticRwcResult = 0.0
 
-    def __init__(self, nrOfNodes, nrOfGroups, grLabelHomogenity, prEdgeInGroup, prEdgeBetweenGroups, nrOfLayers, percentOfTrainignNodes, counter):
+    def __init__(self, nrOfNodes, nrOfGroups, grLabelHomogenity, prEdgeInGroup, prEdgeBetweenGroups, nrOfLayers, percentOfTrainignNodes, method, counter):
         self.NUMBER_OF_NODES = nrOfNodes
         self.NUMBER_OF_GROUPS = nrOfGroups
         self.prepareNumberOfGroups(nrOfNodes, nrOfGroups)
@@ -82,8 +85,12 @@ class DecisionFusion:
         self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS = prEdgeBetweenGroups
         self.initLayers(nrOfLayers)
         self.nrOfLayers = nrOfLayers
-        self.percentOfTrainignNodes = percentOfTrainignNodes
+        self.method = method
         self.counter = counter
+        if method == 1:
+            self.NUMBER_OF_FOLDS = percentOfTrainignNodes
+        else:
+            self.percentOfTrainignNodes = percentOfTrainignNodes
 
     def initLayers(self, nrOfLayers):
         for i in xrange(0, nrOfLayers):
@@ -110,6 +117,7 @@ class DecisionFusion:
                 self.flatLBP()
                 self.multiLayerLBP()
                 self.rwpLBP()
+                self.rwc()
                 self.evaluation()
             except IndexError, ValueError:
                 self.generateSyntheticData()
@@ -152,7 +160,7 @@ class DecisionFusion:
         flatLBP = FlatLBP()
         self.syntheticFlatResult = flatLBP.start(self.synthetic, self.NUMBER_OF_NODES, self.syntheticClassMat,
                                                  self.syntheticNrOfClasses, self.LBP_MAX_STEPS, self.LBP_TRESHOLD,
-                                                 self.NUMBER_OF_FOLDS, self.percentOfTrainignNodes)
+                                                 self.NUMBER_OF_FOLDS, self.percentOfTrainignNodes, self.method)
         print("---flatLBP time: %s seconds ---" % str(time.time() - start_time))
 #         self.realFlatResult = flatLBP.start(self.realGraph, self.REAL_NUMBER_OF_NODES, self.realGraphClassMat, self.realNrOfClasses, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.NUMBER_OF_FOLDS)
         
@@ -160,16 +168,20 @@ class DecisionFusion:
         
     def multiLayerLBP(self):
         multiLBP = Multilayer_LBP()
-        self.syntheticLBPFoldSum, self.syntheticLBPFusionMean = multiLBP.start(self.synthetic, self.syntheticClassMat, self.syntheticNrOfClasses, self.NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.LAYERS_WEIGHTS, self.percentOfTrainignNodes)
+        self.syntheticLBPFoldSum, self.syntheticLBPFusionMean = multiLBP.start(self.synthetic, self.syntheticClassMat, self.syntheticNrOfClasses, self.NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.LAYERS_WEIGHTS, self.percentOfTrainignNodes, self.method)
 #         self.realLBPFoldSum, self.realLBPFusionMean = multiLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses, self.REAL_NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS)
 
         
         
     def rwpLBP(self):
         rwpLBP = RwpLBP()
-        self.syntheticRWPFoldSum, self.syntheticRWPFusionMean = rwpLBP.start(self.synthetic, self.syntheticClassMat, self.syntheticNrOfClasses, self.NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.LAYERS_WEIGHTS, self.percentOfTrainignNodes)
+        self.syntheticRWPFoldSum, self.syntheticRWPFusionMean = rwpLBP.start(self.synthetic, self.syntheticClassMat, self.syntheticNrOfClasses, self.NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.LAYERS_WEIGHTS, self.percentOfTrainignNodes, self.method)
 #         self.realRWPFoldSum, self.realRWPFusionMean = rwpLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses, self.REAL_NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS)
 
+    def rwc(self):
+        rwc = RandomWalkMethods()
+        self.syntheticRwcResult = rwc.random_walk_classical(self.synthetic, self.syntheticClassMat, self.LAYERS_WEIGHTS,
+                                                                                self.NUMBER_OF_FOLDS, self.method, self.percentOfTrainignNodes)
     '''
     Evaluation
     '''
@@ -182,21 +194,21 @@ class DecisionFusion:
         fMacroLBPSyntheticFusionMean = ev.calculateFMacro(self.syntheticLabels, self.syntheticLBPFusionMean, self.syntheticNrOfClasses)
         fMacroRWPSyntheticFoldSum = ev.calculateFMacro(self.syntheticLabels, self.syntheticRWPFoldSum, self.syntheticNrOfClasses)
         fMacroRWPSyntheticFusionMean = ev.calculateFMacro(self.syntheticLabels, self.syntheticRWPFusionMean, self.syntheticNrOfClasses)
-        
+        fMacroRWCSyntheticResult = ev.calculateFMacro(self.syntheticLabels, self.syntheticRwcResult, self.syntheticNrOfClasses)
 #         fMacroFlatReal = ev.calculateFMacro(self.realLabels, self.realFlatResult, self.realNrOfClasses)
 #         fMacroLBPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realLBPFoldSum, self.realNrOfClasses)
 #         fMacroLBPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realLBPFusionMean, self.realNrOfClasses)
 #         fMacroRWPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realRWPFoldSum, self.realNrOfClasses)
 #         fMacroRWPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realRWPFusionMean, self.realNrOfClasses)
         
-        with open(self.FILE_PATH + str(self.counter) + '.csv', 'ab') as csvfile:
+        with open(self.FILE_PATH + str(self.counter) + 'synth.csv', 'ab') as csvfile:
             writer = csv.writer(csvfile)
         
             writer.writerow([self.NUMBER_OF_NODES, self.NUMBER_OF_GROUPS, self.GROUP_LABEL_HOMOGENITY,
                               self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP, self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
-                                self.nrOfLayers, self.percentOfTrainignNodes,
+                                self.nrOfLayers, self.method, self.NUMBER_OF_FOLDS, self.percentOfTrainignNodes,
                             fMacroFlatSynthetic, fMacroLBPSyntheticFoldSum, fMacroLBPSyntheticFusionMean, fMacroRWPSyntheticFoldSum,
-                            fMacroRWPSyntheticFusionMean])
+                            fMacroRWPSyntheticFusionMean, fMacroRWCSyntheticResult])
         
     def prepareOriginalLabels(self, defaultClassMat, nrOfClasses):
         classMatForEv = []

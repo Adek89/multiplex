@@ -4263,7 +4263,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
  *             g.add_node(node.id)
  * 
  *         sortedNodes = sorted(g.nodes())             # <<<<<<<<<<<<<<
- *         adjMat = nx.adjacency_matrix(g, sortedNodes, weight = None)
+ *         adjMat = nx.adjacency_matrix(g, sortedNodes, weight=None)
  *         cdef np.ndarray out_nodes = np.asarray(nx.nodes(g))
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_g, __pyx_n_s_nodes); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -4298,7 +4298,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
   /* "graph\method\lbp\LBPTools.pyx":148
  * 
  *         sortedNodes = sorted(g.nodes())
- *         adjMat = nx.adjacency_matrix(g, sortedNodes, weight = None)             # <<<<<<<<<<<<<<
+ *         adjMat = nx.adjacency_matrix(g, sortedNodes, weight=None)             # <<<<<<<<<<<<<<
  *         cdef np.ndarray out_nodes = np.asarray(nx.nodes(g))
  *         return classMat, adjMat, out_nodes
  */
@@ -4328,7 +4328,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
 
   /* "graph\method\lbp\LBPTools.pyx":149
  *         sortedNodes = sorted(g.nodes())
- *         adjMat = nx.adjacency_matrix(g, sortedNodes, weight = None)
+ *         adjMat = nx.adjacency_matrix(g, sortedNodes, weight=None)
  *         cdef np.ndarray out_nodes = np.asarray(nx.nodes(g))             # <<<<<<<<<<<<<<
  *         return classMat, adjMat, out_nodes
  * 
@@ -4399,7 +4399,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_8LBPTools_8LBPTools_fillEmptyRow(st
   __pyx_t_8 = 0;
 
   /* "graph\method\lbp\LBPTools.pyx":150
- *         adjMat = nx.adjacency_matrix(g, sortedNodes, weight = None)
+ *         adjMat = nx.adjacency_matrix(g, sortedNodes, weight=None)
  *         cdef np.ndarray out_nodes = np.asarray(nx.nodes(g))
  *         return classMat, adjMat, out_nodes             # <<<<<<<<<<<<<<
  * 

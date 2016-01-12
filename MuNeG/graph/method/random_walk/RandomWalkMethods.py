@@ -62,5 +62,5 @@ class RandomWalkMethods():
 
     def execute_experiment(self, common, default_class_mat, graph, layers, method, results_dict, validation):
         classMat, adjMat, sortedNodes = common.prepareFoldClassMat(graph, default_class_mat, validation)
-        results = method.random_walk(graph, classMat, layers, 5, 100)
+        results = method.random_walk(graph, classMat, layers, 100, 100)
         results_dict.update(results)

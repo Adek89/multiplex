@@ -42,7 +42,7 @@ class DecisionFusion:
     training = []
     validation = []
     
-    file_path = "/home/apopiel/multiplex/MuNeG/results/"
+    file_path = ""
     
     nu = NetworkUtils()
     training = []
@@ -178,7 +178,7 @@ class DecisionFusion:
         fMacroRWPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realRWPFusionMean, self.realNrOfClasses)
         fMacroRWCRealResult = ev.calculateFMacro(self.realLabels, self.realRwcResult, self.realNrOfClasses)
         
-        with open(self.file_path + self.fun + 'real.csv', 'ab') as csvfile:
+        with open(self.file_path + 'real.csv', 'ab') as csvfile:
             writer = csv.writer(csvfile)
         
             writer.writerow([
