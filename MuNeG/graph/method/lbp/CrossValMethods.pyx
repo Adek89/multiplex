@@ -185,40 +185,55 @@ cdef class CrossValMethods:
                     fold_sum[i][2]+=sum[i][2]
             # print sum
 
-            fusion_mean = self.prepare_powered_fusion_mean(results_agregator, separationMethod, layerWeights, nrOfNodes, fusion_mean, validation)
-            #fusion - mean part1
-            # adjMatPy = np.array(adjMat)
-            sumElement = np.finfo(np.double).tiny
-            rows = adjMat[validation,:]
-            repmatInput = rows.sum(axis=1) + sumElement
-#             print "sum ",len(sum)," repmat ",len(repmatInput)
-            fuz_mean_occ = np.append(fuz_mean_occ,repmatInput)
+            fusion_mean = self.prepare_fusion_mean(results_agregator, separationMethod, layerWeights, nrOfNodes, fusion_mean, validation)
             fold_number = fold_number + 1
+        print 'Variable full fusion_mean: ' + str(fusion_mean)
+        print 'Variable full fold_sum: ' + str(fold_sum)
         return fold_sum, fusion_mean
 
-    def prepare_powered_fusion_mean(self, results_agregator, separation_method, layer_weights, nr_of_nodes, fusion_mean, validation):
+    def prepare_fusion_mean(self, results_agregator, separation_method, layer_weights, nr_of_nodes, fusion_mean, validation):
         i = 0
+        sum_of_classes = {}
         print 'Start fusion mean: ' + str(fusion_mean)
         for results_on_layer in results_agregator:
-            fuz_mean_occ = np.array([])
             layer = layer_weights[i]
             results_on_layer = filter(lambda res : res[0] in validation, results_on_layer)
-            results_on_layer = sorted(results_on_layer,key=lambda row : row[0])
+            results_on_layer = sorted(results_on_layer, key=lambda row : row[0])
             print 'Results on layer variable: ' + str(results_on_layer)
-            class_Mat, adjMat, nodes = separation_method(layer)
-            sumElement = np.finfo(np.double).tiny
-            rows = adjMat[validation,:]
-            repmatInput = rows.sum(axis=1) + sumElement
-            fuz_mean_occ = np.append(fuz_mean_occ,repmatInput)
 
-            print 'Variable fuzz mean occ: ' + str(fuz_mean_occ)
-
-            iter = 0
-            for result in results_on_layer:
-                node_id = result[0]
-                fusion_mean[node_id][1]+=result[1]/fuz_mean_occ[iter]
-                fusion_mean[node_id][2]+=result[2]/fuz_mean_occ[iter]
-                iter += 1
+            sum_of_classes = self.analyse_result_in_layer(results_on_layer, sum_of_classes)
             i += 1
-            print 'Variable fusion_mean: ' + str(fusion_mean) + ' after layer: ' + str(layer)
+            print 'Variable sum_of_classes: ' + str(sum_of_classes) + ' after layer: ' + str(layer)
+        fusion_mean = self.execute_fusion_mean(fusion_mean, layer_weights, sum_of_classes)
+        print 'Variable fusion_mean: ' + str(fusion_mean)
+        return fusion_mean
+
+    def collect_result(self, node_id, sum_of_classes, class_to_add):
+        if sum_of_classes.has_key(node_id):
+            current_classes_list = sum_of_classes.get(node_id)
+            current_classes_list.append(class_to_add)
+            sum_of_classes[node_id] = current_classes_list
+        else:
+            sum_of_classes[node_id] = [class_to_add]
+        return sum_of_classes
+
+    def analyse_result_in_layer(self, results_on_layer, sum_of_classes):
+        for result in results_on_layer:
+            node_id = result[0]
+            if result[1] >= result[2]:
+                sum_of_classes = self.collect_result(node_id, sum_of_classes, 0)
+            else:
+                sum_of_classes = self.collect_result(node_id, sum_of_classes, 1)
+        return sum_of_classes
+
+    def execute_fusion_mean(self, fusion_mean, layer_weights, sum_of_classes):
+        for node_id in sum_of_classes.keys():
+            average_class = round(sum(sum_of_classes[node_id]) / float(len(layer_weights)))
+            print 'Variable average_class: ' + str(average_class) + ' for node' + str(node_id)
+            if (average_class) == 0.0:
+                fusion_mean[node_id][1] = 1
+                fusion_mean[node_id][2] = 0
+            else:
+                fusion_mean[node_id][1] = 0
+                fusion_mean[node_id][2] = 1
         return fusion_mean
