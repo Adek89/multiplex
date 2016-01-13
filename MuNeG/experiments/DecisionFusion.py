@@ -110,7 +110,6 @@ class DecisionFusion:
         self.AVERAGE_GROUP_SIZE = nrOfNodes / nrOfGroups
         
     def processExperiment(self):
-#         self.readRealData()
         self.generateSyntheticData()
         self.preprocessing()
         for i in range (0, 10):

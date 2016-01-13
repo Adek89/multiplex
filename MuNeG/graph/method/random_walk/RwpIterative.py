@@ -34,6 +34,8 @@ class RwpIterative():
 
         founded_nodes = {}
         temp_founded_nodes = {}
+        previous_results = {}
+        is_stop_reached = False
         for i in xrange(number_repetitions):
             for node in unknown_nodes:
                 res_node=[]
@@ -44,6 +46,13 @@ class RwpIterative():
                 self.update_temp_founded_nodes(node, temp_classes_for_node, temp_founded_nodes)
                 results = self.collect_results(node, res_node, results)
             founded_nodes = temp_founded_nodes
+            current_results = self.prepare_classification_results(results)
+            if len(previous_results) != 0:
+                is_stop_reached = self.check_stop_sign(current_results, previous_results, 0.1)
+
+            if is_stop_reached:
+                break
+            previous_results = current_results
         return results
 
     def random_walk_recursive(self, network, unknown_nodes, founded_nodes, start_node, current_node, visited, current_layer, depth, counter):
@@ -78,6 +87,20 @@ class RwpIterative():
                     visited = self.update_visited_before_transition(current_layer, edge, visited)
                     return self.random_walk_recursive(network, unknown_nodes, founded_nodes, start_node, edge[1], visited, current_layer, depth-1, counter+1)
 
+
+
+    def check_stop_sign(self, current_results, previous_results, threshold):
+        changed = 0.0
+        all = float(len(current_results))
+        are_none_results = False
+        for node in current_results.keys():
+            if (current_results[node] != previous_results[node]):
+                changed += 1.0
+            if (current_results[node] == None):
+                are_none_results = True
+                break
+        ratio = changed/all
+        return  ratio < threshold and not are_none_results
 
     def collect_temp_information(self, new_class_with_counter, res_node, temp_classes_for_node):
         res_node.append(new_class_with_counter)
