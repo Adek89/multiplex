@@ -71,24 +71,18 @@ cdef class CrossValMethods:
             
         return fold_sum
 
-    def prepare_sum_for_fusion_mean(self, nrOfNodes):
-        sum_for_fusion_mean = []
-        for j in xrange(0, nrOfNodes, 1):
-            sum_for_fusion_mean.append([j, 0, 0])
-        return sum_for_fusion_mean
-
     cpdef multiLayerCrossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
                      np.ndarray defaultClassMat, int lbpSteps, float lbpThreshold, k_fold_cross_validation,
                      separationMethod, lbp, list layerWeights, isRandomWalk, float percentOfKnownNodes, prepareAdjMat, prepareLayers, prepareClassMat):
         cdef int fold_number = 1
         cdef list fold_sum = []
-        cdef list adjTransMatrixes = []
         cdef int i
         for i in range(1,nrOfNodes+1,1):
             fold_sum.append([i,0,0])
             
         cdef np.ndarray fuz_mean_occ = np.array([])
         prepareLayers(graph, layerWeights, defaultClassMat)
+        cdef list adjTransMatrixes = []
         cdef list training
         cdef list validation
         cdef list results_agregator
@@ -106,8 +100,10 @@ cdef class CrossValMethods:
         cdef np.float64_t sumElement
         cdef rows
         cdef repmatInput
+        cdef list rwp_result = []
         fusion_mean = self.prepare_sum_for_fusion_mean(nrOfNodes)
         for training, validation in k_fold_cross_validation(items, numberOfFolds, percentOfKnownNodes):
+            adjTransMatrixes = []
             print 'Multilayer method'
             print "-----FOLD %d-----" % fold_number
             print "Training: "
@@ -140,7 +136,6 @@ cdef class CrossValMethods:
                     results = []
                     adjMat = prepareAdjMat(adjMat,graph)
                     adjTransMatrixes.append(adjMat)
-                    
                     class_mat = lbp(adjTransMatrixes, results, class_Mat, training, lbpSteps, lbpThreshold)
                 else:    
                     #-------------LBP----------------------
@@ -186,26 +181,38 @@ cdef class CrossValMethods:
             # print sum
 
             fusion_mean = self.prepare_fusion_mean(results_agregator, separationMethod, layerWeights, nrOfNodes, fusion_mean, validation)
+            rwp_result = self.collect_rwp_lbp_result(isRandomWalk, layerWeights, results_agregator, rwp_result, validation)
             fold_number = fold_number + 1
+        print 'Full rwp_result : ' + str(rwp_result)
         print 'Variable full fusion_mean: ' + str(fusion_mean)
         print 'Variable full fold_sum: ' + str(fold_sum)
-        return fold_sum, fusion_mean
+        return fold_sum, fusion_mean, rwp_result
+
+
+    def collect_rwp_lbp_result(self, isRandomWalk, layerWeights, results_agregator, rwp_result, validation):
+        print 'rwp_result on start: ' + str(rwp_result)
+        print 'result_aggregator: ' + str(results_agregator)
+        if (isRandomWalk):
+            nr_of_layers = len(layerWeights)
+            last_result = results_agregator[nr_of_layers - 1]
+            last_result = filter(lambda res: res[0] in validation, last_result)
+            last_result = sorted(last_result, key=lambda row: row[0])
+            rwp_result = rwp_result + last_result
+        rwp_result = sorted(rwp_result, key=lambda row : row[0])
+        print 'rwp_result for fold: ' + str(rwp_result)
+        return rwp_result
 
     def prepare_fusion_mean(self, results_agregator, separation_method, layer_weights, nr_of_nodes, fusion_mean, validation):
         i = 0
         sum_of_classes = {}
-        print 'Start fusion mean: ' + str(fusion_mean)
         for results_on_layer in results_agregator:
             layer = layer_weights[i]
             results_on_layer = filter(lambda res : res[0] in validation, results_on_layer)
             results_on_layer = sorted(results_on_layer, key=lambda row : row[0])
-            print 'Results on layer variable: ' + str(results_on_layer)
 
             sum_of_classes = self.analyse_result_in_layer(results_on_layer, sum_of_classes)
             i += 1
-            print 'Variable sum_of_classes: ' + str(sum_of_classes) + ' after layer: ' + str(layer)
         fusion_mean = self.execute_fusion_mean(fusion_mean, layer_weights, sum_of_classes)
-        print 'Variable fusion_mean: ' + str(fusion_mean)
         return fusion_mean
 
     def collect_result(self, node_id, sum_of_classes, class_to_add):
@@ -237,3 +244,9 @@ cdef class CrossValMethods:
                 fusion_mean[node_id][1] = 0
                 fusion_mean[node_id][2] = 1
         return fusion_mean
+
+    def prepare_sum_for_fusion_mean(self, nrOfNodes):
+        sum_for_fusion_mean = []
+        for j in xrange(0, nrOfNodes, 1):
+            sum_for_fusion_mean.append([j, 0, 0])
+        return sum_for_fusion_mean

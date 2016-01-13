@@ -48,7 +48,7 @@ cdef class Multilayer_LBP:
         cdef common = commonUtils.CommonUtils()
         x_val_methods = XValMethods(graph)
         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
-        fold_sum, fusion_mean = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
+        fold_sum, fusion_mean, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
                        x_val, tools.giveCorrectData,
                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)

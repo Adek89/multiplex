@@ -39,15 +39,16 @@ class RwpLBP:
         common = CommonUtils()
         x_val_methods = XValMethods(graph)
         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
-        fold_sum, fusion_mean = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
+        fold_sum, fusion_mean, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
                        defaultClassMat, lbpMaxSteps, lbpThreshold,
                        x_val, tools.giveCorrectData,
                        self.propagation, layerWeights, method.multiLayerCrossVal, True, percentOfKnownNodes, self.prepare_adjetency_matrix, tools.separate_layer, tools.prepareClassMatForFold)
         
         foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)
         fusionMeanEstimated = tools.prepareToEvaluate(fusion_mean, nrOfClasses)
+        rwpEstimated = tools.prepareToEvaluate(rwp, nrOfClasses)
         
-        return foldSumEstimated, fusionMeanEstimated
+        return foldSumEstimated, fusionMeanEstimated, rwpEstimated
     
 
     def propagation(self, adjTransMatrixes, results, classMat, training, lbpMaxSteps, lbpThreshold):

@@ -81,6 +81,7 @@ class DecisionFusion:
     method = 0
     fun = 0
     terms_map = dict([])
+    rwpResult = []
 
     def __init__(self, method, fold, fun):
         if method == 1:
@@ -155,7 +156,7 @@ class DecisionFusion:
     def rwpLBP(self):
         rwpLBP = RwpLBP()
         nrOfNodes = self.realGraph.nodes().__len__()
-        self.realRWPFoldSum, self.realRWPFusionMean = rwpLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses,
+        self.realRWPFoldSum, self.realRWPFusionMean, self.rwpResult = rwpLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses,
                                                                    nrOfNodes, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS,
                                                                    self.percentOfTrainignNodes, self.method)
 
@@ -176,6 +177,7 @@ class DecisionFusion:
         fMacroLBPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realLBPFusionMean, self.realNrOfClasses)
         fMacroRWPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realRWPFoldSum, self.realNrOfClasses)
         fMacroRWPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realRWPFusionMean, self.realNrOfClasses)
+        fMacroRWPReal = ev.calculateFMacro(self.realLabels, self.rwpResult, self.realNrOfClasses)
         fMacroRWCRealResult = ev.calculateFMacro(self.realLabels, self.realRwcResult, self.realNrOfClasses)
         
         with open(self.file_path + 'real.csv', 'ab') as csvfile:
@@ -184,7 +186,7 @@ class DecisionFusion:
             writer.writerow([
                 self.realGraph.nodes().__len__(),self.fun, self.terms_map[self.fun], self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
                             fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMacroRWPRealFoldSum,
-                            fMacroRWPRealFusionMean, fMacroRWCRealResult])
+                            fMacroRWPRealFusionMean, fMacroRWPReal, fMacroRWCRealResult])
         
     def prepareOriginalLabels(self, defaultClassMat, nrOfClasses):
         classMatForEv = []

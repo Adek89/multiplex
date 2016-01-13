@@ -75,6 +75,7 @@ class DecisionFusion:
     counter = 0
     method = 0
     syntheticRwcResult = 0.0
+    rwpResult = []
 
     def __init__(self, nrOfNodes, nrOfGroups, grLabelHomogenity, prEdgeInGroup, prEdgeBetweenGroups, nrOfLayers, percentOfTrainignNodes, method, counter):
         self.NUMBER_OF_NODES = nrOfNodes
@@ -175,7 +176,7 @@ class DecisionFusion:
         
     def rwpLBP(self):
         rwpLBP = RwpLBP()
-        self.syntheticRWPFoldSum, self.syntheticRWPFusionMean = rwpLBP.start(self.synthetic, self.syntheticClassMat, self.syntheticNrOfClasses, self.NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.LAYERS_WEIGHTS, self.percentOfTrainignNodes, self.method)
+        self.syntheticRWPFoldSum, self.syntheticRWPFusionMean, self.rwpResult = rwpLBP.start(self.synthetic, self.syntheticClassMat, self.syntheticNrOfClasses, self.NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.LAYERS_WEIGHTS, self.percentOfTrainignNodes, self.method)
 #         self.realRWPFoldSum, self.realRWPFusionMean = rwpLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses, self.REAL_NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS)
 
     def rwc(self):
@@ -194,7 +195,9 @@ class DecisionFusion:
         fMacroLBPSyntheticFusionMean = ev.calculateFMacro(self.syntheticLabels, self.syntheticLBPFusionMean, self.syntheticNrOfClasses)
         fMacroRWPSyntheticFoldSum = ev.calculateFMacro(self.syntheticLabels, self.syntheticRWPFoldSum, self.syntheticNrOfClasses)
         fMacroRWPSyntheticFusionMean = ev.calculateFMacro(self.syntheticLabels, self.syntheticRWPFusionMean, self.syntheticNrOfClasses)
+        fMacroRWPSyntheticResult = ev.calculateFMacro(self.syntheticLabels, self.rwpResult, self.syntheticNrOfClasses)
         fMacroRWCSyntheticResult = ev.calculateFMacro(self.syntheticLabels, self.syntheticRwcResult, self.syntheticNrOfClasses)
+
 #         fMacroFlatReal = ev.calculateFMacro(self.realLabels, self.realFlatResult, self.realNrOfClasses)
 #         fMacroLBPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realLBPFoldSum, self.realNrOfClasses)
 #         fMacroLBPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realLBPFusionMean, self.realNrOfClasses)
@@ -208,7 +211,7 @@ class DecisionFusion:
                               self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP, self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
                                 self.nrOfLayers, self.method, self.NUMBER_OF_FOLDS, self.percentOfTrainignNodes,
                             fMacroFlatSynthetic, fMacroLBPSyntheticFoldSum, fMacroLBPSyntheticFusionMean, fMacroRWPSyntheticFoldSum,
-                            fMacroRWPSyntheticFusionMean, fMacroRWCSyntheticResult])
+                            fMacroRWPSyntheticFusionMean, fMacroRWPSyntheticResult, fMacroRWCSyntheticResult])
         
     def prepareOriginalLabels(self, defaultClassMat, nrOfClasses):
         classMatForEv = []
