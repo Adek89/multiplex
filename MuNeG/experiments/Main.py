@@ -5,6 +5,7 @@ Created on 18 mar 2014
 '''
 import time
 import sys
+from multiprocessing import Process
 sys.path.append('/home/apopiel/MuNeG')
 from experiments.DecisionFusion import DecisionFusion
 if __name__ == '__main__':
@@ -22,15 +23,16 @@ if __name__ == '__main__':
     #                 for probBetween in probBetweenGroups:
     nodes = int(sys.argv[1])
     size = int(sys.argv[2])
-    label = float(sys.argv[3])
-    probIn = int(sys.argv[4])
-    probBetween = float(sys.argv[5])
-    nrOfLayers = int(sys.argv[6])
-    percentOfTrainingNodes = float(sys.argv[7])
-    method =int(sys.argv[8])
-    counter = int(sys.argv[9])
-
-
-    df = DecisionFusion(nodes, size, label, probIn, probBetween, nrOfLayers, percentOfTrainingNodes, method, counter)
-    df.processExperiment()
+    for label in [5]:
+        for probIn in [5]:
+            for probBetween in [0.1]:
+                for nrOfLayers in [2]:
+                    processes = []
+                    for fold in [2, 3, 4, 5, 10, 20]:
+                        df = DecisionFusion(nodes, size, label, probIn, probBetween, nrOfLayers, fold)
+                        p = Process(target=df.processExperiment)
+                        p.start()
+                        processes.append(p)
+                    for p in processes:
+                        p.join()
     print("--- %s seconds ---" % str(time.time() - start_time))

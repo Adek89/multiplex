@@ -12,7 +12,7 @@ class XValMethods():
     def __init__(self, graph):
         self.graph = graph
 
-    def stratifies_x_val(self, nodes, nr_of_folds, percent_of_known_nodes=0.0):
+    def stratifies_x_val(self, nodes, nr_of_folds):
         sorted_nodes = sorted(nodes, key= lambda node: node.id)
         y = [node.label for node in sorted_nodes]
         str = StratifiedKFold(y, n_folds=nr_of_folds)

@@ -12,8 +12,13 @@ from graph.method.lbp.FlatLBP import FlatLBP
 from graph.method.lbp.RwpLBP import RwpLBP
 from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.method.random_walk.RandomWalkMethods import RandomWalkMethods
+import graph.reader.syntethic.MuNeGGraphReader as reader
 import csv
 import time
+import math
+
+
+
 class DecisionFusion:
     
     #Parameters
@@ -38,7 +43,7 @@ class DecisionFusion:
     training = []
     validation = []
     
-    FILE_PATH = ""
+    FILE_PATH = "..\\results\\synthetic\\"
     
     
     nu = NetworkUtils()
@@ -73,63 +78,35 @@ class DecisionFusion:
     nrOfLayers = 0
     percentOfTrainignNodes = 0.0
     counter = 0
-    method = 0
     syntheticRwcResult = 0.0
     rwpResult = []
+    method = 1
 
-    def __init__(self, nrOfNodes, nrOfGroups, grLabelHomogenity, prEdgeInGroup, prEdgeBetweenGroups, nrOfLayers, percentOfTrainignNodes, method, counter):
+    def __init__(self, nrOfNodes, AVG_GROUP_SIZE, grLabelHomogenity, prEdgeInGroup, prEdgeBetweenGroups, nrOfLayers, folds):
         self.NUMBER_OF_NODES = nrOfNodes
-        self.NUMBER_OF_GROUPS = nrOfGroups
-        self.prepareNumberOfGroups(nrOfNodes, nrOfGroups)
+        self.AVERAGE_GROUP_SIZE = AVG_GROUP_SIZE
         self.GROUP_LABEL_HOMOGENITY = grLabelHomogenity
         self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP = prEdgeInGroup
         self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS = prEdgeBetweenGroups
         self.initLayers(nrOfLayers)
         self.nrOfLayers = nrOfLayers
-        self.method = method
-        self.counter = counter
-        if method == 1:
-            self.NUMBER_OF_FOLDS = percentOfTrainignNodes
-        else:
-            self.percentOfTrainignNodes = percentOfTrainignNodes
+        self.NUMBER_OF_FOLDS = folds
 
     def initLayers(self, nrOfLayers):
+        self.LAYERS_WEIGHTS = []
+        self.LAYERS_NAME = []
         for i in xrange(0, nrOfLayers):
             self.LAYERS_WEIGHTS.append(i + 1)
             self.LAYERS_NAME.append("L"+str(i+1))
-
-
-    def prepareNumberOfGroups(self, nrOfNodes, nrOfGroups):
-        while True:
-            dividedInt = nrOfNodes % nrOfGroups
-            if (not dividedInt == 0):
-                nrOfNodes = nrOfNodes + 1
-            else: 
-                break
-        self.NUMBER_OF_NODES = nrOfNodes
-        self.AVERAGE_GROUP_SIZE = nrOfNodes / nrOfGroups
         
     def processExperiment(self):
         self.generateSyntheticData()
         self.preprocessing()
-        for i in range (0, 10):
-            try:
-                self.flatLBP()
-                self.multiLayerLBP()
-                self.rwpLBP()
-                self.rwc()
-                self.evaluation()
-            except IndexError, ValueError:
-                self.generateSyntheticData()
-                continue
-            break
-        if (i == 10):
-            with open(self.FILE_PATH, 'ab') as csvfile:
-                writer = csv.writer(csvfile)
-        
-                writer.writerow([self.NUMBER_OF_NODES, self.NUMBER_OF_GROUPS, self.GROUP_LABEL_HOMOGENITY,
-                              self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP, self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
-                            0.0, 0.0, 0.0, 0.0, 0.0])
+        self.flatLBP()
+        self.multiLayerLBP()
+        self.rwpLBP()
+        self.rwc()
+        self.evaluation()
         
     '''
     Prepare data
@@ -137,13 +114,28 @@ class DecisionFusion:
     def readRealData(self):
         reader = ExcelReader()
         self.realGraph = reader.read('acta_vir')
-        
+
+    def build_file_name(self):
+        homogenity = self.GROUP_LABEL_HOMOGENITY if self.GROUP_LABEL_HOMOGENITY in [5.5, 6.5, 7.5, 8.5, 9.5] else int(math.floor(self.GROUP_LABEL_HOMOGENITY))
+        group = int(self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP )
+        between_other_groups = self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS if self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS in [0.1, 0.5] else int(self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS)
+        nodes = int(round(float(self.NUMBER_OF_NODES) / 100.0) * 100)
+        return 'muneg_' + str(nodes) + '_' + str(self.AVERAGE_GROUP_SIZE) + '_' + str(
+            homogenity) + '_' + str(group) + '_' + str(
+            between_other_groups) + '_' + str(self.nrOfLayers) + '.gml'
+
+    def build_output_file_name(self):
+        homogenity = self.GROUP_LABEL_HOMOGENITY if self.GROUP_LABEL_HOMOGENITY in [5.5, 6.5, 7.5, 8.5, 9.5] else int(math.floor(self.GROUP_LABEL_HOMOGENITY))
+        group = int(self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP )
+        between_other_groups = self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS if self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS in [0.1, 0.5] else int(self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS)
+        nodes = int(round(float(self.NUMBER_OF_NODES) / 100.0) * 100)
+        return 'synt_' + str(nodes) + '_' + str(self.AVERAGE_GROUP_SIZE) + '_' + str(
+            homogenity) + '_' + str(group) + '_' + str(
+            between_other_groups) + '_' + str(self.nrOfLayers) + '_' + str(self.NUMBER_OF_FOLDS) + '.csv'
+
     def generateSyntheticData(self):
         start_time = time.time()
-        self.gg = GraphGenerator(self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.LAYERS_WEIGHTS,
-                                 self.GROUP_LABEL_HOMOGENITY, self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP,
-                                 self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS, self.LAYERS_NAME)
-        self.synthetic = self.gg.generate()
+        self.synthetic = reader.read_from_gml('..\\results', self.build_file_name(),)
         print("---generation time: %s seconds ---" % str(time.time() - start_time))
         
     '''
@@ -203,12 +195,12 @@ class DecisionFusion:
 #         fMacroRWPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realRWPFoldSum, self.realNrOfClasses)
 #         fMacroRWPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realRWPFusionMean, self.realNrOfClasses)
         
-        with open(self.FILE_PATH + str(self.counter) + 'synth.csv', 'ab') as csvfile:
+        with open(self.FILE_PATH + self.build_output_file_name(),'wb') as csvfile:
             writer = csv.writer(csvfile)
         
-            writer.writerow([self.NUMBER_OF_NODES, self.NUMBER_OF_GROUPS, self.GROUP_LABEL_HOMOGENITY,
+            writer.writerow([self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.GROUP_LABEL_HOMOGENITY,
                               self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP, self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
-                                self.nrOfLayers, self.method, self.NUMBER_OF_FOLDS, self.percentOfTrainignNodes,
+                                self.nrOfLayers, self.method, self.NUMBER_OF_FOLDS,
                             fMacroFlatSynthetic, fMacroLBPSyntheticFoldSum, fMacroLBPSyntheticFusionMean, fMacroRWPSyntheticFoldSum,
                             fMacroRWPSyntheticFusionMean, fMacroRWPSyntheticResult, fMacroRWCSyntheticResult])
         

@@ -8,10 +8,9 @@ cdef class CommonUtils:
         pass
 
     #cross validation random fold set generator
-    def k_fold_cross_validation(self, list items, int k, float percentOfKnownNodes, randomize=False):
-        print ('Percent of known nodes %s' % percentOfKnownNodes)
-        cdef float trainignFoldsFloat = k*percentOfKnownNodes
-        cdef int trainignFolds = int(trainignFoldsFloat)
+    def k_fold_cross_validation(self, list items, int k, randomize=False):
+        print ('Folds %s' % k)
+        cdef int trainignFolds = int(k-1)
         cdef int validationFolds = k-trainignFolds
         print('Nr of training folds %s:' % trainignFolds)
         print('Nr of validation folds %s:' % validationFolds)
@@ -68,7 +67,7 @@ cdef class CommonUtils:
                 classMat[i] = row
 
         sortedNodes = sorted(graph.nodes())
-        adjMat = nx.adjacency_matrix(graph, sortedNodes, weight=None)
+        adjMat = nx.adjacency_matrix(graph, sortedNodes)
 
         return classMat, adjMat, sortedNodes
 

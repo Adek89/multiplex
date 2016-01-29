@@ -38,3 +38,6 @@ class NetworkUtils:
         for node in nodes:
             labelSet.add(node.label)
         return labelSet.__len__()
+
+    def sort_sum(self, sum):
+        return sorted(sum, key=lambda elem : elem[0])

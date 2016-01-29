@@ -91,7 +91,7 @@ cdef class GraphGenerator:
             else: 
                 self.addNodeToCorrectCollection(10-self.grLabelHomogenity, self.grLabelHomogenity, group, i, self.blues)
             j = j + 1
-            if (j > 9 or j > self.ng-1):
+            if (j > self.ng-1):
                 j = 0
                 
     cdef void addNodeToCorrectCollection(self, int lowerWeight, int higherWeight, g.Group group, int i, list nodeCollection):
@@ -129,7 +129,6 @@ cdef class GraphGenerator:
                     else:
                         weights = [10-probOthers, probOthers]
                         isEdgeExist = self.weighted_choice(weights)
-                    print "edge exists: " + str(isEdgeExist)
                     if (isEdgeExist == 1):
                         self.graph.add_edge(node1, node2, weight=currentLayerWeight, layer=currentLayerName, conWeight = 1)  #conWeight - waga polaczenia
                         

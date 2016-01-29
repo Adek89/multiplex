@@ -5,6 +5,7 @@ Created on 09.04.2014
 '''
 cimport cython
 from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
+from graph.method.lbp.NetworkUtils import NetworkUtils
 import numpy as np
 cimport numpy as np
 DTYPE=np.float64
@@ -25,9 +26,10 @@ cdef class CrossValMethods:
                       defaultClassMat, int lbpSteps, float lbpThreshold, object k_fold_cross_validation,
                       object separationMethod, object lbp, list layerWeights, isRandomWalk, float percentOfKnownNodes, object adjMatPrep,
                       object prepareLayers, object prepareClassMat):
+        utils = NetworkUtils()
         cdef list fold_sum = []
         cdef int i
-        for i in range(1,nrOfNodes+1,1):
+        for i in range(0,nrOfNodes,1):
             fold_sum.append([i,0,0])
         cdef int fold_number = 1
         cdef list training
@@ -36,7 +38,7 @@ cdef class CrossValMethods:
         cdef int num_of_res
         cdef list sum
         cdef int iter
-        for training, validation in k_fold_cross_validation(items, numberOfFolds, percentOfKnownNodes):
+        for training, validation in k_fold_cross_validation(items, numberOfFolds):
             print "-----FOLD %d-----" % fold_number
             print "Training: "
             print training
@@ -52,23 +54,23 @@ cdef class CrossValMethods:
             print class_Mat
                 #-------------LBP----------------------
             class_mat = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
+            print "class_mat after method: "
+            print class_mat
             #create zero result matrix
             sum = []
-            iter = 0
             for node in nodes:
                 if (node.id in validation):
-                    sum.append([node.id,class_mat[iter,0],class_mat[iter,1]])
+                    sum.append([node.id,class_mat[node.id,0],class_mat[node.id,1]])
                 else:  
-                    sum.append([node.id,0,0])  
-                iter+=1
-            
+                    sum.append([node.id,0,0])
+            sorted_sum = utils.sort_sum(sum)
             #fusion - sum
             for i in range(0,nrOfNodes,1):
-                fold_sum[i][1]+=sum[i][1]
-                fold_sum[i][2]+=sum[i][2]
+                fold_sum[i][1]+=sorted_sum[i][1]
+                fold_sum[i][2]+=sorted_sum[i][2]
             # print sum
             fold_number = fold_number + 1
-            
+            print 'Fold sum ' + str(fold_sum) + 'for fold: ' + str(fold_number)
         return fold_sum
 
     cpdef multiLayerCrossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
@@ -102,7 +104,7 @@ cdef class CrossValMethods:
         cdef repmatInput
         cdef list rwp_result = []
         fusion_mean = self.prepare_sum_for_fusion_mean(nrOfNodes)
-        for training, validation in k_fold_cross_validation(items, numberOfFolds, percentOfKnownNodes):
+        for training, validation in k_fold_cross_validation(items, numberOfFolds):
             adjTransMatrixes = []
             print 'Multilayer method'
             print "-----FOLD %d-----" % fold_number
@@ -140,16 +142,20 @@ cdef class CrossValMethods:
                 else:    
                     #-------------LBP----------------------
                     class_mat = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
-                    
+                print 'Class mat after execution: '
+                print class_mat
                 res = []
                 iter = 0
                 #assign results to nodes
+                print 'Nodes: ' + str(nodes)
                 for node in nodes:
                     res.append([node,class_mat[iter,0],class_mat[iter,1]])
                     iter+=1
                     
                 #assign results to full node list
                 res = np.asarray(sorted(res))
+
+                print 'Res: ' + str(res)
                 full_res = []
                 iter = 0
                 for n in res:
@@ -160,6 +166,7 @@ cdef class CrossValMethods:
                     iter+=1
                     
                 #push out results
+                print 'Full res:' + str(full_res)
                 results_agregator.append(full_res)
                 num_of_res += 1
             

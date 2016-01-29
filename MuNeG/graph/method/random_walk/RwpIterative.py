@@ -48,7 +48,7 @@ class RwpIterative():
             founded_nodes = temp_founded_nodes
             current_results = self.prepare_classification_results(results)
             if len(previous_results) != 0:
-                is_stop_reached = self.check_stop_sign(current_results, previous_results, 0.1)
+                is_stop_reached = self.check_stop_sign(current_results, previous_results, 0.01)
 
             if is_stop_reached:
                 break

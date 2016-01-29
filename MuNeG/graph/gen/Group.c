@@ -525,6 +525,39 @@ static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[], \
 static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
     const char *name, int exact);
 
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name) {
+    PyTypeObject* tp = Py_TYPE(obj);
+    if (likely(tp->tp_getattro))
+        return tp->tp_getattro(obj, attr_name);
+#if PY_MAJOR_VERSION < 3
+    if (likely(tp->tp_getattr))
+        return tp->tp_getattr(obj, PyString_AS_STRING(attr_name));
+#endif
+    return PyObject_GetAttr(obj, attr_name);
+}
+#else
+#define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
+#else
+#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
+#endif
+
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
+#else
+#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
+#endif
+
 typedef struct {
     int code_line;
     PyCodeObject* code_object;
@@ -544,6 +577,8 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
 
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
@@ -562,16 +597,23 @@ int __pyx_module_is_main_graph__gen__Group = 0;
 
 /* Implementation of 'graph.gen.Group' */
 static int __pyx_pf_5graph_3gen_5Group_5Group___cinit__(struct __pyx_obj_5graph_3gen_5Group_Group *__pyx_v_self, PyObject *__pyx_v_types, int __pyx_v_number); /* proto */
+static PyObject *__pyx_pf_5graph_3gen_5Group_5Group_2__str__(struct __pyx_obj_5graph_3gen_5Group_Group *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5graph_3gen_5Group_5Group_5gType___get__(struct __pyx_obj_5graph_3gen_5Group_Group *__pyx_v_self); /* proto */
 static int __pyx_pf_5graph_3gen_5Group_5Group_5gType_2__set__(struct __pyx_obj_5graph_3gen_5Group_Group *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static PyObject *__pyx_pf_5graph_3gen_5Group_5Group_7gNumber___get__(struct __pyx_obj_5graph_3gen_5Group_Group *__pyx_v_self); /* proto */
+static int __pyx_pf_5graph_3gen_5Group_5Group_7gNumber_2__set__(struct __pyx_obj_5graph_3gen_5Group_Group *__pyx_v_self, int __pyx_v_value); /* proto */
 static PyObject *__pyx_tp_new_5graph_3gen_5Group_Group(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static char __pyx_k_[] = " ";
+static char __pyx_k_str[] = "__str__";
 static char __pyx_k_main[] = "__main__";
 static char __pyx_k_test[] = "__test__";
 static char __pyx_k_types[] = "types";
 static char __pyx_k_number[] = "number";
 static char __pyx_k_Created_on_6_lut_2014_author_Ad[] = "\nCreated on 6 lut 2014\n\n@author: Adek\n";
+static PyObject *__pyx_kp_s_;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_number;
+static PyObject *__pyx_n_s_str;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_types;
 
@@ -672,7 +714,7 @@ static int __pyx_pf_5graph_3gen_5Group_5Group___cinit__(struct __pyx_obj_5graph_
  *         self.gType = types
  *         self.gNumber = number             # <<<<<<<<<<<<<<
  * 
- * 
+ *     def __str__(self):
  */
   __pyx_v_self->gNumber = __pyx_v_number;
 
@@ -690,7 +732,109 @@ static int __pyx_pf_5graph_3gen_5Group_5Group___cinit__(struct __pyx_obj_5graph_
   return __pyx_r;
 }
 
-/* "graph\gen\Group.pyx":19
+/* "graph\gen\Group.pyx":17
+ *         self.gNumber = number
+ * 
+ *     def __str__(self):             # <<<<<<<<<<<<<<
+ *         return self.gType.__str__() + ' ' + str(self.gNumber)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5graph_3gen_5Group_5Group_3__str__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5graph_3gen_5Group_5Group_3__str__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5graph_3gen_5Group_5Group_2__str__(((struct __pyx_obj_5graph_3gen_5Group_Group *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5graph_3gen_5Group_5Group_2__str__(struct __pyx_obj_5graph_3gen_5Group_Group *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__str__", 0);
+
+  /* "graph\gen\Group.pyx":18
+ * 
+ *     def __str__(self):
+ *         return self.gType.__str__() + ' ' + str(self.gNumber)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->gType, __pyx_n_s_str); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  if (__pyx_t_3) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  } else {
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_kp_s_); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->gNumber); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)(&PyString_Type))), __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
+  goto __pyx_L0;
+
+  /* "graph\gen\Group.pyx":17
+ *         self.gNumber = number
+ * 
+ *     def __str__(self):             # <<<<<<<<<<<<<<
+ *         return self.gType.__str__() + ' ' + str(self.gNumber)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("graph.gen.Group.Group.__str__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "graph\gen\Group.pyx":22
  * 
  *     property gType:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -716,7 +860,7 @@ static PyObject *__pyx_pf_5graph_3gen_5Group_5Group_5gType___get__(struct __pyx_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "graph\gen\Group.pyx":20
+  /* "graph\gen\Group.pyx":23
  *     property gType:
  *         def __get__(self):
  *           return self.gType             # <<<<<<<<<<<<<<
@@ -728,7 +872,7 @@ static PyObject *__pyx_pf_5graph_3gen_5Group_5Group_5gType___get__(struct __pyx_
   __pyx_r = __pyx_v_self->gType;
   goto __pyx_L0;
 
-  /* "graph\gen\Group.pyx":19
+  /* "graph\gen\Group.pyx":22
  * 
  *     property gType:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -743,11 +887,12 @@ static PyObject *__pyx_pf_5graph_3gen_5Group_5Group_5gType___get__(struct __pyx_
   return __pyx_r;
 }
 
-/* "graph\gen\Group.pyx":21
+/* "graph\gen\Group.pyx":24
  *         def __get__(self):
  *           return self.gType
  *         def __set__(self, str value):             # <<<<<<<<<<<<<<
  *           self.gType = value
+ * 
  */
 
 /* Python wrapper */
@@ -759,7 +904,7 @@ static int __pyx_pw_5graph_3gen_5Group_5Group_5gType_3__set__(PyObject *__pyx_v_
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_value), (&PyString_Type), 1, "value", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_value), (&PyString_Type), 1, "value", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_5graph_3gen_5Group_5Group_5gType_2__set__(((struct __pyx_obj_5graph_3gen_5Group_Group *)__pyx_v_self), ((PyObject*)__pyx_v_value));
 
   /* function exit code */
@@ -776,10 +921,12 @@ static int __pyx_pf_5graph_3gen_5Group_5Group_5gType_2__set__(struct __pyx_obj_5
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "graph\gen\Group.pyx":22
+  /* "graph\gen\Group.pyx":25
  *           return self.gType
  *         def __set__(self, str value):
  *           self.gType = value             # <<<<<<<<<<<<<<
+ * 
+ *     property gNumber:
  */
   __Pyx_INCREF(__pyx_v_value);
   __Pyx_GIVEREF(__pyx_v_value);
@@ -787,11 +934,133 @@ static int __pyx_pf_5graph_3gen_5Group_5Group_5gType_2__set__(struct __pyx_obj_5
   __Pyx_DECREF(__pyx_v_self->gType);
   __pyx_v_self->gType = __pyx_v_value;
 
-  /* "graph\gen\Group.pyx":21
+  /* "graph\gen\Group.pyx":24
  *         def __get__(self):
  *           return self.gType
  *         def __set__(self, str value):             # <<<<<<<<<<<<<<
  *           self.gType = value
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "graph\gen\Group.pyx":28
+ * 
+ *     property gNumber:
+ *         def __get__(self):             # <<<<<<<<<<<<<<
+ *           return self.gNumber
+ *         def __set__(self, int value):
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5graph_3gen_5Group_5Group_7gNumber_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5graph_3gen_5Group_5Group_7gNumber_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5graph_3gen_5Group_5Group_7gNumber___get__(((struct __pyx_obj_5graph_3gen_5Group_Group *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5graph_3gen_5Group_5Group_7gNumber___get__(struct __pyx_obj_5graph_3gen_5Group_Group *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 0);
+
+  /* "graph\gen\Group.pyx":29
+ *     property gNumber:
+ *         def __get__(self):
+ *           return self.gNumber             # <<<<<<<<<<<<<<
+ *         def __set__(self, int value):
+ *           self.gNumber = value
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->gNumber); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "graph\gen\Group.pyx":28
+ * 
+ *     property gNumber:
+ *         def __get__(self):             # <<<<<<<<<<<<<<
+ *           return self.gNumber
+ *         def __set__(self, int value):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("graph.gen.Group.Group.gNumber.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "graph\gen\Group.pyx":30
+ *         def __get__(self):
+ *           return self.gNumber
+ *         def __set__(self, int value):             # <<<<<<<<<<<<<<
+ *           self.gNumber = value
+ */
+
+/* Python wrapper */
+static int __pyx_pw_5graph_3gen_5Group_5Group_7gNumber_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_arg_value); /*proto*/
+static int __pyx_pw_5graph_3gen_5Group_5Group_7gNumber_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_arg_value) {
+  int __pyx_v_value;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  assert(__pyx_arg_value); {
+    __pyx_v_value = __Pyx_PyInt_As_int(__pyx_arg_value); if (unlikely((__pyx_v_value == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 30; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("graph.gen.Group.Group.gNumber.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return -1;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5graph_3gen_5Group_5Group_7gNumber_2__set__(((struct __pyx_obj_5graph_3gen_5Group_Group *)__pyx_v_self), ((int)__pyx_v_value));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_5graph_3gen_5Group_5Group_7gNumber_2__set__(struct __pyx_obj_5graph_3gen_5Group_Group *__pyx_v_self, int __pyx_v_value) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__", 0);
+
+  /* "graph\gen\Group.pyx":31
+ *           return self.gNumber
+ *         def __set__(self, int value):
+ *           self.gNumber = value             # <<<<<<<<<<<<<<
+ */
+  __pyx_v_self->gNumber = __pyx_v_value;
+
+  /* "graph\gen\Group.pyx":30
+ *         def __get__(self):
+ *           return self.gNumber
+ *         def __set__(self, int value):             # <<<<<<<<<<<<<<
+ *           self.gNumber = value
  */
 
   /* function exit code */
@@ -842,12 +1111,27 @@ static int __pyx_setprop_5graph_3gen_5Group_5Group_gType(PyObject *o, PyObject *
   }
 }
 
+static PyObject *__pyx_getprop_5graph_3gen_5Group_5Group_gNumber(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5graph_3gen_5Group_5Group_7gNumber_1__get__(o);
+}
+
+static int __pyx_setprop_5graph_3gen_5Group_5Group_gNumber(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_5graph_3gen_5Group_5Group_7gNumber_3__set__(o, v);
+  }
+  else {
+    PyErr_SetString(PyExc_NotImplementedError, "__del__");
+    return -1;
+  }
+}
+
 static PyMethodDef __pyx_methods_5graph_3gen_5Group_Group[] = {
   {0, 0, 0, 0}
 };
 
 static struct PyGetSetDef __pyx_getsets_5graph_3gen_5Group_Group[] = {
   {(char *)"gType", __pyx_getprop_5graph_3gen_5Group_5Group_gType, __pyx_setprop_5graph_3gen_5Group_5Group_gType, 0, 0},
+  {(char *)"gNumber", __pyx_getprop_5graph_3gen_5Group_5Group_gNumber, __pyx_setprop_5graph_3gen_5Group_5Group_gNumber, 0, 0},
   {0, 0, 0, 0, 0}
 };
 
@@ -871,7 +1155,7 @@ static PyTypeObject __pyx_type_5graph_3gen_5Group_Group = {
   0, /*tp_as_mapping*/
   0, /*tp_hash*/
   0, /*tp_call*/
-  0, /*tp_str*/
+  __pyx_pw_5graph_3gen_5Group_5Group_3__str__, /*tp_str*/
   0, /*tp_getattro*/
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
@@ -931,8 +1215,10 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
+  {&__pyx_kp_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 0},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_number, __pyx_k_number, sizeof(__pyx_k_number), 0, 0, 1, 1},
+  {&__pyx_n_s_str, __pyx_k_str, sizeof(__pyx_k_str), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_types, __pyx_k_types, sizeof(__pyx_k_types), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
@@ -1258,6 +1544,89 @@ static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, in
     return 0;
 }
 
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
+    PyObject *result;
+    ternaryfunc call = func->ob_type->tp_call;
+    if (unlikely(!call))
+        return PyObject_Call(func, arg, kw);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = (*call)(func, arg, kw);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
+    PyObject *self, *result;
+    PyCFunction cfunc;
+    cfunc = PyCFunction_GET_FUNCTION(func);
+    self = PyCFunction_GET_SELF(func);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = cfunc(self, arg);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_New(1);
+    if (unlikely(!args)) return NULL;
+    Py_INCREF(arg);
+    PyTuple_SET_ITEM(args, 0, arg);
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
+}
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || PyObject_TypeCheck(func, __pyx_CyFunctionType))) {
+#else
+    if (likely(PyCFunction_Check(func))) {
+#endif
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
+            return __Pyx_PyObject_CallMethO(func, arg);
+        }
+    }
+    return __Pyx__PyObject_CallOneArg(func, arg);
+}
+#else
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject* args = PyTuple_Pack(1, arg);
+    return (likely(args)) ? __Pyx_PyObject_Call(func, args, NULL) : NULL;
+}
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || PyObject_TypeCheck(func, __pyx_CyFunctionType))) {
+#else
+    if (likely(PyCFunction_Check(func))) {
+#endif
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
+            return __Pyx_PyObject_CallMethO(func, NULL);
+        }
+    }
+    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
+}
+#endif
+
 static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;
     if (end >= 0 && code_line > entries[end].code_line) {
@@ -1531,6 +1900,32 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to int");
     return (int) -1;
+}
+
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+    const int neg_one = (int) -1, const_zero = 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(int) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long long)) {
+            return PyLong_FromUnsignedLongLong((unsigned long long) value);
+        }
+    } else {
+        if (sizeof(int) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(long long)) {
+            return PyLong_FromLongLong((long long) value);
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(int),
+                                     little, !is_unsigned);
+    }
 }
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {

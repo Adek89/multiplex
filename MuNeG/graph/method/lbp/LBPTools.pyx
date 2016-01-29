@@ -48,7 +48,7 @@ cdef class LBPTools:
         cdef list row = []
         cdef int i
         for i in range(0, nrOfClasses):
-            row.append(0.0)
+            row.append(1.0)
         return row
     
     cpdef giveCorrectData(self, int label):
@@ -107,6 +107,7 @@ cdef class LBPTools:
             self.classMats[str(i)] = defaultClassMat.copy()
             self.graphs[str(i)] = nx.Graph()
             self.nodes[str(i)] = set([])
+        print 'Nodes before ' + str(self.nodes)
         cdef int nrOfClasses = self.classMats[str(1)].shape[1]
         cdef int label
         cdef str temp
@@ -125,10 +126,7 @@ cdef class LBPTools:
         for i in layers:
             self.rests[str(i)] = gNodes.difference(self.nodes[str(i)])
         for i in layers:
-            print i
-            print self.nodes[str(i)]
-            print self.rests[str(i)]
-            print self.classMats[str(i)]
+            print 'Nodes for layer ' + str(i) + ':' + str(self.nodes[str(i)])
             self.classMats[str(i)], self.adjMats[str(i)], self.nodes[str(i)] = self.fillEmptyRow(self.graphs[str(i)],
                                                                                                  self.rests[str(i)],
                                                                                                  self.nodes[str(i)],

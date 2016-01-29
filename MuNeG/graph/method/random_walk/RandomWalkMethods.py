@@ -27,7 +27,7 @@ class RandomWalkMethods():
         results_dict = {}
         removed_ids = []
         single_component_ids = []
-        for training, validation in x_val(items, number_of_folds, percent_of_known_nodes):
+        for training, validation in x_val(items, number_of_folds):
             training, validation, removed_ids, single_component_ids = self.find_and_correct_unknown_components(graph, training, validation, removed_ids, single_component_ids)
             self.execute_experiment(common, default_class_mat, graph, layers, method, results_dict, validation)
         self.execute_experiment(common, default_class_mat, graph, layers, method, results_dict, sorted(removed_ids))
