@@ -28,10 +28,8 @@ def perform_statistical_analysis():
     sa.compare_distributions(reduction_data, rwc_iter_data)
 
 
-if __name__ == "__main__":
-    cursor = connect_to_danio_rerio()
-    cursor.execute('select reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last from DanioRerio.daniorerio.results')
-    results = cursor.fetchall()
+def perform_basic_analysis():
+    global reduction_data, rwc_iter_data, fusion_sum_data, fusion_mean_data, rwc_sum_data, rwc_mean_data, rwc_last_data
     reduction_data = sorted(results.ado_results[0])
     rwc_iter_data = sorted(results.ado_results[1])
     fusion_sum_data = sorted(results.ado_results[2])
@@ -39,7 +37,28 @@ if __name__ == "__main__":
     rwc_sum_data = sorted(results.ado_results[4])
     rwc_mean_data = sorted(results.ado_results[5])
     rwc_last_data = sorted(results.ado_results[6])
-
     draw_data()
-
     perform_statistical_analysis()
+
+
+if __name__ == "__main__":
+    cursor = connect_to_danio_rerio()
+    cursor.execute('select reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last from DanioRerio.daniorerio.results')
+    results = cursor.fetchall()
+    perform_basic_analysis()
+
+    cursor.execute('select fold, reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last from DanioRerio.daniorerio.results')
+    results = cursor.fetchall()
+    reduction_dict = {}
+    for row in results:
+        fold = row[0]
+        if reduction_dict.has_key(fold):
+            reduction_list = reduction_dict.get(fold)
+            reduction_list.append(row[1])
+            reduction_dict[fold] = reduction_list
+        else:
+            reduction_list = [row[1]]
+            reduction_dict[fold] = reduction_list
+    sa.draw_boxplot(reduction_dict, [2, 3, 4, 5, 10, 20])
+
+

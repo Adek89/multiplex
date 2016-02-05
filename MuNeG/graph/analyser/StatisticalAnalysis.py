@@ -1,5 +1,7 @@
 import adodbapi as ado
 import numpy as np
+import plotly
+import plotly.graph_objs as go
 import pylab as pl
 import scipy.stats as stats
 
@@ -44,4 +46,16 @@ def draw_plot(data_dict):
         fit =  fit_to_distribution(data[0], data[1])
         pl.plot(data[1], fit, label=data[0])
     pl.legend(loc='upper right')
-    pl.show()
+    pl.show(block=False)
+
+def draw_boxplot(result_dict, folds):
+    data = []
+    for fold in folds:
+        trace = go.Box(
+        y=result_dict[fold],
+        name=str(fold),
+        boxmean=True
+    )
+        data.append(trace)
+    plot_url = plotly.offline.plot(data, filename='box-plot.html')
+    pass
