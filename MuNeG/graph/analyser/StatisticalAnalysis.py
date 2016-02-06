@@ -48,14 +48,52 @@ def draw_plot(data_dict):
     pl.legend(loc='upper right')
     pl.show(block=False)
 
-def draw_boxplot(result_dict, folds):
+def draw_boxplot_for_folds(result_dict, folds, names):
     data = []
     for fold in folds:
         trace = go.Box(
         y=result_dict[fold],
-        name=str(fold),
-        boxmean=True
+        name=names[fold],
+        boxmean=True,
+        boxpoints='all'
     )
         data.append(trace)
     plot_url = plotly.offline.plot(data, filename='box-plot.html')
-    pass
+
+def draw_boxplots_for_folds(dict1, dict2, folds, names):
+    x = []
+    y1 = []
+    y2 = []
+    for fold in folds:
+        for res1, res2 in zip(dict1[fold], dict2[fold]):
+            x.append(names[fold])
+            y1.append(res1)
+            y2.append(res2)
+    trace0 = go.Box(
+    y=y1,
+    x=x,
+    name='reduction',
+    marker=dict(
+        color='#3D9970'
+    ),
+    boxpoints=False
+    )
+    trace1 = go.Box(
+    y=y2,
+    x=x,
+    name='rwc_iter',
+    marker=dict(
+        color='#FF4136'
+    ),
+    boxpoints=False
+    )
+    data = [trace0, trace1]
+    layout = go.Layout(
+    yaxis=dict(
+        title='two methods',
+        zeroline=False
+    ),
+    boxmode='group'
+    )
+    fig = go.Figure(data=data, layout=layout)
+    plot_url = plotly.offline.plot(fig, filename='box-grouped.html')

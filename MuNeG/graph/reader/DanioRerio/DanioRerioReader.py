@@ -1,10 +1,10 @@
 __author__ = 'Adrian'
 import os
 import tokenize as token
+
 import networkx as nx
 
 from graph.reader.DanioRerio.DanioRerioNode import DanioRerioNode
-
 
 PATH_TO_NETWORK = '..\\..\\..\\dataset\\DanioRerio\\edge_list_danioRerio_layer%s.txt'
 PATH_TO_NODES = '..\\..\\..\\dataset\\DanioRerio\\danioRerio_layout.txt'
@@ -104,6 +104,16 @@ class DanioRerioReader():
                     map.update({fun : count + 1})
         return map
 
-
+    def calcuclate_homogenity(self):
+        results = []
+        for node in self.graph.nodes():
+            neighbors = nx.neighbors(self.graph, node)
+            summ = 0
+            for n in neighbors:
+                if node.label == n.label:
+                    summ = summ + 1
+            results.append(float(summ)/float(len(neighbors)))
+        homogenity = float(sum(results))/float(len(self.graph.nodes()))
+        return homogenity
 
 

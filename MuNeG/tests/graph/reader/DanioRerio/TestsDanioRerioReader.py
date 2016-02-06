@@ -1,6 +1,8 @@
 __author__ = 'Adrian'
 import unittest
+
 from graph.reader.DanioRerio.DanioRerioReader import DanioRerioReader
+
 #@Before
 reader = DanioRerioReader()
 reader.read()
@@ -34,5 +36,9 @@ class TestsDanioRerioReader(unittest.TestCase):
             if node.label == 1:
                 i = i + 1
         assert i == 53
+
+    def test_calculte_homogenity(self):
+        reader.assign_labels('GO:0005634')
+        reader.calcuclate_homogenity()
 
 
