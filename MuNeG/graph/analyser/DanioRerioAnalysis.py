@@ -82,6 +82,35 @@ def qty_analysis():
     sa.draw_boxplots_for_folds(reduction_dict, rwc_iter_dict, experiment_values, names)
 
 
+def homogenity_analysis():
+    reader = drr.DanioRerioReader()
+    homogenity_dict = {}
+    reduction_dict = {}
+    rwc_iter_dict = {}
+    for row in results:
+        fun = row[0]
+        if not homogenity_dict.has_key(fun):
+            reader.read(fun)
+            homogenity_dict.update({fun: reader.calcuclate_homogenity()})
+        reduction_dict = build_dicts(homogenity_dict[fun], row[1], reduction_dict)
+        rwc_iter_dict = build_dicts(homogenity_dict[fun], row[2], rwc_iter_dict)
+    x = []
+    reduction_list = []
+    rwc_iter_list = []
+    for item in sorted(reduction_dict.items()):
+        x.append(item[0])
+        # uncomment if you one to check for which fun is gomogenity calculated
+        # for key, value in homogenity_dict.iteritems():
+        #     if value == item[0]:
+        #         x.append(key)
+        #         break
+        reduction_list.append(float(sum(item[1])) / float(len(item[1])))
+
+        values_for_homogenity = rwc_iter_dict[item[0]]
+        rwc_iter_list.append(float(sum(values_for_homogenity)) / float(len(values_for_homogenity)))
+    sa.draw_line_chart(x, reduction_list, rwc_iter_list)
+
+
 if __name__ == "__main__":
     cursor = connect_to_danio_rerio()
     cursor.execute('select reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last from DanioRerio.daniorerio.results')
@@ -101,15 +130,4 @@ if __name__ == "__main__":
     cursor.execute('select fun, reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last'
                    ' from DanioRerio.daniorerio.results ')
     results = cursor.fetchall()
-    reader = drr.DanioRerioReader()
-    homogenity_dict = {}
-    reduction_dict = {}
-    rwc_iter_dict = {}
-    for row in results:
-        fun = row[0]
-        if not homogenity_dict.has_key(fun):
-            reader.read(fun)
-            homogenity_dict.update({fun : reader.calcuclate_homogenity()})
-        reduction_dict = build_dicts(homogenity_dict[fun], row[1], reduction_dict)
-        rwc_iter_dict = build_dicts(homogenity_dict[fun], row[2], rwc_iter_dict)
-    pass
+    homogenity_analysis()

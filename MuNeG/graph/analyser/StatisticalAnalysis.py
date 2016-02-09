@@ -97,3 +97,27 @@ def draw_boxplots_for_folds(dict1, dict2, folds, names):
     )
     fig = go.Figure(data=data, layout=layout)
     plot_url = plotly.offline.plot(fig, filename='box-grouped.html')
+
+def draw_line_chart(data_x, data_1, data_2):
+    # Create a trace
+    trace0 = go.Scatter(
+        x = data_x,
+        y = data_1,
+        mode='lines+markers',
+        line=dict(
+            shape='spline'
+        )
+    )
+    trace1 = go.Scatter(
+        x = data_x,
+        y = data_2,
+        mode='lines+markers',
+        line=dict(
+            shape='spline'
+        )
+    )
+
+    data = [trace0, trace1]
+
+    # Plot and embed in ipython notebook!
+    plotly.offline.plot(data, filename='basic-line.html')

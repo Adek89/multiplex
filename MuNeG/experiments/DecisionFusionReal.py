@@ -3,21 +3,19 @@ Created on 13.03.2014
 
 @author: apopiel
 '''
-import networkx as nx
 import csv
-import time
-from graph.reader.ExcelReader import ExcelReader
-from graph.gen.GraphGenerator import GraphGenerator
+
+import networkx as nx
+
+from graph.evaluation.EvaluationTools import EvaluationTools
+from graph.method.lbp.FlatLBP import FlatLBP
 from graph.method.lbp.Multilayer_LBP import Multilayer_LBP
 from graph.method.lbp.NetworkUtils import NetworkUtils
-from graph.method.lbp.FlatLBP import FlatLBP
 from graph.method.lbp.RwpLBP import RwpLBP
-from graph.evaluation.EvaluationTools import EvaluationTools
-from graph.reader.DanioRerio.DanioRerioReader import DanioRerioReader
-from graph.method.ensamble.EnsambleLearning import EnsambleLearning
-from graph.analyser.GraphAnalyser import GraphAnalyser
-import matplotlib.pyplot as plt
 from graph.method.random_walk.RandomWalkMethods import RandomWalkMethods
+from graph.reader.DanioRerio.DanioRerioReader import DanioRerioReader
+
+
 class DecisionFusion:
     
     #Parameters
