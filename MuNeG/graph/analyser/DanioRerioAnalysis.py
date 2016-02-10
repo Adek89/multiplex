@@ -62,8 +62,8 @@ def folds_analysis():
         rwc_iter_dict = build_dicts(fold, row[2], rwc_iter_dict)
     experiment_folds = [2, 3, 4, 5, 10, 20]
     fold_names = {2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 10: 'Ten', 20: 'Twenty'}
-    sa.draw_boxplot_for_folds(reduction_dict, experiment_folds, fold_names)
-    sa.draw_boxplots_for_folds(reduction_dict, rwc_iter_dict, experiment_folds, fold_names)
+    sa.draw_boxplot_for_folds(reduction_dict, experiment_folds, fold_names, 'fold_box_plot.html')
+    sa.draw_boxplots_for_folds(reduction_dict, rwc_iter_dict, experiment_folds, fold_names, 'fold_box_plots.html')
 
 
 def qty_analysis():
@@ -78,8 +78,8 @@ def qty_analysis():
     for qty in reduction_dict.keys():
         experiment_values.append(qty)
         names.update({qty: qty})
-    sa.draw_boxplot_for_folds(reduction_dict, experiment_values, names)
-    sa.draw_boxplots_for_folds(reduction_dict, rwc_iter_dict, experiment_values, names)
+    sa.draw_boxplot_for_folds(reduction_dict, experiment_values, names, 'qty_box_plot.html')
+    sa.draw_boxplots_for_folds(reduction_dict, rwc_iter_dict, experiment_values, names, 'qty_box_plots.html')
 
 
 def homogenity_analysis():
@@ -108,7 +108,7 @@ def homogenity_analysis():
 
         values_for_homogenity = rwc_iter_dict[item[0]]
         rwc_iter_list.append(float(sum(values_for_homogenity)) / float(len(values_for_homogenity)))
-    sa.draw_line_chart(x, reduction_list, rwc_iter_list)
+    sa.draw_line_chart(x, reduction_list, rwc_iter_list, 'homogenity_line.html')
 
 
 if __name__ == "__main__":

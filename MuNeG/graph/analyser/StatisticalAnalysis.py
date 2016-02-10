@@ -48,7 +48,7 @@ def draw_plot(data_dict):
     pl.legend(loc='upper right')
     pl.show(block=False)
 
-def draw_boxplot_for_folds(result_dict, folds, names):
+def draw_boxplot_for_folds(result_dict, folds, names, file_name):
     data = []
     for fold in folds:
         trace = go.Box(
@@ -58,9 +58,10 @@ def draw_boxplot_for_folds(result_dict, folds, names):
         boxpoints='all'
     )
         data.append(trace)
-    plot_url = plotly.offline.plot(data, filename='box-plot.html')
+    plot_url = plotly.offline.plot(data, filename=file_name)
+    plotly.plotly.image.save_as({'data': data}, file_name + '.png')
 
-def draw_boxplots_for_folds(dict1, dict2, folds, names):
+def draw_boxplots_for_folds(dict1, dict2, folds, names, file_name):
     x = []
     y1 = []
     y2 = []
@@ -96,9 +97,10 @@ def draw_boxplots_for_folds(dict1, dict2, folds, names):
     boxmode='group'
     )
     fig = go.Figure(data=data, layout=layout)
-    plot_url = plotly.offline.plot(fig, filename='box-grouped.html')
+    plot_url = plotly.offline.plot(fig, filename=file_name)
+    plotly.plotly.image.save_as({'data': data}, file_name + '.png')
 
-def draw_line_chart(data_x, data_1, data_2):
+def draw_line_chart(data_x, data_1, data_2, file_name):
     # Create a trace
     trace0 = go.Scatter(
         x = data_x,
@@ -120,4 +122,5 @@ def draw_line_chart(data_x, data_1, data_2):
     data = [trace0, trace1]
 
     # Plot and embed in ipython notebook!
-    plotly.offline.plot(data, filename='basic-line.html')
+    plotly.offline.plot(data, filename=file_name)
+    plotly.plotly.image.save_as({'data': data}, file_name + '.png')
