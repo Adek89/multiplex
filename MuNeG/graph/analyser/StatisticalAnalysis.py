@@ -59,7 +59,6 @@ def draw_boxplot_for_folds(result_dict, folds, names, file_name):
     )
         data.append(trace)
     plot_url = plotly.offline.plot(data, filename=file_name)
-    plotly.plotly.image.save_as({'data': data}, file_name + '.png')
 
 def draw_boxplots_for_folds(dict1, dict2, folds, names, file_name):
     x = []
@@ -98,7 +97,6 @@ def draw_boxplots_for_folds(dict1, dict2, folds, names, file_name):
     )
     fig = go.Figure(data=data, layout=layout)
     plot_url = plotly.offline.plot(fig, filename=file_name)
-    plotly.plotly.image.save_as({'data': data}, file_name + '.png')
 
 def draw_line_chart(data_x, data_1, data_2, file_name):
     # Create a trace
@@ -121,6 +119,18 @@ def draw_line_chart(data_x, data_1, data_2, file_name):
 
     data = [trace0, trace1]
 
-    # Plot and embed in ipython notebook!
     plotly.offline.plot(data, filename=file_name)
-    plotly.plotly.image.save_as({'data': data}, file_name + '.png')
+
+def draw_bar(data_dict, file_name):
+    x = []
+    y = []
+    for el_x, el_y in data_dict.iteritems():
+        x.append(el_x)
+        y.append(el_y)
+    data = [
+    go.Bar(
+        x=x,
+        y=y
+    )]
+    plotly.offline.plot(data, filename=file_name)
+
