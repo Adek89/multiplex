@@ -46,7 +46,7 @@ def draw_plot(data_dict):
         fit =  fit_to_distribution(data[0], data[1])
         pl.plot(data[1], fit, label=data[0])
     pl.legend(loc='upper right')
-    pl.show(block=False)
+    pl.show(block=True)
 
 def draw_boxplot_for_folds(result_dict, folds, names, file_name):
     data = []

@@ -139,33 +139,7 @@ def density_static_analysis(graph):
     sa.draw_bar(edges_in_layers_for_node, 'edges_in_layers.html')
 
 
-if __name__ == "__main__":
-    cursor = connect_to_danio_rerio()
-    cursor.execute('select reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last from DanioRerio.daniorerio.results')
-    results = cursor.fetchall()
-    perform_basic_analysis()
-
-    cursor.execute('select fold, reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last from DanioRerio.daniorerio.results')
-    results = cursor.fetchall()
-    folds_analysis()
-
-    cursor.execute('select qty, reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last'
-                   ' from DanioRerio.daniorerio.results res join DanioRerio.daniorerio.functions fun '
-                   'on res.fun = fun.fun')
-    results = cursor.fetchall()
-    qty_analysis()
-
-    cursor.execute('select fun, reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last'
-                   ' from DanioRerio.daniorerio.results ')
-    results = cursor.fetchall()
-    homogenity_analysis()
-
-    layers_density_analysis()
-
-    cursor.execute('select fun, reduction, rwc_iter, fusion_sum, fusion_mean, rwc_sum, rwc_mean, rwc_last'
-                   ' from DanioRerio.daniorerio.results ')
-    results = cursor.fetchall()
-
+def layers_density_classification():
     map_functions_to_average_ones = {}
     map_average_ones_to_list_reduction = {}
     map_average_ones_to_list_rwc = {}
@@ -187,9 +161,10 @@ if __name__ == "__main__":
                 layers = [e[2]['layer'] for e in edges]
                 unique_layers = len(set(layers))
                 layers_for_node.append(unique_layers)
-            average_nr_of_layers = float(sum(layers_for_node)) / float(len(layers_for_node)) if len(filtered_nodes) > 0 else 0.0
+            average_nr_of_layers = float(sum(layers_for_node)) / float(len(layers_for_node)) if len(
+                filtered_nodes) > 0 else 0.0
         if not map_functions_to_average_ones.has_key(fun):
-            map_functions_to_average_ones.update({fun : average_nr_of_layers})
+            map_functions_to_average_ones.update({fun: average_nr_of_layers})
         else:
             average_nr_of_layers = map_functions_to_average_ones[fun]
         if map_average_ones_to_list_reduction.has_key(average_nr_of_layers):
@@ -200,8 +175,8 @@ if __name__ == "__main__":
             current_list_rwc.append(result[2])
             map_average_ones_to_list_rwc[average_nr_of_layers] = current_list_rwc
         else:
-            map_average_ones_to_list_reduction.update({average_nr_of_layers : [result[1]]})
-            map_average_ones_to_list_rwc.update({average_nr_of_layers : [result[2]]})
+            map_average_ones_to_list_reduction.update({average_nr_of_layers: [result[1]]})
+            map_average_ones_to_list_rwc.update({average_nr_of_layers: [result[2]]})
         count = count + 1
     x = []
     reduction_y = []
@@ -214,4 +189,21 @@ if __name__ == "__main__":
         rwc_y.append(float(sum(rwc_values)) / float(len(rwc_values)))
     sa.draw_line_chart(x, reduction_y, rwc_y, 'layer_nr_analysis.html')
 
+
+if __name__ == "__main__":
+    cursor = connect_to_danio_rerio()
+
+    cursor.execute('select fun_qty, reduction, rwc_sum'
+                   ' from DanioRerio.daniorerio.results_fmicro res ')
+    results = cursor.fetchall()
+    qty_analysis()
+
+    cursor.execute('select fun, reduction, rwc_sum '
+                   ' from DanioRerio.daniorerio.results_fmicro ')
+    results = cursor.fetchall()
+    homogenity_analysis()
+
+    cursor.execute('select reduction, rwc_sum from DanioRerio.daniorerio.results_fmicro')
+    results = cursor.fetchall()
+    perform_basic_analysis()
 

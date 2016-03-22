@@ -6,6 +6,7 @@ Created on 13.03.2014
 import csv
 
 import networkx as nx
+import sklearn.metrics as metrics
 
 from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.method.lbp.FlatLBP import FlatLBP
@@ -170,13 +171,13 @@ class DecisionFusion:
         self.realLabels = self.prepareOriginalLabels(self.realGraphClassMat, self.realNrOfClasses) 
         self.syntheticLabels = self.prepareOriginalLabels(self.syntheticClassMat, self.syntheticNrOfClasses)   
         ev = EvaluationTools()
-        fMacroFlatReal = ev.calculateFMacro(self.realLabels, self.realFlatResult, self.realNrOfClasses)
-        fMacroLBPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realLBPFoldSum, self.realNrOfClasses)
-        fMacroLBPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realLBPFusionMean, self.realNrOfClasses)
-        fMacroRWPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realRWPFoldSum, self.realNrOfClasses)
-        fMacroRWPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realRWPFusionMean, self.realNrOfClasses)
-        fMacroRWPReal = ev.calculateFMacro(self.realLabels, self.rwpResult, self.realNrOfClasses)
-        fMacroRWCRealResult = ev.calculateFMacro(self.realLabels, self.realRwcResult, self.realNrOfClasses)
+        fMacroFlatReal = metrics.f1_score(self.realLabels, self.realFlatResult,pos_label=None, average='micro')
+        fMacroLBPRealFoldSum = metrics.f1_score(self.realLabels, self.realLBPFoldSum,pos_label=None, average='micro')
+        fMacroLBPRealFusionMean = metrics.f1_score(self.realLabels, self.realLBPFusionMean,pos_label=None, average='micro')
+        fMacroRWPRealFoldSum = metrics.f1_score(self.realLabels, self.realRWPFoldSum,pos_label=None, average='micro')
+        fMacroRWPRealFusionMean = metrics.f1_score(self.realLabels, self.realRWPFusionMean,pos_label=None, average='micro')
+        fMacroRWPReal = metrics.f1_score(self.realLabels, self.rwpResult,pos_label=None, average='micro')
+        fMacroRWCRealResult = metrics.f1_score(self.realLabels, self.realRwcResult,pos_label=None, average='micro')
         
         with open(self.file_path + 'real.csv', 'ab') as csvfile:
             writer = csv.writer(csvfile)
@@ -185,7 +186,7 @@ class DecisionFusion:
                 self.realGraph.nodes().__len__(),self.fun, self.terms_map[self.fun], self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
                             fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMacroRWPRealFoldSum,
                             fMacroRWPRealFusionMean, fMacroRWPReal, fMacroRWCRealResult])
-        
+
     def prepareOriginalLabels(self, defaultClassMat, nrOfClasses):
         classMatForEv = []
         for i in range(0, defaultClassMat.__len__()):

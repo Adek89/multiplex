@@ -3,20 +3,21 @@ Created on 13.03.2014
 
 @author: apopiel
 '''
-from graph.reader.ExcelReader import ExcelReader
-from graph.gen.GraphGenerator import GraphGenerator
-from graph.method.lbp.Multilayer_LBP import Multilayer_LBP
-import networkx as nx
-from graph.method.lbp.NetworkUtils import NetworkUtils
-from graph.method.lbp.FlatLBP import FlatLBP
-from graph.method.lbp.RwpLBP import RwpLBP
-from graph.evaluation.EvaluationTools import EvaluationTools
-from graph.method.random_walk.RandomWalkMethods import RandomWalkMethods
-import graph.reader.syntethic.MuNeGGraphReader as reader
 import csv
-import time
 import math
+import time
 
+import networkx as nx
+import sklearn.metrics as metrics
+
+import graph.reader.syntethic.MuNeGGraphReader as reader
+from graph.evaluation.EvaluationTools import EvaluationTools
+from graph.method.lbp.FlatLBP import FlatLBP
+from graph.method.lbp.Multilayer_LBP import Multilayer_LBP
+from graph.method.lbp.NetworkUtils import NetworkUtils
+from graph.method.lbp.RwpLBP import RwpLBP
+from graph.method.random_walk.RandomWalkMethods import RandomWalkMethods
+from graph.reader.ExcelReader import ExcelReader
 
 
 class DecisionFusion:
@@ -181,20 +182,20 @@ class DecisionFusion:
         self.realLabels = self.prepareOriginalLabels(self.realGraphClassMat, self.realNrOfClasses) 
         self.syntheticLabels = self.prepareOriginalLabels(self.syntheticClassMat, self.syntheticNrOfClasses)   
         ev = EvaluationTools()
-        fMacroFlatSynthetic = ev.calculateFMacro(self.syntheticLabels, self.syntheticFlatResult, self.syntheticNrOfClasses)
-        fMacroLBPSyntheticFoldSum = ev.calculateFMacro(self.syntheticLabels, self.syntheticLBPFoldSum, self.syntheticNrOfClasses)
-        fMacroLBPSyntheticFusionMean = ev.calculateFMacro(self.syntheticLabels, self.syntheticLBPFusionMean, self.syntheticNrOfClasses)
-        fMacroRWPSyntheticFoldSum = ev.calculateFMacro(self.syntheticLabels, self.syntheticRWPFoldSum, self.syntheticNrOfClasses)
-        fMacroRWPSyntheticFusionMean = ev.calculateFMacro(self.syntheticLabels, self.syntheticRWPFusionMean, self.syntheticNrOfClasses)
-        fMacroRWPSyntheticResult = ev.calculateFMacro(self.syntheticLabels, self.rwpResult, self.syntheticNrOfClasses)
-        fMacroRWCSyntheticResult = ev.calculateFMacro(self.syntheticLabels, self.syntheticRwcResult, self.syntheticNrOfClasses)
+        fMacroFlatSynthetic = metrics.f1_score(self.syntheticLabels, self.syntheticFlatResult, pos_label=None, average='micro')
+        fMacroLBPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticLBPFoldSum, pos_label=None, average='micro')
+        fMacroLBPSyntheticFusionMean =  metrics.f1_score(self.syntheticLabels, self.syntheticLBPFusionMean, pos_label=None, average='micro')
+        fMacroRWPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticRWPFoldSum, pos_label=None, average='micro')
+        fMacroRWPSyntheticFusionMean = metrics.f1_score(self.syntheticLabels, self.syntheticRWPFusionMean, pos_label=None, average='micro')
+        fMacroRWPSyntheticResult = metrics.f1_score(self.syntheticLabels, self.rwpResult, pos_label=None, average='micro')
+        fMacroRWCSyntheticResult = metrics.f1_score(self.syntheticLabels, self.syntheticRwcResult, pos_label=None, average='micro')
 
 #         fMacroFlatReal = ev.calculateFMacro(self.realLabels, self.realFlatResult, self.realNrOfClasses)
 #         fMacroLBPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realLBPFoldSum, self.realNrOfClasses)
 #         fMacroLBPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realLBPFusionMean, self.realNrOfClasses)
 #         fMacroRWPRealFoldSum = ev.calculateFMacro(self.realLabels, self.realRWPFoldSum, self.realNrOfClasses)
 #         fMacroRWPRealFusionMean = ev.calculateFMacro(self.realLabels, self.realRWPFusionMean, self.realNrOfClasses)
-        
+
         with open(self.FILE_PATH + self.build_output_file_name(),'wb') as csvfile:
             writer = csv.writer(csvfile)
         

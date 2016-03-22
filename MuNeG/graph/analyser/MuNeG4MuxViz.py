@@ -38,9 +38,9 @@ if __name__ == "__main__":
         source = edge[0]
         dest = edge[1]
         data = edge[2]
-        with open('muneg.edges','ab') as csvfile:
+        with open('muneg.edges_layer_' + str(data['layer']),'ab') as csvfile:
             writer = csv.writer(csvfile, delimiter=' ', lineterminator='\n')
-            writer.writerow([source.id, data['weight'], dest.id, data['weight'], data['conWeight']])
+            writer.writerow([source.id, dest.id, data['conWeight']])
         layers_set.add((data['weight'], data['layer']))
         nodes_set.add(source)
         nodes_set.add(dest)
