@@ -3,10 +3,7 @@ Created on 09.04.2014
 
 @author: apopiel
 '''
-cimport cython
-from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 from graph.method.lbp.NetworkUtils import NetworkUtils
-import numpy as np
 cimport numpy as np
 DTYPE=np.float64
 ctypedef np.float64_t DTYPE_t
@@ -104,6 +101,10 @@ cdef class CrossValMethods:
         cdef repmatInput
         cdef list rwp_result = []
         fusion_mean = self.prepare_sum_for_fusion_mean(nrOfNodes)
+        fusion_layer = []
+        for i in range(0,nrOfNodes,1):
+            fusion_layer.append([i,0,0])
+
         for training, validation in k_fold_cross_validation(items, numberOfFolds):
             adjTransMatrixes = []
             print 'Multilayer method'
@@ -186,14 +187,39 @@ cdef class CrossValMethods:
                     fold_sum[i][1]+=sum[i][1]
                     fold_sum[i][2]+=sum[i][2]
             # print sum
-
             fusion_mean = self.prepare_fusion_mean(results_agregator, separationMethod, layerWeights, nrOfNodes, fusion_mean, validation)
             rwp_result = self.collect_rwp_lbp_result(isRandomWalk, layerWeights, results_agregator, rwp_result, validation)
+            fusion_layer = self.calculate_best_layer(fusion_layer, results_agregator, validation)
+
             fold_number = fold_number + 1
         print 'Full rwp_result : ' + str(rwp_result)
         print 'Variable full fusion_mean: ' + str(fusion_mean)
         print 'Variable full fold_sum: ' + str(fold_sum)
-        return fold_sum, fusion_mean, rwp_result
+        return fold_sum, fusion_mean, fusion_layer, rwp_result
+
+    def calculate_best_layer(self, fusion_layer, results_agregator, validation):
+        print 'Fusion layer at start: ' + str(fusion_layer)
+        for row in fusion_layer:
+            node_id = row[0]
+            if node_id in validation:
+                map_max = {0:0.0, 1:0.0}
+                for single_res in results_agregator:
+                    print 'Single res: ' + str(single_res)
+                    res_for_node = filter(lambda r: r[0] == node_id, single_res)[0]
+                    print 'Res for node: ' + str(res_for_node)
+                    if res_for_node[1] > map_max[0]:
+                        map_max[0] = res_for_node[1]
+                    if res_for_node[2] > map_max[1]:
+                        map_max[1] = res_for_node[2]
+                print 'Map max: ' + str(map_max)
+                if map_max[0] >= map_max[1]:
+                    fusion_layer[node_id][1] = 1
+                    fusion_layer[node_id][2] = 0
+                else:
+                    fusion_layer[node_id][2] = 1
+                    fusion_layer[node_id][1] = 0
+        print 'Fusion layer: ' + str(fusion_layer)
+        return fusion_layer
 
 
     def collect_rwp_lbp_result(self, isRandomWalk, layerWeights, results_agregator, rwp_result, validation):

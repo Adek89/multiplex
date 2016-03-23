@@ -4,16 +4,14 @@ Created on 11 mar 2014
 @author: MKulisiewicz
 '''
 
-import networkx as nx
-import matplotlib.pyplot as plt
-import numpy as np
 cimport numpy as np
-import time
+
 import csv
-import copy
+import time
 
 from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 from graph.method.lbp.NetworkUtils import NetworkUtils
+
 cimport graph.method.lbp.CrossValMethods as cvm
 cimport graph.method.lbp.LBPTools as tool
 cimport graph.method.common.CommonUtils as commonUtils
@@ -48,7 +46,7 @@ cdef class Multilayer_LBP:
         cdef common = commonUtils.CommonUtils()
         x_val_methods = XValMethods(graph)
         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
-        fold_sum, fusion_mean, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
+        fold_sum, fusion_mean, fusion_layer, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
                        x_val, tools.giveCorrectData,
                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)
@@ -69,6 +67,7 @@ cdef class Multilayer_LBP:
         
         foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)
         fusionMeanEstimated = tools.prepareToEvaluate(fusion_mean, nrOfClasses)
+        fusionLayerEstimated = tools.prepareToEvaluate(fusion_layer, nrOfClasses)
         
-        return foldSumEstimated, fusionMeanEstimated
+        return foldSumEstimated, fusionMeanEstimated, fusionLayerEstimated
                     
