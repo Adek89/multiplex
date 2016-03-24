@@ -46,7 +46,7 @@ cdef class Multilayer_LBP:
         cdef common = commonUtils.CommonUtils()
         x_val_methods = XValMethods(graph)
         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
-        fold_sum, fusion_mean, fusion_layer, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
+        fold_sum, fusion_mean, fusion_layer, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
                        x_val, tools.giveCorrectData,
                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)
@@ -64,10 +64,17 @@ cdef class Multilayer_LBP:
         work_time = time.time()-timer
         print "DONE"
         print "time:  %f s" %work_time
+        print 'Layer result: ' + str(layer_results)
         
         foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)
         fusionMeanEstimated = tools.prepareToEvaluate(fusion_mean, nrOfClasses)
         fusionLayerEstimated = tools.prepareToEvaluate(fusion_layer, nrOfClasses)
+        fusionRadomEstimated = tools.prepareToEvaluate(fusion_random, nrOfClasses)
+        fusionConvergenceMaxEstimated = tools.prepareToEvaluate(fusion_convergence_max, nrOfClasses)
+        fusionConvergenceMinEstimated = tools.prepareToEvaluate(fusion_convergence_min, nrOfClasses)
+        fusionForLayersEstimated = {}
+        for layer, class_mat in layer_results.iteritems():
+            fusionForLayersEstimated[layer] = tools.prepareToEvaluate(class_mat, nrOfClasses)
         
-        return foldSumEstimated, fusionMeanEstimated, fusionLayerEstimated
+        return foldSumEstimated, fusionMeanEstimated, fusionLayerEstimated, fusionRadomEstimated, fusionConvergenceMaxEstimated, fusionConvergenceMinEstimated, fusionForLayersEstimated
                     

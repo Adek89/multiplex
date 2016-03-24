@@ -81,7 +81,11 @@ class DecisionFusion:
     fun = 0
     terms_map = dict([])
     rwpResult = []
-    fusion_layer = []
+    realFusionLayer = []
+    realFusionRandom = []
+    realFusionConvergenceMax = []
+    realFusionConvergenceMin = []
+    realFusionForLayers = []
 
     def __init__(self, method, fold, fun):
         if method == 1:
@@ -147,7 +151,7 @@ class DecisionFusion:
     def multiLayerLBP(self):
         multiLBP = Multilayer_LBP()
         nrOfNodes = self.realGraph.nodes().__len__()
-        self.realLBPFoldSum, self.realLBPFusionMean, self.realFusionLayer = multiLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses,
+        self.realLBPFoldSum, self.realLBPFusionMean, self.realFusionLayer, self.realFusionRadom, self.realFusionConvergenceMax, self.realFusionConvergenceMin, self.realFusionForLayers = multiLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses,
                                                                      nrOfNodes, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS,
                                                                      self.percentOfTrainignNodes, self.method)
 
@@ -176,6 +180,12 @@ class DecisionFusion:
         fMacroLBPRealFoldSum = metrics.f1_score(self.realLabels, self.realLBPFoldSum,pos_label=None, average='micro')
         fMacroLBPRealFusionMean = metrics.f1_score(self.realLabels, self.realLBPFusionMean,pos_label=None, average='micro')
         fMicroLBPFusionLayer = metrics.f1_score(self.realLabels, self.realFusionLayer, pos_label=None, average='micro')
+        fMicroLBPFusionRandom = metrics.f1_score(self.realLabels, self.realFusionRadom, pos_label=None, average='micro')
+        fMicroLBPFusionConvergenceMax = metrics.f1_score(self.realLabels, self.realFusionConvergenceMax, pos_label=None, average='micro')
+        fMicroLBPFusionConvergenceMin = metrics.f1_score(self.realLabels, self.realFusionConvergenceMin, pos_label=None, average='micro')
+        fMicroFromLayers = {}
+        for layer, result in self.realFusionForLayers.iteritems():
+            fMicroFromLayers[layer] = metrics.f1_score(self.realLabels, result, pos_label=None, average='micro')
         # fMacroRWPRealFoldSum = metrics.f1_score(self.realLabels, self.realRWPFoldSum,pos_label=None, average='micro')
         # fMacroRWPRealFusionMean = metrics.f1_score(self.realLabels, self.realRWPFusionMean,pos_label=None, average='micro')
         # fMacroRWPReal = metrics.f1_score(self.realLabels, self.rwpResult,pos_label=None, average='micro')
@@ -186,7 +196,7 @@ class DecisionFusion:
         
             writer.writerow([
                 self.realGraph.nodes().__len__(),self.fun, self.terms_map[self.fun], self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
-                            fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMicroLBPFusionLayer])
+                            fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMicroLBPFusionLayer, fMicroLBPFusionRandom, fMicroLBPFusionConvergenceMax, fMicroLBPFusionConvergenceMin, fMicroFromLayers])
 
     def prepareOriginalLabels(self, defaultClassMat, nrOfClasses):
         classMatForEv = []

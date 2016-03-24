@@ -46,7 +46,7 @@ class LoopyBeliefPropagation:
                 break
             
             res_in = res
-        return res
+        return res, i
             
     def stopConditionReached(self, delta, epsilon):
         absVal = np.abs(delta)

@@ -7,6 +7,8 @@ from graph.method.lbp.NetworkUtils import NetworkUtils
 cimport numpy as np
 DTYPE=np.float64
 ctypedef np.float64_t DTYPE_t
+import random
+import operator
 
 cdef class CrossValMethods:
     '''
@@ -37,22 +39,14 @@ cdef class CrossValMethods:
         cdef int iter
         for training, validation in k_fold_cross_validation(items, numberOfFolds):
             print "-----FOLD %d-----" % fold_number
-            print "Training: "
-            print training
-            print "Validation: "
-            print validation
-            
             #separate layers
             results_agregator = []
             num_of_res = 0
             class_Mat, adjMat, nodes = separationMethod(graph, defaultClassMat, validation)
 
-            print "class_mat after separation: "
-            print class_Mat
+
                 #-------------LBP----------------------
-            class_mat = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
-            print "class_mat after method: "
-            print class_mat
+            class_mat, i = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
             #create zero result matrix
             sum = []
             for node in nodes:
@@ -67,7 +61,6 @@ cdef class CrossValMethods:
                 fold_sum[i][2]+=sorted_sum[i][2]
             # print sum
             fold_number = fold_number + 1
-            print 'Fold sum ' + str(fold_sum) + 'for fold: ' + str(fold_number)
         return fold_sum
 
     cpdef multiLayerCrossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
@@ -102,17 +95,26 @@ cdef class CrossValMethods:
         cdef list rwp_result = []
         fusion_mean = self.prepare_sum_for_fusion_mean(nrOfNodes)
         fusion_layer = []
+        fusion_random = []
+        fusion_convergence_max = []
+        fusion_convergence_min = []
+        layer_results = {}
+        for l in layerWeights:
+            layer_results[l] = []
         for i in range(0,nrOfNodes,1):
             fusion_layer.append([i,0,0])
+            fusion_random.append([i,0,0])
+            fusion_convergence_max.append([i,0,0])
+            fusion_convergence_min.append([i,0,0])
+            for l in layerWeights:
+                layer_results[l].append([i,0,0])
+
 
         for training, validation in k_fold_cross_validation(items, numberOfFolds):
+            map_iterations = {}
             adjTransMatrixes = []
             print 'Multilayer method'
             print "-----FOLD %d-----" % fold_number
-            print "Training: "
-            print training
-            print "Validation: "
-            print validation
             #separate layers
             results_agregator = []
             num_of_res = 0
@@ -139,16 +141,14 @@ cdef class CrossValMethods:
                     results = []
                     adjMat = prepareAdjMat(adjMat,graph)
                     adjTransMatrixes.append(adjMat)
-                    class_mat = lbp(adjTransMatrixes, results, class_Mat, training, lbpSteps, lbpThreshold)
+                    class_mat, iterations = lbp(adjTransMatrixes, results, class_Mat, training, lbpSteps, lbpThreshold)
                 else:    
                     #-------------LBP----------------------
-                    class_mat = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
-                print 'Class mat after execution: '
-                print class_mat
+                    class_mat, iterations = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
+                map_iterations[layer_label] = iterations
                 res = []
                 iter = 0
                 #assign results to nodes
-                print 'Nodes: ' + str(nodes)
                 for node in nodes:
                     res.append([node,class_mat[iter,0],class_mat[iter,1]])
                     iter+=1
@@ -156,7 +156,6 @@ cdef class CrossValMethods:
                 #assign results to full node list
                 res = np.asarray(sorted(res))
 
-                print 'Res: ' + str(res)
                 full_res = []
                 iter = 0
                 for n in res:
@@ -167,7 +166,6 @@ cdef class CrossValMethods:
                     iter+=1
                     
                 #push out results
-                print 'Full res:' + str(full_res)
                 results_agregator.append(full_res)
                 num_of_res += 1
             
@@ -189,42 +187,70 @@ cdef class CrossValMethods:
             # print sum
             fusion_mean = self.prepare_fusion_mean(results_agregator, separationMethod, layerWeights, nrOfNodes, fusion_mean, validation)
             rwp_result = self.collect_rwp_lbp_result(isRandomWalk, layerWeights, results_agregator, rwp_result, validation)
-            fusion_layer = self.calculate_best_layer(fusion_layer, results_agregator, validation)
+            fusion_layer, fusion_random = self.calculate_fusions(fusion_layer, fusion_random, results_agregator, validation)
+
+            fusion_convergence_max, fusion_convergence_min = self.calculate_fusion_convergence(fusion_convergence_max, fusion_convergence_min, map_iterations, results_agregator, validation)
+            layer_results = self.calculate_results_for_layers(layer_results, results_agregator, validation)
+
 
             fold_number = fold_number + 1
-        print 'Full rwp_result : ' + str(rwp_result)
-        print 'Variable full fusion_mean: ' + str(fusion_mean)
-        print 'Variable full fold_sum: ' + str(fold_sum)
-        return fold_sum, fusion_mean, fusion_layer, rwp_result
+        return fold_sum, fusion_mean, fusion_layer, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, rwp_result
 
-    def calculate_best_layer(self, fusion_layer, results_agregator, validation):
-        print 'Fusion layer at start: ' + str(fusion_layer)
+    def calculate_results_for_layers(self, layer_results, results_agregator, validation):
+        i = 0
+        for layer_res in results_agregator:
+            i = i + 1
+            for res in layer_res:
+                node_id = res[0]
+                if node_id in validation:
+                    layer_results[i][node_id][1] = res[1]
+                    layer_results[i][node_id][2] = res[2]
+        print 'Layer results: ' + str(layer_results)
+        return layer_results
+
+    def calculate_fusion_convergence(self, fusion_convergence_max, fusion_convergence_min, map_iterations, results_agregator, validation):
+        max_layer = max(map_iterations.iteritems(), key=operator.itemgetter(1))[0]
+        min_layer = min(map_iterations.iteritems(), key=operator.itemgetter(1))[0]
+        max_results = results_agregator[max_layer]
+        min_results = results_agregator[min_layer]
+        for elem in max_results:
+            node_id = elem[0]
+            if node_id in validation:
+                fusion_convergence_max[node_id][1] = elem[1]
+                fusion_convergence_max[node_id][2] = elem[2]
+        for elem in min_results:
+            node_id = elem[0]
+            if node_id in validation:
+                fusion_convergence_min[node_id][1] = elem[1]
+                fusion_convergence_min[node_id][2] = elem[2]
+        return fusion_convergence_max, fusion_convergence_min
+
+    def calculate_fusions(self, fusion_layer, fusion_random, results_agregator, validation):
         for row in fusion_layer:
             node_id = row[0]
             if node_id in validation:
                 map_max = {0:0.0, 1:0.0}
+                list_of_results = []
                 for single_res in results_agregator:
-                    print 'Single res: ' + str(single_res)
                     res_for_node = filter(lambda r: r[0] == node_id, single_res)[0]
-                    print 'Res for node: ' + str(res_for_node)
+                    list_of_results.append(res_for_node)
                     if res_for_node[1] > map_max[0]:
                         map_max[0] = res_for_node[1]
                     if res_for_node[2] > map_max[1]:
                         map_max[1] = res_for_node[2]
-                print 'Map max: ' + str(map_max)
                 if map_max[0] >= map_max[1]:
                     fusion_layer[node_id][1] = 1
                     fusion_layer[node_id][2] = 0
                 else:
                     fusion_layer[node_id][2] = 1
                     fusion_layer[node_id][1] = 0
-        print 'Fusion layer: ' + str(fusion_layer)
-        return fusion_layer
+                choice = random.choice(list_of_results)
+                fusion_random[node_id][1] = choice[1]
+                fusion_random[node_id][2] = choice[2]
+        return fusion_layer, fusion_random
 
 
     def collect_rwp_lbp_result(self, isRandomWalk, layerWeights, results_agregator, rwp_result, validation):
-        print 'rwp_result on start: ' + str(rwp_result)
-        print 'result_aggregator: ' + str(results_agregator)
         if (isRandomWalk):
             nr_of_layers = len(layerWeights)
             last_result = results_agregator[nr_of_layers - 1]
@@ -232,7 +258,6 @@ cdef class CrossValMethods:
             last_result = sorted(last_result, key=lambda row: row[0])
             rwp_result = rwp_result + last_result
         rwp_result = sorted(rwp_result, key=lambda row : row[0])
-        print 'rwp_result for fold: ' + str(rwp_result)
         return rwp_result
 
     def prepare_fusion_mean(self, results_agregator, separation_method, layer_weights, nr_of_nodes, fusion_mean, validation):
@@ -269,7 +294,6 @@ cdef class CrossValMethods:
     def execute_fusion_mean(self, fusion_mean, layer_weights, sum_of_classes):
         for node_id in sum_of_classes.keys():
             average_class = round(sum(sum_of_classes[node_id]) / float(len(layer_weights)))
-            print 'Variable average_class: ' + str(average_class) + ' for node' + str(node_id)
             if (average_class) == 0.0:
                 fusion_mean[node_id][1] = 1
                 fusion_mean[node_id][2] = 0
