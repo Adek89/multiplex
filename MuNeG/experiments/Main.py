@@ -3,9 +3,10 @@ Created on 18 mar 2014
 
 @author: Adek
 '''
-import time
 import sys
+import time
 from multiprocessing import Process
+
 sys.path.append('/home/apopiel/MuNeG')
 from experiments.DecisionFusion import DecisionFusion
 if __name__ == '__main__':
@@ -26,7 +27,7 @@ if __name__ == '__main__':
     for label in [5]:
         for probIn in [5]:
             for probBetween in [0.1]:
-                for nrOfLayers in [2]:
+                for nrOfLayers in [3]:
                     processes = []
                     for fold in [2, 3, 4, 5, 10, 20]:
                         df = DecisionFusion(nodes, size, label, probIn, probBetween, nrOfLayers, fold)
