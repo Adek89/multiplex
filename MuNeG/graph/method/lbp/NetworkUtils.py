@@ -3,9 +3,12 @@ Created on 13.03.2014
 
 @author: apopiel
 '''
-import numpy as np
 from operator import attrgetter
 from sets import Set
+
+import numpy as np
+
+
 class NetworkUtils:
     '''
     classdocs
@@ -20,7 +23,8 @@ class NetworkUtils:
     def createClassMat(self, graph):
         classMat = []
         nodes = graph.nodes()
-        nrOfClasses = self.calculateNrOfLabels(nodes)
+        calculated_number_or_classes = self.calculateNrOfLabels(nodes)
+        nrOfClasses = calculated_number_or_classes if calculated_number_or_classes > 1 else 2
         sortedNodes = sorted(nodes, key=attrgetter('id'))
         for node in sortedNodes:
             row = []
