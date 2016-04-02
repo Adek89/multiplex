@@ -208,7 +208,7 @@ class DecisionFusion:
             writer.writerow([self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.GROUP_LABEL_HOMOGENITY,
                               self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP, self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
                                 self.nrOfLayers, self.method, self.NUMBER_OF_FOLDS,
-                            fMacroFlatSynthetic, fMacroLBPSyntheticFoldSum, fMacroLBPSyntheticFusionMean, fMicroLBPFusionLayer, fMicroLBPFusionRandom, fMicroLBPFusionConvergenceMax, fMicroLBPFusionConvergenceMin, [str(e[0]) + ',' + str(e[1]) for e in fMicroFromLayers.iteritems()]])
+                            fMacroFlatSynthetic, fMacroLBPSyntheticFoldSum, fMacroLBPSyntheticFusionMean, fMicroLBPFusionLayer, fMicroLBPFusionRandom, fMicroLBPFusionConvergenceMax, fMicroLBPFusionConvergenceMin, [str(e) + ',' + str(fMicroFromLayers[e] if fMicroFromLayers.has_key(e) else '') for e in xrange(1,22)]])
         
     def prepareOriginalLabels(self, defaultClassMat, nrOfClasses):
         classMatForEv = []
