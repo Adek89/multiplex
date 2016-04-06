@@ -1,10 +1,13 @@
 __author__ = 'Adrian'
-import tokenize as token
 import os
 import string
+import tokenize as token
+
 import networkx as nx
+
 from graph.gen.Group import Group
 from graph.gen.Node import Node
+
 
 def move_to_nodes(tokens):
     tokens.next()
@@ -78,13 +81,25 @@ def read_edges(graph, node_id_from_file, tokens):
 def read_from_gml(path, file_name):
         tokens = read_file(file_name, path)
         move_to_nodes(tokens)
-
         graph = nx.MultiGraph()
         node_id_from_file = {}
         groups = {}
         read_nodes(graph, groups, node_id_from_file, tokens)
         read_edges(graph, node_id_from_file, tokens)
         return graph
+
+
+def calcuclate_homogenity(graph):
+    results = []
+    for node in graph.nodes():
+        neighbors = nx.neighbors(graph, node)
+        summ = 0
+        for n in neighbors:
+            if node.label == n.label:
+                summ = summ + 1
+        results.append(float(summ)/float(len(neighbors)))
+    homogenity = float(sum(results))/float(len(graph.nodes()))
+    return homogenity
 
 
 

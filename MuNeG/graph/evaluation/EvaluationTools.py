@@ -3,7 +3,7 @@ Created on 8 mar 2014
 
 @author: Adek
 '''
-
+import numpy as np
 class EvaluationTools:
     '''
     classdocs
@@ -227,5 +227,40 @@ class EvaluationTools:
             fMicro = (2.0 * precision * recall)/(1.0 *precision+recall)
             
             return fMicro
+
+    def baseline_fmeasure(self, classes_cardinality, measure_type='macro'):
+        f_measure=0
+        TP,FP,TN,FN=0,0,0,0
+
+        if(measure_type=='macro'):
+            f_measure_part=[]
+            for i in range(len(classes_cardinality)):
+                TP=classes_cardinality[i]
+                FP=np.sum(classes_cardinality[:i]+classes_cardinality[i+1:])
+                FN=0
+
+                f_measure_part.append(self.binary_fmeasure(self.precision(TP,FP), self.recall(TP,FN)))
+            f_measure=np.mean(f_measure_part)
+
+        elif(measure_type=='micro'):
+            #assumes that most common class is a decision for all
+
+            max_cardinality=classes_cardinality.index(np.max(classes_cardinality))
+
+            TP=classes_cardinality[max_cardinality]
+            FP=np.sum(classes_cardinality[:max_cardinality]+classes_cardinality[max_cardinality+1:])
+            FN=0
+            f_measure=self.binary_fmeasure(self.precision(TP,FP), self.recall(TP,FN))
+
+        return f_measure
+
+    def binary_fmeasure(self, precision, recall):
+        return 2*precision*recall/float(precision+recall)
+
+    def precision(self, TP, FP):
+        return TP/float(TP+FP)
+
+    def recall(self, TP, FN):
+        return TP/float(TP+FN)
     
     
