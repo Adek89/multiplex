@@ -35,5 +35,5 @@ for label in [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]:
 
                     writer.writerow([nodes, size, label,
                               probIn, probBetween,
-                                nrOfLayers, baseline_fmeasure])
+                                nrOfLayers, baseline_fmeasure, real_homogenity])
 

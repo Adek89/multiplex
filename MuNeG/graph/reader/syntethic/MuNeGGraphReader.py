@@ -97,7 +97,7 @@ def calcuclate_homogenity(graph):
         for n in neighbors:
             if node.label == n.label:
                 summ = summ + 1
-        results.append(float(summ)/float(len(neighbors)))
+        results.append(float(summ)/float(len(neighbors)) if len(neighbors) > 0 else 0)
     homogenity = float(sum(results))/float(len(graph.nodes()))
     return homogenity
 
