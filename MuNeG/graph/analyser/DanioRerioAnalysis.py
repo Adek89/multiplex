@@ -193,8 +193,8 @@ def layers_density_classification():
 if __name__ == "__main__":
     cursor = connect_to_danio_rerio()
 
-    cursor.execute('select fun_qty, reduction, rwc_sum'
-                   ' from DanioRerio.daniorerio.results_fmicro res ')
+    cursor.execute('select reduction'
+                   ' from DanioRerio.muneg.results_df res ')
     results = cursor.fetchall()
     qty_analysis()
 

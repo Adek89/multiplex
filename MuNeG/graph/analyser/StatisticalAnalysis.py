@@ -7,7 +7,7 @@ import scipy.stats as stats
 
 
 def connect_to_data(host, database, user, password):
-    conn_str = """Provider=SQLOLEDB.1; User ID=%(user)s; Password=%(password)s;"Database=%(database)s;Data Source=%(host)s"""
+    conn_str = """Provider=SQLOLEDB.1; Integrated Security=SSPI;"Database=%(database)s;Data Source=%(host)s"""
     my_conn = ado.connect(conn_str, user, password, host, database)
     curs = my_conn.cursor()
     return curs

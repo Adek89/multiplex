@@ -4,11 +4,7 @@ Created on 18 mar 2014
 @author: Adek
 '''
 import time
-import numpy as np
 cimport numpy as np
-import networkx as nx
-import csv
-from random import shuffle
 from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 cimport graph.method.lbp.CrossValMethods as crossValMethods
 cimport graph.method.lbp.LBPTools as tool
@@ -25,7 +21,7 @@ cdef class FlatLBP:
         Constructor
         '''
         
-    cpdef list start(self, graph, int nrOfNodes, np.ndarray defaultClassMat, int nrOfClasses, int lbpSteps, float lbpThreshold, int numberOfFolds,
+    cpdef start(self, graph, int nrOfNodes, np.ndarray defaultClassMat, int nrOfClasses, int lbpSteps, float lbpThreshold, int numberOfFolds,
                         float percentOfTrainignNodes, int method_type):
         cdef list fold_sum = []
         cdef int i
@@ -52,4 +48,4 @@ cdef class FlatLBP:
                        lbp.lbp, None, method.flatCrossVal, False, percentOfTrainignNodes, None, None, None)
         
         cdef list foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)
-        return foldSumEstimated
+        return fold_sum, foldSumEstimated

@@ -3,7 +3,7 @@ import math
 import sys
 import time
 
-import graph.reader.syntethic.MuNeGGraphReader as reader
+from graph.gen.GraphGenerator import GraphGenerator
 
 
 def build_file_name(nodes, avg_in_group, homogenity, prob_in, prob_out, layers):
@@ -16,7 +16,8 @@ def build_file_name(nodes, avg_in_group, homogenity, prob_in, prob_out, layers):
 
 def generateSyntheticData(nodes, avg_in_group, homogenity, prob_in, prob_out, layers):
     start_time = time.time()
-    synthetic = reader.read_from_gml('..\\..\\results', build_file_name(nodes, avg_in_group, homogenity, prob_in, prob_out, layers))
+    gen = GraphGenerator(nodes, avg_in_group, [1, 2, 3, 4], homogenity, prob_in, prob_out, ['L1', 'L2', 'L3', 'L4'])
+    synthetic = gen.generate()
     print("---generation time: %s seconds ---" % str(time.time() - start_time))
     return synthetic
 
@@ -63,4 +64,11 @@ if __name__ == "__main__":
         with open('muneg_layout.txt','ab') as csvfile:
             writer = csv.writer(csvfile, delimiter=' ', lineterminator='\n')
             writer.writerow([el.id, 'n'+str(el.id)])
+
+    with open('node_colors.txt','ab') as csvfile:
+        writer = csv.writer(csvfile, delimiter=' ', lineterminator='\n')
+        writer.writerow(['nodeID', 'layerID', 'color', 'size'])
+        for layer_id in xrange(1, 5):
+            for node in sorted(graph.nodes(), key=lambda n : n.id):
+                writer.writerow([node.id + 1, layer_id, 'red' if node.label == 0 else 'blue', 10])
 

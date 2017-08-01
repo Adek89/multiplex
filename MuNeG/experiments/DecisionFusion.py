@@ -187,6 +187,8 @@ class DecisionFusion:
         self.realLabels = self.prepareOriginalLabels(self.realGraphClassMat, self.realNrOfClasses) 
         self.syntheticLabels = self.prepareOriginalLabels(self.syntheticClassMat, self.syntheticNrOfClasses)   
         ev = EvaluationTools()
+        fpr, tpr, threshold = metrics.roc_curve(self.syntheticLabels, self.syntheticFlatResult, pos_label=None, drop_intermediate=False)
+        auc_score = metrics.roc_auc_score(self.syntheticLabels, self.syntheticFlatResult, average='macro')
         fMacroFlatSynthetic = metrics.f1_score(self.syntheticLabels, self.syntheticFlatResult, pos_label=None, average='micro')
         fMacroLBPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticLBPFoldSum, pos_label=None, average='micro')
         fMacroLBPSyntheticFusionMean =  metrics.f1_score(self.syntheticLabels, self.syntheticLBPFusionMean, pos_label=None, average='micro')

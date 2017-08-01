@@ -3,8 +3,10 @@ Created on 09.04.2014
 
 @author: apopiel
 '''
+import numpy as np
+
 from graph.method.lbp.NetworkUtils import NetworkUtils
-cimport numpy as np
+
 DTYPE=np.float64
 ctypedef np.float64_t DTYPE_t
 import random
@@ -94,7 +96,9 @@ cdef class CrossValMethods:
         cdef repmatInput
         cdef list rwp_result = []
         fusion_mean = self.prepare_sum_for_fusion_mean(nrOfNodes)
+        fusion_mean_scores = self.prepare_sum_for_fusion_mean(nrOfNodes)
         fusion_layer = []
+        fusion_layer_scores = []
         fusion_random = []
         fusion_convergence_max = []
         fusion_convergence_min = []
@@ -103,6 +107,7 @@ cdef class CrossValMethods:
             layer_results[l] = []
         for i in range(0,nrOfNodes,1):
             fusion_layer.append([i,0,0])
+            fusion_layer_scores.append([i, 0.0, 0.0])
             fusion_random.append([i,0,0])
             fusion_convergence_max.append([i,0,0])
             fusion_convergence_min.append([i,0,0])
@@ -185,16 +190,16 @@ cdef class CrossValMethods:
                     fold_sum[i][1]+=sum[i][1]
                     fold_sum[i][2]+=sum[i][2]
             # print sum
-            fusion_mean = self.prepare_fusion_mean(results_agregator, separationMethod, layerWeights, nrOfNodes, fusion_mean, validation)
+            fusion_mean, fusion_mean_scores = self.prepare_fusion_mean(results_agregator, separationMethod, layerWeights, nrOfNodes, fusion_mean, fusion_mean_scores, validation)
             rwp_result = self.collect_rwp_lbp_result(isRandomWalk, layerWeights, results_agregator, rwp_result, validation)
-            fusion_layer, fusion_random = self.calculate_fusions(fusion_layer, fusion_random, results_agregator, validation)
+            fusion_layer, fusion_layer_scores, fusion_random = self.calculate_fusions(fusion_layer, fusion_layer_scores, fusion_random, results_agregator, validation)
 
             fusion_convergence_max, fusion_convergence_min = self.calculate_fusion_convergence(fusion_convergence_max, fusion_convergence_min, map_iterations, results_agregator, validation)
             layer_results = self.calculate_results_for_layers(layer_results, results_agregator, validation)
 
 
             fold_number = fold_number + 1
-        return fold_sum, fusion_mean, fusion_layer, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, rwp_result
+        return fold_sum, fusion_mean, fusion_mean_scores, fusion_layer, fusion_layer_scores, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, rwp_result
 
     def calculate_results_for_layers(self, layer_results, results_agregator, validation):
         i = 0
@@ -211,8 +216,8 @@ cdef class CrossValMethods:
     def calculate_fusion_convergence(self, fusion_convergence_max, fusion_convergence_min, map_iterations, results_agregator, validation):
         max_layer = max(map_iterations.iteritems(), key=operator.itemgetter(1))[0]
         min_layer = min(map_iterations.iteritems(), key=operator.itemgetter(1))[0]
-        max_results = results_agregator[max_layer]
-        min_results = results_agregator[min_layer]
+        max_results = results_agregator[max_layer-1]
+        min_results = results_agregator[min_layer-1]
         for elem in max_results:
             node_id = elem[0]
             if node_id in validation:
@@ -225,7 +230,7 @@ cdef class CrossValMethods:
                 fusion_convergence_min[node_id][2] = elem[2]
         return fusion_convergence_max, fusion_convergence_min
 
-    def calculate_fusions(self, fusion_layer, fusion_random, results_agregator, validation):
+    def calculate_fusions(self, fusion_layer, fusion_layer_scores, fusion_random, results_agregator, validation):
         for row in fusion_layer:
             node_id = row[0]
             if node_id in validation:
@@ -244,10 +249,13 @@ cdef class CrossValMethods:
                 else:
                     fusion_layer[node_id][2] = 1
                     fusion_layer[node_id][1] = 0
+                fusion_layer_scores[node_id][1] = map_max[0]
+                fusion_layer_scores[node_id][2] = map_max[1]
                 choice = random.choice(list_of_results)
                 fusion_random[node_id][1] = choice[1]
                 fusion_random[node_id][2] = choice[2]
-        return fusion_layer, fusion_random
+        print 'Fusion layer: ' + str(fusion_layer)
+        return fusion_layer, fusion_layer_scores, fusion_random
 
 
     def collect_rwp_lbp_result(self, isRandomWalk, layerWeights, results_agregator, rwp_result, validation):
@@ -260,7 +268,7 @@ cdef class CrossValMethods:
         rwp_result = sorted(rwp_result, key=lambda row : row[0])
         return rwp_result
 
-    def prepare_fusion_mean(self, results_agregator, separation_method, layer_weights, nr_of_nodes, fusion_mean, validation):
+    def prepare_fusion_mean(self, results_agregator, separation_method, layer_weights, nr_of_nodes, fusion_mean, fusion_mean_scores, validation):
         i = 0
         sum_of_classes = {}
         for results_on_layer in results_agregator:
@@ -270,8 +278,8 @@ cdef class CrossValMethods:
 
             sum_of_classes = self.analyse_result_in_layer(results_on_layer, sum_of_classes)
             i += 1
-        fusion_mean = self.execute_fusion_mean(fusion_mean, layer_weights, sum_of_classes)
-        return fusion_mean
+        fusion_mean, fusion_mean_scores = self.execute_fusion_mean(fusion_mean, fusion_mean_scores, layer_weights, sum_of_classes)
+        return fusion_mean, fusion_mean_scores
 
     def collect_result(self, node_id, sum_of_classes, class_to_add):
         if sum_of_classes.has_key(node_id):
@@ -291,16 +299,19 @@ cdef class CrossValMethods:
                 sum_of_classes = self.collect_result(node_id, sum_of_classes, 1)
         return sum_of_classes
 
-    def execute_fusion_mean(self, fusion_mean, layer_weights, sum_of_classes):
+    def execute_fusion_mean(self, fusion_mean, fusion_mean_scores, layer_weights, sum_of_classes):
         for node_id in sum_of_classes.keys():
-            average_class = round(sum(sum_of_classes[node_id]) / float(len(layer_weights)))
+            mean_class = sum(sum_of_classes[node_id]) / float(len(layer_weights))
+            fusion_mean_scores[node_id][1] = 1.0 - mean_class
+            fusion_mean_scores[node_id][2] = mean_class
+            average_class = round(mean_class)
             if (average_class) == 0.0:
                 fusion_mean[node_id][1] = 1
                 fusion_mean[node_id][2] = 0
             else:
                 fusion_mean[node_id][1] = 0
                 fusion_mean[node_id][2] = 1
-        return fusion_mean
+        return fusion_mean, fusion_mean_scores
 
     def prepare_sum_for_fusion_mean(self, nrOfNodes):
         sum_for_fusion_mean = []

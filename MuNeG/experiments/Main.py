@@ -24,12 +24,12 @@ if __name__ == '__main__':
     #                 for probBetween in probBetweenGroups:
     nodes = int(sys.argv[1])
     size = int(sys.argv[2])
-    for label in [5]:
+    for label in [5.5]:
         for probIn in [5]:
-            for probBetween in [0.1]:
-                for nrOfLayers in [3]:
+            for probBetween in [1]:
+                for nrOfLayers in [2]:
                     processes = []
-                    for fold in [2, 3, 4, 5, 10, 20]:
+                    for fold in [2]:
                         df = DecisionFusion(nodes, size, label, probIn, probBetween, nrOfLayers, fold)
                         p = Process(target=df.processExperiment)
                         p.start()
