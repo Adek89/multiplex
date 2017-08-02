@@ -26,6 +26,7 @@ class StarWarsReader():
         return node
 
     def read(self):
+        self.graph = nx.MultiGraph()
         self.read_nodes()
         self.read_edges()
 
