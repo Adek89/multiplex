@@ -26,7 +26,7 @@ class DecisionFusion(object):
     AVERAGE_GROUP_SIZE = 50
      
     LAYERS_WEIGHTS = []
-    REAL_LAYERS_WEIGHTS = [1, 2, 3, 4, 5]
+    REAL_LAYERS_WEIGHTS = [1, 2, 3, 4, 5, 6]
     LAYERS_NAME = []
      
     GROUP_LABEL_HOMOGENITY = 1
@@ -141,7 +141,7 @@ class DecisionFusion(object):
     '''      
     def readRealData(self):
         reader = StarWarsReader()
-        reader.read()
+        reader.read(isAnakinEqualVader=True)
         self.realGraph = reader.graph
         # ga = GraphAnalyser(self.realGraph)
         # ga.analyse()

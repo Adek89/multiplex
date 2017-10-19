@@ -5,20 +5,23 @@ Created on 18 mar 2014
 '''
 #1 - stratified xval
 #2 therefore used xval
-
+import matplotlib
+matplotlib.use('Agg')
 import os
 import pickle
 import string
 import sys
 import tokenize as token
+import seaborn as sns
+import csv
 
 import matplotlib.pyplot as plt
 import numpy as np
 import sklearn.metrics as metrics
 from scipy import interp
 
-sys.path.append('/cygdrive/d/pycharm_workspace/multiplex/MuNeG/')
-sys.path.append('D:\pycharm_workspace\multiplex\MuNeG')
+sys.path.append('/home/apopiel/multiplex/MuNeG/')
+
 
 from experiments.DecisionFusionReal import DecisionFusion
 import gc
@@ -36,23 +39,30 @@ def append_roc_rates_for_average(mean_fprs, mean_tprs, fpr, tpr):
 
 def plot_roc_curve(fpr, tpr, roc_auc, method, color):
     lw = 2
-    plt.plot(fpr, tpr, color=color,
-    lw=lw, label='ROC %s curve (area = %0.2f)' % (method, roc_auc))
+    line = plt.plot(fpr, tpr, color=color, lw=lw, label='%s curve (area = %0.2f)' % (method, roc_auc))
+    plt.setp(line, linewidth=6)
 
-def plot(figure, function="", qty=0):
+def plot(figure, probe, function="", qty=0, fold_nr=''):
     plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('Receiver operating characteristic example')
-    plt.legend(loc="lower right")
+    plt.xlabel('False Positive Rate', fontsize="20")
+    plt.ylabel('True Positive Rate', fontsize="20")
+    plt.xticks(fontsize="20")
+    plt.yticks(fontsize="20")
+    plt.title('Receiver operating characteristic', fontsize="20")
+    legend = plt.legend(loc="lower right", fontsize="17", frameon=True)
+    frame = legend.get_frame()
+    frame.set_facecolor('white')
+    frame.set_edgecolor('black')
+    figure.set_size_inches(19, 12)
     # plt.draw()
     file_name = function.replace(":", "") if function <> "" else "global"
     if file_name <> "global":
         file_name += "_" + str(qty)
-    figure.set_size_inches(19, 12)
-    figure.savefig('..\\results\\real\\roc2\\' + file_name + '.png', dpi=300)
+        if fold_nr <> '':
+            file_name += '_' + fold_nr
+    figure.savefig('..\\results\\real\\roc2\\' + file_name + '_' + str(probe) + '.png', dpi=100)
     plt.close(figure)
 
 
@@ -70,26 +80,34 @@ def read_function(tokens):
 
 def prepare_file():
     global tokens
-    path = '..\\dataset\\DanioRerio\\functions.csv'
+    path = '../dataset/DanioRerio/functions.csv'
     path = os.path.join(os.path.dirname(__file__), '%s' % path)
     f = open(path)
     tokens = token.generate_tokens(f.readline)
     return tokens
 
 
-def save_mean_rates(means, rate_type, function, weight, fold=None):
+def save_mean_rates(means, rate_type, function, weight, probe, fold=None):
     function_for_file_name = function.replace(":", "")
-    target_file = open('..\\results\\real\\roc2\\mean_' + rate_type + '_' + function_for_file_name + '_' + str(weight) + (str('_'+str(fold)) if fold <> None else '') + '.txt', 'ab')
+    target_file = open('..\\results\\real\\means\\mean_' + rate_type + '_' + function_for_file_name + '_' + str(weight) + (str('_'+str(fold)) if fold <> None else '') + '_' + probe + '.txt', 'ab')
     pickle.dump(means, target_file)
     target_file.close()
+
+def save_aoc_results(fold, weight, key, aoc, probe, function=''):
+    file_name = function.replace(":", "") if function <> "" else "global"
+    with open('..\\results\\real\\aoc\\real_aoc_' + file_name + '_' + (str(fold) if fold <> '' else 'global') + '_' + str(probe) + '.csv','ab') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow([function, weight, fold, key, aoc, probe])
 
 
 if __name__ == "__main__":
         keys = ["reduction", "fusion_sum", "fusion_mean", "fusion_layer", "fusion_random", "fusion_convergence_max", "fusion_convergence_min"]
         colors = {"reduction":'cyan',"fusion_sum":'indigo', "fusion_mean":'seagreen', "fusion_layer":'yellow', "fusion_random":'blue', "fusion_convergence_max":'darkorange', "fusion_convergence_min" : "red"}
+        names = {"reduction":'LR',"fusion_sum":'SF', "fusion_mean":'MF', "fusion_layer":'LF', "fusion_random":'RF', "fusion_convergence_max":'SCF', "fusion_convergence_min" : "FCF"}
         global_fprs = {}
         global_tprs = {}
         sum_of_weights = 0
+        sns.set_style("darkgrid")
         for key in keys:
             global_fprs[key] = np.linspace(0, 1, 100)
             global_tprs[key] = 0.0
@@ -98,6 +116,7 @@ if __name__ == "__main__":
         while execute:
             try:
                 function, weight = sys.argv[1], sys.argv[2]
+                probe = sys.argv[3]
                 weight = int(weight)
                 sum_of_weights += weight
             except:
@@ -109,22 +128,28 @@ if __name__ == "__main__":
                 mean_fprs[key] = np.linspace(0, 1, 100)
                 mean_tprs[key] = 0.0
             for fold in [2.0, 3.0, 4.0, 5.0, 10.0, 20.0]:
+                fold_figure = plt.figure()
                 fprs_per_method = {}
                 tprs_per_method = {}
                 fprs_per_method, tprs_per_method = execute_experiment(function, 1, fold)
-
-                save_mean_rates(fprs_per_method, 'fprs', function, weight, fold=fold)
-                save_mean_rates(tprs_per_method, 'tprs', function, weight, fold=fold)
+                for key in keys:
+                    roc_auc = metrics.auc(fprs_per_method[key], tprs_per_method[key])
+                    plot_roc_curve(fprs_per_method[key], tprs_per_method[key], roc_auc, names[key], colors[key])
+                    save_aoc_results(fold, weight, key, roc_auc, probe, function)
+                plot(fold_figure, probe, function=function, qty=weight, fold_nr=str(fold))
+                save_mean_rates(fprs_per_method, 'fprs', function, weight, probe, fold=fold)
+                save_mean_rates(tprs_per_method, 'tprs', function, weight, probe, fold=fold)
                 for key in keys:
                     mean_tprs[key] = append_roc_rates_for_average(mean_fprs[key], mean_tprs[key], fprs_per_method[key], tprs_per_method[key])
             for key in keys:
                 mean_tprs[key] /= 6
                 mean_tprs[key][-1] = 1.0
                 roc_auc = metrics.auc(mean_fprs[key], mean_tprs[key])
-                plot_roc_curve(mean_fprs[key], mean_tprs[key], roc_auc, key, colors[key])
-            plot(figure, function=function, qty=weight)
-            save_mean_rates(mean_fprs, 'fprs', function, weight)
-            save_mean_rates(mean_tprs, 'tprs', function, weight)
+                plot_roc_curve(mean_fprs[key], mean_tprs[key], roc_auc, names[key], colors[key])
+                save_aoc_results('', weight, key, roc_auc, probe, function)
+            plot(figure, probe, function=function, qty=weight)
+            save_mean_rates(mean_fprs, 'fprs', function, weight, probe)
+            save_mean_rates(mean_tprs, 'tprs', function, weight, probe)
             execute = False
             # for key in keys:
             #     global_tprs[key] += interp(global_fprs[key]*weight, mean_fprs[key]*weight, mean_tprs[key]*weight)

@@ -61,6 +61,7 @@ class DecisionFusion:
     syntheticNrOfClasses = 0
     
     syntheticFlatResult = []
+    syntheticFlatScores = []
     realFlatResult = []
     
     syntheticLBPFoldSum = []
@@ -88,6 +89,17 @@ class DecisionFusion:
     syntheticFusionConvergenceMin = []
     syntheticFusionForLayers = []
 
+    syntheticLBPFoldSumScores = []
+    syntheticLBPFusionMeanScores = []
+    syntheticFusionLayerScores = []
+    syntheticFusionRandomScores = []
+    syntheticFusionConvergenceMaxScores = []
+    syntheticFusionForLayersScores = {}
+
+    tprs_per_method = {}
+    fprs_per_method = {}
+
+
     def __init__(self, nrOfNodes, AVG_GROUP_SIZE, grLabelHomogenity, prEdgeInGroup, prEdgeBetweenGroups, nrOfLayers, folds):
         self.NUMBER_OF_NODES = nrOfNodes
         self.AVERAGE_GROUP_SIZE = AVG_GROUP_SIZE
@@ -97,6 +109,9 @@ class DecisionFusion:
         self.initLayers(nrOfLayers)
         self.nrOfLayers = nrOfLayers
         self.NUMBER_OF_FOLDS = folds
+        self.fprs_per_method = {}
+        self.tprs_per_method = {}
+
 
     def initLayers(self, nrOfLayers):
         self.LAYERS_WEIGHTS = []
@@ -110,9 +125,8 @@ class DecisionFusion:
         self.preprocessing()
         self.flatLBP()
         self.multiLayerLBP()
-        # self.rwpLBP()
-        # self.rwc()
         self.evaluation()
+        return self.fprs_per_method, self.tprs_per_method
         
     '''
     Prepare data
@@ -156,19 +170,28 @@ class DecisionFusion:
     def flatLBP(self):
         start_time = time.time()
         flatLBP = FlatLBP()
-        self.syntheticFlatResult = flatLBP.start(self.synthetic, self.NUMBER_OF_NODES, self.syntheticClassMat,
+        fold_sum, self.syntheticFlatResult = flatLBP.start(self.synthetic, self.NUMBER_OF_NODES, self.syntheticClassMat,
                                                  self.syntheticNrOfClasses, self.LBP_MAX_STEPS, self.LBP_TRESHOLD,
                                                  self.NUMBER_OF_FOLDS, self.percentOfTrainignNodes, self.method)
         print("---flatLBP time: %s seconds ---" % str(time.time() - start_time))
+        self.syntheticFlatScores = [element[2] for element in fold_sum]
 #         self.realFlatResult = flatLBP.start(self.realGraph, self.REAL_NUMBER_OF_NODES, self.realGraphClassMat, self.realNrOfClasses, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.NUMBER_OF_FOLDS)
         
         
         
     def multiLayerLBP(self):
         multiLBP = Multilayer_LBP()
-        self.syntheticLBPFoldSum, self.syntheticLBPFusionMean, self.syntheticFusionLayer, self.syntheticFusionRadom, self.syntheticFusionConvergenceMax, self.syntheticFusionConvergenceMin, self.syntheticFusionForLayers = multiLBP.start(self.synthetic, self.syntheticClassMat, self.syntheticNrOfClasses, self.NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.LAYERS_WEIGHTS, self.percentOfTrainignNodes, self.method)
-#         self.realLBPFoldSum, self.realLBPFusionMean = multiLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses, self.REAL_NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS)
 
+        fold_sum, fusion_mean, fusion_layer, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, self.syntheticLBPFoldSum, self.syntheticLBPFusionMean, self.syntheticFusionLayer, self.syntheticFusionRadom, self.syntheticFusionConvergenceMax, self.syntheticFusionConvergenceMin, self.syntheticFusionForLayers = multiLBP.start(self.synthetic, self.syntheticClassMat, self.syntheticNrOfClasses, self.NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.LAYERS_WEIGHTS, self.percentOfTrainignNodes, self.method)
+#         self.realLBPFoldSum, self.realLBPFusionMean = multiLBP.start(self.realGraph, self.realGraphClassMat, self.realNrOfClasses, self.REAL_NUMBER_OF_NODES, self.NUMBER_OF_FOLDS, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.REAL_LAYERS_WEIGHTS)
+        self.syntheticLBPFoldSumScores = [element[2] for element in fold_sum]
+        self.syntheticLBPFusionMeanScores = [element[2] for element in fusion_mean]
+        self.syntheticFusionLayerScores = [element[2] for element in fusion_layer]
+        self.syntheticFusionRandomScores = [element[2] for element in fusion_random]
+        self.syntheticFusionConvergenceMaxScores = [element[2] for element in fusion_convergence_max]
+        self.syntheticFusionConvergenceMinScores = [element[2] for element in fusion_convergence_min]
+        for layer, class_mat in layer_results.iteritems():
+            self.syntheticFusionForLayersScores[layer] = [element[2] for element in class_mat]
         
         
     def rwpLBP(self):
@@ -184,18 +207,22 @@ class DecisionFusion:
     Evaluation
     '''
     def evaluation(self):
-        self.realLabels = self.prepareOriginalLabels(self.realGraphClassMat, self.realNrOfClasses) 
         self.syntheticLabels = self.prepareOriginalLabels(self.syntheticClassMat, self.syntheticNrOfClasses)   
         ev = EvaluationTools()
-        fpr, tpr, threshold = metrics.roc_curve(self.syntheticLabels, self.syntheticFlatResult, pos_label=None, drop_intermediate=False)
-        auc_score = metrics.roc_auc_score(self.syntheticLabels, self.syntheticFlatResult, average='macro')
         fMacroFlatSynthetic = metrics.f1_score(self.syntheticLabels, self.syntheticFlatResult, pos_label=None, average='micro')
+        self.append_roc_rates_for_average(self.syntheticFlatScores, "reduction")
         fMacroLBPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticLBPFoldSum, pos_label=None, average='micro')
+        self.append_roc_rates_for_average(self.syntheticLBPFoldSumScores, "fusion_sum")
         fMacroLBPSyntheticFusionMean =  metrics.f1_score(self.syntheticLabels, self.syntheticLBPFusionMean, pos_label=None, average='micro')
+        self.append_roc_rates_for_average(self.syntheticLBPFusionMeanScores, "fusion_mean")
         fMicroLBPFusionLayer = metrics.f1_score(self.syntheticLabels, self.syntheticFusionLayer, pos_label=None, average='micro')
+        self.append_roc_rates_for_average(self.syntheticFusionLayerScores, "fusion_layer")
         fMicroLBPFusionRandom = metrics.f1_score(self.syntheticLabels, self.syntheticFusionRadom, pos_label=None, average='micro')
+        self.append_roc_rates_for_average(self.syntheticFusionRandomScores, "fusion_random")
         fMicroLBPFusionConvergenceMax = metrics.f1_score(self.syntheticLabels, self.syntheticFusionConvergenceMax, pos_label=None, average='micro')
+        self.append_roc_rates_for_average(self.syntheticFusionConvergenceMaxScores, "fusion_convergence_max")
         fMicroLBPFusionConvergenceMin = metrics.f1_score(self.syntheticLabels, self.syntheticFusionConvergenceMin, pos_label=None, average='micro')
+        self.append_roc_rates_for_average(self.syntheticFusionConvergenceMinScores, "fusion_convergence_min")
         fMicroFromLayers = {}
         for layer, result in self.syntheticFusionForLayers.iteritems():
             fMicroFromLayers[layer] = metrics.f1_score(self.syntheticLabels, result, pos_label=None, average='micro')
@@ -212,6 +239,12 @@ class DecisionFusion:
                                 self.nrOfLayers, self.method, self.NUMBER_OF_FOLDS,
                             fMacroFlatSynthetic, fMacroLBPSyntheticFoldSum, fMacroLBPSyntheticFusionMean, fMicroLBPFusionLayer, fMicroLBPFusionRandom, fMicroLBPFusionConvergenceMax, fMicroLBPFusionConvergenceMin, [str(e) + ',' + str(fMicroFromLayers[e] if fMicroFromLayers.has_key(e) else '') for e in xrange(1,22)]])
         
+
+    def append_roc_rates_for_average(self, scores, method):
+        fpr, tpr, threashold = metrics.roc_curve(self.syntheticLabels, scores)
+        self.tprs_per_method[method] = tpr
+        self.fprs_per_method[method] = fpr
+
     def prepareOriginalLabels(self, defaultClassMat, nrOfClasses):
         classMatForEv = []
         for i in range(0, defaultClassMat.__len__()):

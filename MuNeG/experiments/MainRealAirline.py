@@ -22,14 +22,14 @@ from scipy import interp
 sys.path.append('/cygdrive/d/pycharm_workspace/multiplex/MuNeG/')
 sys.path.append('D:\pycharm_workspace\multiplex\MuNeG')
 
-from experiments.DecisionFusionRealSW import DecisionFusion
+from experiments.DecisionFusionRealAirline import DecisionFusion
 import gc
 
 
-def execute_experiment(method, folds):
+def execute_experiment(method, folds, threshold, class_label):
     gc.collect()
     df = DecisionFusion(method, folds)
-    return df.processExperiment()
+    return df.processExperiment(threshold, class_label)
 
 def append_roc_rates_for_average(mean_fprs, mean_tprs, fpr, tpr):
     new_mean_tprs = mean_tprs + interp(mean_fprs, fpr, tpr)
@@ -41,7 +41,7 @@ def plot_roc_curve(fpr, tpr, roc_auc, method, color):
     line = plt.plot(fpr, tpr, color=color, lw=lw, label='%s curve (area = %0.2f)' % (method, roc_auc))
     plt.setp(line, linewidth=6)
 
-def plot(figure, type_of_exp, probe, file_name = 'global'):
+def plot(figure, qty=0, file_name = 'global'):
     plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
@@ -55,9 +55,8 @@ def plot(figure, type_of_exp, probe, file_name = 'global'):
     frame.set_facecolor('white')
     frame.set_edgecolor('black')
     figure.set_size_inches(19, 12)
-    figure.savefig('..\\results\\real_sw\\roc2\\' + file_name + '_' + type_of_exp + '_' + str(probe) + '.png', dpi=300)
+    figure.savefig('..\\results\\real_airline\\roc2\\' + file_name + '.png', dpi=300)
     plt.close(figure)
-
 
 
 def read_function(tokens):
@@ -81,25 +80,24 @@ def prepare_file():
     return tokens
 
 
-def save_mean_rates(means, rate_type, type_of_exp, probe, fold=None):
-    target_file = open('..\\results\\real_sw\\roc2\\mean_' + rate_type + '_' + (str('_'+str(fold)) if fold <> None else '') + '_' + type_of_exp + '_' + str(probe) + '.txt', 'ab')
+def save_mean_rates(means, rate_type, class_label, threshold, probe, fold=None):
+    target_file = open('..\\results\\real_airline\\roc2\\mean_' + rate_type + '_' + (str('_'+str(fold)) if fold <> None else '') + class_label + '_' + str(threshold) + '_' + str(probe) + '.txt', 'ab')
     pickle.dump(means, target_file)
     target_file.close()
 
-def save_aoc_results(probe, aoc, key, type_of_exp, fold ='', file_name = 'global'):
-    with open('..\\results\\real_sw\\aoc\\real_aoc_' + file_name + '_' + type_of_exp + '_' + str(probe) + '.csv','ab') as csvfile:
+def save_aoc_results(probe, aoc, key, class_label, threshold, fold ='', file_name = 'global'):
+    with open('..\\results\\real_airline\\aoc\\real_aoc_' + file_name + '_' + class_label + '_' + str(threshold) + '_' + str(probe) + '.csv','ab') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow([key, fold, aoc, probe])
+        writer.writerow([key, fold, class_label, threshold, aoc, probe])
 
-
-
-def main(probe, type_of_exp):
+def main(probe, class_label, threshold):
         keys = ["reduction", "fusion_sum", "fusion_mean", "fusion_layer", "fusion_random", "fusion_convergence_max", "fusion_convergence_min"]
         colors = {"reduction":'cyan',"fusion_sum":'indigo', "fusion_mean":'seagreen', "fusion_layer":'yellow', "fusion_random":'blue', "fusion_convergence_max":'darkorange', "fusion_convergence_min" : "red"}
         names = {"reduction":'LR',"fusion_sum":'SF', "fusion_mean":'MF', "fusion_layer":'LF', "fusion_random":'RF', "fusion_convergence_max":'SCF', "fusion_convergence_min" : "FCF"}
         global_fprs = {}
         global_tprs = {}
         sum_of_weights = 0
+        sns.set_style("darkgrid")
         for key in keys:
             global_fprs[key] = np.linspace(0, 1, 100)
             global_tprs[key] = 0.0
@@ -108,24 +106,20 @@ def main(probe, type_of_exp):
         while execute:
             mean_fprs = {}
             mean_tprs = {}
-            sns.set_style("darkgrid")
             figure = plt.figure()
             for key in keys:
                 mean_fprs[key] = np.linspace(0, 1, 100)
                 mean_tprs[key] = 0.0
             for fold in [2.0, 3.0, 4.0, 5.0, 10.0, 20.0]:
                 fold_figure = plt.figure()
-                fprs_per_method = {}
-                tprs_per_method = {}
-                fprs_per_method, tprs_per_method = execute_experiment(1, fold)
-
+                fprs_per_method, tprs_per_method = execute_experiment(1, fold, threshold, class_label)
                 for key in keys:
                     roc_auc = metrics.auc(fprs_per_method[key], tprs_per_method[key])
                     plot_roc_curve(fprs_per_method[key], tprs_per_method[key], roc_auc, names[key], colors[key])
-                    save_aoc_results(probe, roc_auc, key, type_of_exp, fold=fold, file_name='fold_'+str(fold))
-                plot(fold_figure, type_of_exp, probe, file_name='fold_'+str(fold))
-                save_mean_rates(fprs_per_method, 'fprs', type_of_exp, probe, fold=fold)
-                save_mean_rates(tprs_per_method, 'tprs', type_of_exp, probe, fold=fold)
+                    save_aoc_results(probe, roc_auc, key, class_label, threshold, fold=fold, file_name='fold_'+str(fold))
+                plot(fold_figure, file_name='fold_'+str(fold) + '_' + class_label + '_' + str(threshold) + '_' + str(probe))
+                save_mean_rates(fprs_per_method, 'fprs', class_label, threshold, probe, fold=fold)
+                save_mean_rates(tprs_per_method, 'tprs', class_label, threshold, probe, fold=fold)
                 for key in keys:
                     mean_tprs[key] = append_roc_rates_for_average(mean_fprs[key], mean_tprs[key], fprs_per_method[key], tprs_per_method[key])
             for key in keys:
@@ -133,10 +127,10 @@ def main(probe, type_of_exp):
                 mean_tprs[key][-1] = 1.0
                 roc_auc = metrics.auc(mean_fprs[key], mean_tprs[key])
                 plot_roc_curve(mean_fprs[key], mean_tprs[key], roc_auc, names[key], colors[key])
-                save_aoc_results(probe, roc_auc, key, type_of_exp)
-            plot(figure, type_of_exp, probe)
-            save_mean_rates(mean_fprs, 'fprs', type_of_exp, probe)
-            save_mean_rates(mean_tprs, 'tprs', type_of_exp, probe)
+                save_aoc_results(probe, roc_auc, key, class_label, threshold)
+            plot(figure, file_name='global_' + class_label + '_' + str(threshold) + '_' + str(probe))
+            save_mean_rates(mean_fprs, 'fprs', class_label, threshold, probe)
+            save_mean_rates(mean_tprs, 'tprs', class_label, threshold, probe)
             execute = False
             # for key in keys:
             #     global_tprs[key] += interp(global_fprs[key]*weight, mean_fprs[key]*weight, mean_tprs[key]*weight)
@@ -149,9 +143,10 @@ def main(probe, type_of_exp):
         #     plot_roc_curve(global_fprs[key], global_tprs[key], roc_auc, key, colors[key])
         # plot(figure, function="")
 
-
 if __name__ == '__main__':
     for i in xrange(1, 11):
-        main(i, 'anakin_dark')
+        main(i, 'g', 1)
+
+
 
 

@@ -14,7 +14,7 @@ from graph.method.lbp.Multilayer_LBP import Multilayer_LBP
 from graph.method.lbp.NetworkUtils import NetworkUtils
 from graph.method.lbp.RwpLBP import RwpLBP
 from graph.method.random_walk.RandomWalkMethods import RandomWalkMethods
-from graph.reader.DanioRerio.DanioRerioReader import DanioRerioReader
+from graph.reader.Airline2016.Airline2016Reader import Airline2016Reader
 
 
 class DecisionFusion(object):
@@ -26,7 +26,7 @@ class DecisionFusion(object):
     AVERAGE_GROUP_SIZE = 50
      
     LAYERS_WEIGHTS = []
-    REAL_LAYERS_WEIGHTS = [1, 2, 3, 4, 5]
+    REAL_LAYERS_WEIGHTS = [i for i in xrange(1, 133)]
     LAYERS_NAME = []
      
     GROUP_LABEL_HOMOGENITY = 1
@@ -35,8 +35,8 @@ class DecisionFusion(object):
      
     NUMBER_OF_FOLDS = 5
      
-    LBP_MAX_STEPS = 1000
-    LBP_TRESHOLD = 0.0001
+    LBP_MAX_STEPS = 100
+    LBP_TRESHOLD = 0.001
     
     training = []
     validation = []
@@ -99,12 +99,11 @@ class DecisionFusion(object):
     tprs_per_method = {}
     keys = ["reduction", "fusion_sum", "fusion_mean", "fusion_layer", "fusion_random", "fusion_convergence_max", "fusion_convergence_min"]
 
-    def __init__(self, method, fold, fun):
+    def __init__(self, method, fold):
         if method == 1:
             self.NUMBER_OF_FOLDS = fold
         else:
             self.percentOfTrainignNodes = fold
-        self.fun = fun
         self.method = method
         self.fprs_per_method = {}
         self.tprs_per_method = {}
@@ -127,8 +126,8 @@ class DecisionFusion(object):
         self.NUMBER_OF_NODES = nrOfNodes
         self.AVERAGE_GROUP_SIZE = nrOfNodes / nrOfGroups
         
-    def processExperiment(self):
-        self.readRealData()
+    def processExperiment(self, threshold, class_label):
+        self.readRealData(threshold, class_label)
         self.preprocessing()
         self.flatLBP()
         self.multiLayerLBP()
@@ -140,13 +139,13 @@ class DecisionFusion(object):
     '''
     Prepare data
     '''      
-    def readRealData(self):
-        reader = DanioRerioReader()
-        reader.read(self.fun)
+    def readRealData(self, threshold, class_label):
+        reader = Airline2016Reader()
+        reader.read(threshold, classLabel = class_label)
         self.realGraph = reader.graph
         # ga = GraphAnalyser(self.realGraph)
         # ga.analyse()
-        self.terms_map = reader.create_go_terms_map()
+        # self.terms_map = reader.create_go_terms_map()
 
     '''
     Preprocessing
@@ -234,17 +233,11 @@ class DecisionFusion(object):
             writer = csv.writer(csvfile)
         
             writer.writerow([
-                self.realGraph.nodes().__len__(),self.fun, self.terms_map[self.fun], self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
+                self.realGraph.nodes().__len__(), self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
                             fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMicroLBPFusionLayer, fMicroLBPFusionRandom, fMicroLBPFusionConvergenceMax, fMicroLBPFusionConvergenceMin, [str(e[0]) + ',' + str(e[1]) for e in fMicroFromLayers.iteritems()]])
 
     def append_roc_rates_for_average(self, scores, method):
-        new_scores = []
-        real_labels = []
-        for i in xrange(0, len(scores)):
-            if scores[i] <> 0.5:
-                new_scores.append(scores[i])
-                real_labels.append(self.realLabels[i])
-        fpr, tpr, threashold = metrics.roc_curve(real_labels, new_scores)
+        fpr, tpr, threashold = metrics.roc_curve(self.realLabels, scores)
         self.tprs_per_method[method] = tpr
         self.fprs_per_method[method] = fpr
 

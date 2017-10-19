@@ -11,6 +11,7 @@ DTYPE=np.float64
 ctypedef np.float64_t DTYPE_t
 import random
 import operator
+import csv
 
 cdef class CrossValMethods:
     '''
@@ -49,6 +50,7 @@ cdef class CrossValMethods:
 
                 #-------------LBP----------------------
             class_mat, i = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
+            self.write_stop_iters(i, fold_number, 'flat')
             #create zero result matrix
             sum = []
             for node in nodes:
@@ -150,6 +152,7 @@ cdef class CrossValMethods:
                 else:    
                     #-------------LBP----------------------
                     class_mat, iterations = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
+                self.write_stop_iters(iterations, fold_number, layer_label)
                 map_iterations[layer_label] = iterations
                 res = []
                 iter = 0
@@ -318,3 +321,8 @@ cdef class CrossValMethods:
         for j in xrange(0, nrOfNodes, 1):
             sum_for_fusion_mean.append([j, 0, 0])
         return sum_for_fusion_mean
+
+    def write_stop_iters(self, iteration, fold_number, layer_or_flat):
+        with open('..\\results\\iterations\\output.csv', 'ab') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([iteration, fold_number, layer_or_flat])

@@ -4,10 +4,12 @@ Created on 18 mar 2014
 @author: Adek
 '''
 
-import time
-import sys
-import networkx as nx
 import os
+import sys
+import time
+
+import networkx as nx
+
 sys.path.append('/home/apopiel/multiplex/MuNeG')
 from graph.gen.GraphGenerator import GraphGenerator
 
@@ -33,10 +35,10 @@ if __name__ == '__main__':
 
     nodes = int(sys.argv[1])
     size = int(sys.argv[2])
-    for label in [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]:
-        for probIn in [5, 6, 7, 8, 9]:
-            for probBetween in [0.1, 0.5, 1, 2, 3, 4, 5]:
-                for nrOfLayers in [2, 3, 4, 5, 6, 8, 10, 21]:
+    for label in [10]:
+        for probIn in [5]:
+            for probBetween in [1]:
+                for nrOfLayers in [21]:
 
                     layer_names, layer_weights = prepare_layers()
 

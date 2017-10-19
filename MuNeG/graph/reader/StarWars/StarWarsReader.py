@@ -25,10 +25,30 @@ class StarWarsReader():
             raise ValueError('Node should be available in set')
         return node
 
-    def read(self):
+    def read(self, isAnakinEqualVader = True):
         self.graph = nx.MultiGraph()
         self.read_nodes()
         self.read_edges()
+        self.substituteVaderWithAnakinIfNecessary(isAnakinEqualVader)
+        pass
+
+    def substituteVaderWithAnakinIfNecessary(self, isAnakinEqualVader):
+        if isAnakinEqualVader:
+            vader = filter(lambda n: n.id == 64, self.graph.nodes())[0]
+            anakin = filter(lambda n: n.id == 18, self.graph.nodes())[0]
+            vader_edges = self.graph.edges(vader, data=True)
+            for e in vader_edges:
+                if (e[0].id != 18 and e[1].name != 18):
+                    if e[0] == vader:
+                        self.graph.add_edge(anakin, e[1], weight=e[2]['weight'], layer=e[2]['layer'],
+                                            conWeight=e[2]['conWeight'],
+                                            scenes=e[2]['scenes'])
+                    elif e[1] == vader:
+                        self.graph.add_edge(anakin, e[0], weight=e[2]['weight'], layer=e[2]['layer'],
+                                            conWeight=e[2]['conWeight'],
+                                            scenes=e[2]['scenes'])
+            self.graph.remove_node(vader)
+            self.graph.add_node(vader)
 
     def read_edges(self):
         for i in xrange(1, 7):
