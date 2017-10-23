@@ -24,6 +24,7 @@ class LoopyBeliefPropagation:
         '''
     def lbp(self, adjMat, classMat, repetitions, epsilon, trainingInstances, testingInstances):
         res_in = classMat
+
         for i in range(0, repetitions):
             '''
             propagacja poprzez mnozenie macierzy

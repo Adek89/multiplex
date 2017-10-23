@@ -3,13 +3,9 @@ Created on 24 mar 2014
 
 @author: Adek
 '''
-import networkx as nx
-import numpy as np
 import re
-from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
-from graph.gen.Node import Node
-cimport cython
-import numpy.matrixlib.defmatrix as defmatrix
+
+import networkx as nx
 cimport numpy as np
 cdef class LBPTools:
     '''
@@ -43,27 +39,27 @@ cdef class LBPTools:
         for i in range(0, nrOfClasses):
             row.append(0.5)
         return row
-    
-    cdef list prepareEmptyRow(self, int nrOfClasses):
+
+    cdef list prepareEmptyRow(self, label, int nrOfClasses):
         cdef list row = []
         cdef int i
         for i in range(0, nrOfClasses):
-            row.append(1.0)
+            row.append(0.0)
         return row
-    
+
     cpdef giveCorrectData(self, int label):
         # print ('Give correct data %s '% label)
         # print self.folds.get(str(label))
         # print self.adjMats.get(str(label))
         # print self.nodes.get(str(label))
         return self.folds[str(label)], self.adjMats[str(label)], self.nodes[str(label)]
-        
+
     cpdef np.ndarray giveCorrectClassMat(self, int label):
         self.folds[str(label)] = self.classMats[str(label)].copy()
         # print ('Give correct data %s '% label)
         # print self.folds[str(label)]
         return self.folds[str(label)]
-    
+
     cdef void addToGraph(self, g, n0, n1, set nodes, np.ndarray classMat, int nrOfClasses, edge):
 
         if not g.has_node(n0):
@@ -138,7 +134,7 @@ cdef class LBPTools:
         cdef adjMat
         for node in rest:
             nodes.add(node)
-            row = self.prepareEmptyRow(nrOfClasses)
+            row = self.prepareEmptyRow(node.label, nrOfClasses)
             classMat[node.id] = row
             g.add_node(node.id)
         
@@ -162,9 +158,9 @@ cdef class LBPTools:
     
     cpdef crossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
                      np.ndarray defaultClassMat, int lbpSteps, float lbpThreshold,
-                     k_fold_cross_validation, separationMethod, lbp, list layerWeights, crossValMethod, isRandomWalk, percentOfKnownNodes, adjMarPrep, prepareLayers, prepareClassMat):
+                     k_fold_cross_validation, folds, separationMethod, lbp, list layerWeights, crossValMethod, isRandomWalk, percentOfKnownNodes, adjMarPrep, prepareLayers, prepareClassMat):
         return crossValMethod(items, numberOfFolds, graph, nrOfNodes,
-                     defaultClassMat, lbpSteps, lbpThreshold, k_fold_cross_validation, separationMethod, lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMarPrep, prepareLayers, prepareClassMat)
+                     defaultClassMat, lbpSteps, lbpThreshold, k_fold_cross_validation, folds, separationMethod, lbp, layerWeights, isRandomWalk, percentOfKnownNodes, adjMarPrep, prepareLayers, prepareClassMat)
 
 
     property classMats:

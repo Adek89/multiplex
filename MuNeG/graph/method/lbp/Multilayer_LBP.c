@@ -842,8 +842,8 @@ struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP {
  */
 
 struct __pyx_vtabstruct_5graph_6method_3lbp_15CrossValMethods_CrossValMethods {
-  PyObject *(*flatCrossVal)(struct __pyx_obj_5graph_6method_3lbp_15CrossValMethods_CrossValMethods *, PyObject *, int, PyObject *, int, PyObject *, int, float, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, float, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch);
-  PyObject *(*multiLayerCrossVal)(struct __pyx_obj_5graph_6method_3lbp_15CrossValMethods_CrossValMethods *, PyObject *, int, PyObject *, int, PyArrayObject *, int, float, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, float, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  PyObject *(*flatCrossVal)(struct __pyx_obj_5graph_6method_3lbp_15CrossValMethods_CrossValMethods *, PyObject *, int, PyObject *, int, PyObject *, int, float, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, float, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  PyObject *(*multiLayerCrossVal)(struct __pyx_obj_5graph_6method_3lbp_15CrossValMethods_CrossValMethods *, PyObject *, int, PyObject *, int, PyArrayObject *, int, float, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, float, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5graph_6method_3lbp_15CrossValMethods_CrossValMethods *__pyx_vtabptr_5graph_6method_3lbp_15CrossValMethods_CrossValMethods;
 
@@ -857,7 +857,7 @@ static struct __pyx_vtabstruct_5graph_6method_3lbp_15CrossValMethods_CrossValMet
  */
 
 struct __pyx_vtabstruct_5graph_6method_3lbp_8LBPTools_LBPTools {
-  PyObject *(*crossVal)(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *, PyObject *, int, PyObject *, int, PyArrayObject *, int, float, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  PyObject *(*crossVal)(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *, PyObject *, int, PyObject *, int, PyArrayObject *, int, float, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch);
   PyObject *(*prepareUnobservdRow)(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *, int);
   PyObject *(*prepareEmptyRow)(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *, int);
   PyObject *(*giveCorrectData)(struct __pyx_obj_5graph_6method_3lbp_8LBPTools_LBPTools *, int, int __pyx_skip_dispatch);
@@ -895,7 +895,7 @@ static struct __pyx_vtabstruct_5graph_6method_6common_11CommonUtils_CommonUtils 
  */
 
 struct __pyx_vtabstruct_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP {
-  PyObject *(*start)(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *, PyObject *, PyArrayObject *, int, int, int, int, float, PyObject *, float, int, int __pyx_skip_dispatch);
+  PyObject *(*start)(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *, PyObject *, PyArrayObject *, int, int, int, int, float, PyObject *, float, int, PyObject *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_vtabptr_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP;
 
@@ -1219,7 +1219,7 @@ static PyTypeObject *__Pyx_ImportType(const char *module_name, const char *class
 
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_start(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_nrOfNodes, int __pyx_v_nrOfFolds, int __pyx_v_lbpMaxSteps, float __pyx_v_lbpThreshold, PyObject *__pyx_v_layerWeights, float __pyx_v_percentOfTrainingNodes, int __pyx_v_method_type, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_start(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_nrOfNodes, int __pyx_v_nrOfFolds, int __pyx_v_lbpMaxSteps, float __pyx_v_lbpThreshold, PyObject *__pyx_v_layerWeights, float __pyx_v_percentOfTrainingNodes, int __pyx_v_method_type, PyObject *__pyx_v_folds, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'cpython.buffer' */
 
@@ -1305,6 +1305,7 @@ static char __pyx_k_main[] = "__main__";
 static char __pyx_k_open[] = "open";
 static char __pyx_k_test[] = "__test__";
 static char __pyx_k_time[] = "time";
+static char __pyx_k_folds[] = "folds";
 static char __pyx_k_graph[] = "graph";
 static char __pyx_k_nodes[] = "nodes";
 static char __pyx_k_print[] = "print";
@@ -1373,6 +1374,7 @@ static PyObject *__pyx_n_s_csv;
 static PyObject *__pyx_n_s_defaultClassMat;
 static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_file;
+static PyObject *__pyx_n_s_folds;
 static PyObject *__pyx_n_s_giveCorrectData;
 static PyObject *__pyx_n_s_graph;
 static PyObject *__pyx_n_s_graph_method_common_XValWithSamp;
@@ -1416,7 +1418,7 @@ static PyObject *__pyx_n_s_wb;
 static PyObject *__pyx_n_s_writer;
 static PyObject *__pyx_n_s_writerows;
 static int __pyx_pf_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP___cinit__(CYTHON_UNUSED struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_2start(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_nrOfNodes, int __pyx_v_nrOfFolds, int __pyx_v_lbpMaxSteps, float __pyx_v_lbpThreshold, PyObject *__pyx_v_layerWeights, float __pyx_v_percentOfTrainingNodes, int __pyx_v_method_type); /* proto */
+static PyObject *__pyx_pf_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_2start(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_nrOfNodes, int __pyx_v_nrOfFolds, int __pyx_v_lbpMaxSteps, float __pyx_v_lbpThreshold, PyObject *__pyx_v_layerWeights, float __pyx_v_percentOfTrainingNodes, int __pyx_v_method_type, PyObject *__pyx_v_folds); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_tp_new_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -1465,13 +1467,13 @@ static int __pyx_pf_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP___cini
 /* "graph\method\lbp\Multilayer_LBP.pyx":33
  * 
  * 
- *     cpdef start(self, graph, np.ndarray defaultClassMat, int nrOfClasses, int nrOfNodes, int nrOfFolds, int lbpMaxSteps, float lbpThreshold, list layerWeights, float percentOfTrainingNodes, int method_type):             # <<<<<<<<<<<<<<
+ *     cpdef start(self, graph, np.ndarray defaultClassMat, int nrOfClasses, int nrOfNodes, int nrOfFolds, int lbpMaxSteps, float lbpThreshold, list layerWeights, float percentOfTrainingNodes, int method_type, list folds):             # <<<<<<<<<<<<<<
  * 
  * 
  */
 
 static PyObject *__pyx_pw_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_3start(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_start(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_nrOfNodes, int __pyx_v_nrOfFolds, int __pyx_v_lbpMaxSteps, float __pyx_v_lbpThreshold, PyObject *__pyx_v_layerWeights, float __pyx_v_percentOfTrainingNodes, int __pyx_v_method_type, int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_start(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_nrOfNodes, int __pyx_v_nrOfFolds, int __pyx_v_lbpMaxSteps, float __pyx_v_lbpThreshold, PyObject *__pyx_v_layerWeights, float __pyx_v_percentOfTrainingNodes, int __pyx_v_method_type, PyObject *__pyx_v_folds, int __pyx_skip_dispatch) {
   CYTHON_UNUSED int __pyx_v_fold_number;
   PyObject *__pyx_v_items = 0;
   PyObject *__pyx_v_timer = NULL;
@@ -1566,7 +1568,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
           __pyx_t_12 = 1;
         }
       }
-      __pyx_t_13 = PyTuple_New(10+__pyx_t_12); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_13 = PyTuple_New(11+__pyx_t_12); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_13);
       if (__pyx_t_11) {
         __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_11); __pyx_t_11 = NULL;
@@ -1594,6 +1596,9 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
       PyTuple_SET_ITEM(__pyx_t_13, 8+__pyx_t_12, __pyx_t_8);
       __Pyx_GIVEREF(__pyx_t_9);
       PyTuple_SET_ITEM(__pyx_t_13, 9+__pyx_t_12, __pyx_t_9);
+      __Pyx_INCREF(__pyx_v_folds);
+      __Pyx_GIVEREF(__pyx_v_folds);
+      PyTuple_SET_ITEM(__pyx_t_13, 10+__pyx_t_12, __pyx_v_folds);
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
@@ -1862,7 +1867,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
  *         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
  *         fold_sum, fusion_mean, fusion_mean_scores, fusion_layer, fusion_layer_scores, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,             # <<<<<<<<<<<<<<
  *                        defaultClassMat, lbpMaxSteps, lbpThreshold,
- *                        x_val, tools.giveCorrectData,
+ *                        x_val, folds, tools.giveCorrectData,
  */
   __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_tools, __pyx_n_s_crossVal); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
@@ -1875,7 +1880,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
  *         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
  *         fold_sum, fusion_mean, fusion_mean_scores, fusion_layer, fusion_layer_scores, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
  *                        defaultClassMat, lbpMaxSteps, lbpThreshold,             # <<<<<<<<<<<<<<
- *                        x_val, tools.giveCorrectData,
+ *                        x_val, folds, tools.giveCorrectData,
  *                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)
  */
   __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_lbpMaxSteps); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -1886,7 +1891,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
   /* "graph\method\lbp\Multilayer_LBP.pyx":51
  *         fold_sum, fusion_mean, fusion_mean_scores, fusion_layer, fusion_layer_scores, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
  *                        defaultClassMat, lbpMaxSteps, lbpThreshold,
- *                        x_val, tools.giveCorrectData,             # <<<<<<<<<<<<<<
+ *                        x_val, folds, tools.giveCorrectData,             # <<<<<<<<<<<<<<
  *                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)
  * 
  */
@@ -1895,7 +1900,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
 
   /* "graph\method\lbp\Multilayer_LBP.pyx":52
  *                        defaultClassMat, lbpMaxSteps, lbpThreshold,
- *                        x_val, tools.giveCorrectData,
+ *                        x_val, folds, tools.giveCorrectData,
  *                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)             # <<<<<<<<<<<<<<
  * 
  *         print 'Variable fusion mean: ' + str(fusion_mean)
@@ -1922,7 +1927,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
       __pyx_t_12 = 1;
     }
   }
-  __pyx_t_15 = PyTuple_New(17+__pyx_t_12); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_15 = PyTuple_New(18+__pyx_t_12); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_15);
   if (__pyx_t_14) {
     __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_14); __pyx_t_14 = NULL;
@@ -1947,27 +1952,30 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
   __Pyx_INCREF(__pyx_v_x_val);
   __Pyx_GIVEREF(__pyx_v_x_val);
   PyTuple_SET_ITEM(__pyx_t_15, 7+__pyx_t_12, __pyx_v_x_val);
+  __Pyx_INCREF(__pyx_v_folds);
+  __Pyx_GIVEREF(__pyx_v_folds);
+  PyTuple_SET_ITEM(__pyx_t_15, 8+__pyx_t_12, __pyx_v_folds);
   __Pyx_GIVEREF(__pyx_t_7);
-  PyTuple_SET_ITEM(__pyx_t_15, 8+__pyx_t_12, __pyx_t_7);
+  PyTuple_SET_ITEM(__pyx_t_15, 9+__pyx_t_12, __pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_15, 9+__pyx_t_12, __pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_15, 10+__pyx_t_12, __pyx_t_6);
   __Pyx_INCREF(__pyx_v_layerWeights);
   __Pyx_GIVEREF(__pyx_v_layerWeights);
-  PyTuple_SET_ITEM(__pyx_t_15, 10+__pyx_t_12, __pyx_v_layerWeights);
+  PyTuple_SET_ITEM(__pyx_t_15, 11+__pyx_t_12, __pyx_v_layerWeights);
   __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_15, 11+__pyx_t_12, __pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_15, 12+__pyx_t_12, __pyx_t_5);
   __Pyx_INCREF(Py_False);
   __Pyx_GIVEREF(Py_False);
-  PyTuple_SET_ITEM(__pyx_t_15, 12+__pyx_t_12, Py_False);
+  PyTuple_SET_ITEM(__pyx_t_15, 13+__pyx_t_12, Py_False);
   __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_15, 13+__pyx_t_12, __pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_15, 14+__pyx_t_12, __pyx_t_4);
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
-  PyTuple_SET_ITEM(__pyx_t_15, 14+__pyx_t_12, Py_None);
+  PyTuple_SET_ITEM(__pyx_t_15, 15+__pyx_t_12, Py_None);
   __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_15, 15+__pyx_t_12, __pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_15, 16+__pyx_t_12, __pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_11);
-  PyTuple_SET_ITEM(__pyx_t_15, 16+__pyx_t_12, __pyx_t_11);
+  PyTuple_SET_ITEM(__pyx_t_15, 17+__pyx_t_12, __pyx_t_11);
   __pyx_t_10 = 0;
   __pyx_t_2 = 0;
   __pyx_t_1 = 0;
@@ -2069,7 +2077,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
  *         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
  *         fold_sum, fusion_mean, fusion_mean_scores, fusion_layer, fusion_layer_scores, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,             # <<<<<<<<<<<<<<
  *                        defaultClassMat, lbpMaxSteps, lbpThreshold,
- *                        x_val, tools.giveCorrectData,
+ *                        x_val, folds, tools.giveCorrectData,
  */
   __pyx_v_fold_sum = __pyx_t_9;
   __pyx_t_9 = 0;
@@ -2791,7 +2799,7 @@ static PyObject *__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_s
   /* "graph\method\lbp\Multilayer_LBP.pyx":33
  * 
  * 
- *     cpdef start(self, graph, np.ndarray defaultClassMat, int nrOfClasses, int nrOfNodes, int nrOfFolds, int lbpMaxSteps, float lbpThreshold, list layerWeights, float percentOfTrainingNodes, int method_type):             # <<<<<<<<<<<<<<
+ *     cpdef start(self, graph, np.ndarray defaultClassMat, int nrOfClasses, int nrOfNodes, int nrOfFolds, int lbpMaxSteps, float lbpThreshold, list layerWeights, float percentOfTrainingNodes, int method_type, list folds):             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -2865,6 +2873,7 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_
   PyObject *__pyx_v_layerWeights = 0;
   float __pyx_v_percentOfTrainingNodes;
   int __pyx_v_method_type;
+  PyObject *__pyx_v_folds = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2872,12 +2881,13 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("start (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_graph,&__pyx_n_s_defaultClassMat,&__pyx_n_s_nrOfClasses,&__pyx_n_s_nrOfNodes,&__pyx_n_s_nrOfFolds,&__pyx_n_s_lbpMaxSteps,&__pyx_n_s_lbpThreshold,&__pyx_n_s_layerWeights,&__pyx_n_s_percentOfTrainingNodes,&__pyx_n_s_method_type,0};
-    PyObject* values[10] = {0,0,0,0,0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_graph,&__pyx_n_s_defaultClassMat,&__pyx_n_s_nrOfClasses,&__pyx_n_s_nrOfNodes,&__pyx_n_s_nrOfFolds,&__pyx_n_s_lbpMaxSteps,&__pyx_n_s_lbpThreshold,&__pyx_n_s_layerWeights,&__pyx_n_s_percentOfTrainingNodes,&__pyx_n_s_method_type,&__pyx_n_s_folds,0};
+    PyObject* values[11] = {0,0,0,0,0,0,0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case 11: values[10] = PyTuple_GET_ITEM(__pyx_args, 10);
         case 10: values[9] = PyTuple_GET_ITEM(__pyx_args, 9);
         case  9: values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
         case  8: values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
@@ -2899,53 +2909,58 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_defaultClassMat)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_nrOfClasses)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_nrOfNodes)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_nrOfFolds)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_lbpMaxSteps)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  6:
         if (likely((values[6] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_lbpThreshold)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, 6); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 6); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  7:
         if (likely((values[7] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_layerWeights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, 7); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 7); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  8:
         if (likely((values[8] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_percentOfTrainingNodes)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, 8); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 8); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  9:
         if (likely((values[9] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_method_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, 9); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 9); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        }
+        case 10:
+        if (likely((values[10] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_folds)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, 10); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "start") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 10) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 11) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -2958,6 +2973,7 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_
       values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
       values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
       values[9] = PyTuple_GET_ITEM(__pyx_args, 9);
+      values[10] = PyTuple_GET_ITEM(__pyx_args, 10);
     }
     __pyx_v_graph = values[0];
     __pyx_v_defaultClassMat = ((PyArrayObject *)values[1]);
@@ -2969,10 +2985,11 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_
     __pyx_v_layerWeights = ((PyObject*)values[7]);
     __pyx_v_percentOfTrainingNodes = __pyx_PyFloat_AsFloat(values[8]); if (unlikely((__pyx_v_percentOfTrainingNodes == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     __pyx_v_method_type = __Pyx_PyInt_As_int(values[9]); if (unlikely((__pyx_v_method_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_folds = ((PyObject*)values[10]);
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("start", 1, 10, 10, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("start", 1, 11, 11, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("graph.method.lbp.Multilayer_LBP.Multilayer_LBP.start", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2980,7 +2997,8 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_defaultClassMat), __pyx_ptype_5numpy_ndarray, 1, "defaultClassMat", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_layerWeights), (&PyList_Type), 1, "layerWeights", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_r = __pyx_pf_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_2start(((struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *)__pyx_v_self), __pyx_v_graph, __pyx_v_defaultClassMat, __pyx_v_nrOfClasses, __pyx_v_nrOfNodes, __pyx_v_nrOfFolds, __pyx_v_lbpMaxSteps, __pyx_v_lbpThreshold, __pyx_v_layerWeights, __pyx_v_percentOfTrainingNodes, __pyx_v_method_type);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_folds), (&PyList_Type), 1, "folds", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_r = __pyx_pf_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_2start(((struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *)__pyx_v_self), __pyx_v_graph, __pyx_v_defaultClassMat, __pyx_v_nrOfClasses, __pyx_v_nrOfNodes, __pyx_v_nrOfFolds, __pyx_v_lbpMaxSteps, __pyx_v_lbpThreshold, __pyx_v_layerWeights, __pyx_v_percentOfTrainingNodes, __pyx_v_method_type, __pyx_v_folds);
 
   /* function exit code */
   goto __pyx_L0;
@@ -2991,7 +3009,7 @@ static PyObject *__pyx_pw_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_2start(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_nrOfNodes, int __pyx_v_nrOfFolds, int __pyx_v_lbpMaxSteps, float __pyx_v_lbpThreshold, PyObject *__pyx_v_layerWeights, float __pyx_v_percentOfTrainingNodes, int __pyx_v_method_type) {
+static PyObject *__pyx_pf_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_2start(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *__pyx_v_self, PyObject *__pyx_v_graph, PyArrayObject *__pyx_v_defaultClassMat, int __pyx_v_nrOfClasses, int __pyx_v_nrOfNodes, int __pyx_v_nrOfFolds, int __pyx_v_lbpMaxSteps, float __pyx_v_lbpThreshold, PyObject *__pyx_v_layerWeights, float __pyx_v_percentOfTrainingNodes, int __pyx_v_method_type, PyObject *__pyx_v_folds) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3000,7 +3018,7 @@ static PyObject *__pyx_pf_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("start", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_start(__pyx_v_self, __pyx_v_graph, __pyx_v_defaultClassMat, __pyx_v_nrOfClasses, __pyx_v_nrOfNodes, __pyx_v_nrOfFolds, __pyx_v_lbpMaxSteps, __pyx_v_lbpThreshold, __pyx_v_layerWeights, __pyx_v_percentOfTrainingNodes, __pyx_v_method_type, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_start(__pyx_v_self, __pyx_v_graph, __pyx_v_defaultClassMat, __pyx_v_nrOfClasses, __pyx_v_nrOfNodes, __pyx_v_nrOfFolds, __pyx_v_lbpMaxSteps, __pyx_v_lbpThreshold, __pyx_v_layerWeights, __pyx_v_percentOfTrainingNodes, __pyx_v_method_type, __pyx_v_folds, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5321,6 +5339,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_defaultClassMat, __pyx_k_defaultClassMat, sizeof(__pyx_k_defaultClassMat), 0, 0, 1, 1},
   {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
+  {&__pyx_n_s_folds, __pyx_k_folds, sizeof(__pyx_k_folds), 0, 0, 1, 1},
   {&__pyx_n_s_giveCorrectData, __pyx_k_giveCorrectData, sizeof(__pyx_k_giveCorrectData), 0, 0, 1, 1},
   {&__pyx_n_s_graph, __pyx_k_graph, sizeof(__pyx_k_graph), 0, 0, 1, 1},
   {&__pyx_n_s_graph_method_common_XValWithSamp, __pyx_k_graph_method_common_XValWithSamp, sizeof(__pyx_k_graph_method_common_XValWithSamp), 0, 0, 1, 1},
@@ -5547,7 +5566,7 @@ PyMODINIT_FUNC PyInit_Multilayer_LBP(void)
   /*--- Function export code ---*/
   /*--- Type init code ---*/
   __pyx_vtabptr_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP = &__pyx_vtable_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP;
-  __pyx_vtable_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP.start = (PyObject *(*)(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *, PyObject *, PyArrayObject *, int, int, int, int, float, PyObject *, float, int, int __pyx_skip_dispatch))__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_start;
+  __pyx_vtable_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP.start = (PyObject *(*)(struct __pyx_obj_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP *, PyObject *, PyArrayObject *, int, int, int, int, float, PyObject *, float, int, PyObject *, int __pyx_skip_dispatch))__pyx_f_5graph_6method_3lbp_14Multilayer_LBP_14Multilayer_LBP_start;
   if (PyType_Ready(&__pyx_type_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP.tp_print = 0;
   if (__Pyx_SetVtable(__pyx_type_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP.tp_dict, __pyx_vtabptr_5graph_6method_3lbp_14Multilayer_LBP_Multilayer_LBP) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}

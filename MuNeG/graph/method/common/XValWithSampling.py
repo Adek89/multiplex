@@ -16,8 +16,10 @@ class XValMethods():
         sorted_nodes = sorted(nodes, key= lambda node: node.id)
         y = [node.label for node in sorted_nodes]
         str = StratifiedKFold(y, n_folds=nr_of_folds)
+        folds = []
         for train_index, test_index in str:
-            yield train_index.tolist(), test_index.tolist()
+            folds.append((train_index.tolist(), test_index.tolist()))
+        return folds
 
 
     #1 - degree

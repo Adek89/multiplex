@@ -5,8 +5,7 @@ Created on 18 mar 2014
 '''
 import time
 
-import numpy as np
-
+cimport numpy as np
 from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 cimport graph.method.lbp.CrossValMethods as crossValMethods
 cimport graph.method.lbp.LBPTools as tool
@@ -24,7 +23,7 @@ cdef class FlatLBP:
         '''
         
     cpdef start(self, graph, int nrOfNodes, np.ndarray defaultClassMat, int nrOfClasses, int lbpSteps, float lbpThreshold, int numberOfFolds,
-                        float percentOfTrainignNodes, int method_type):
+                        float percentOfTrainignNodes, int method_type, list folds):
         cdef list fold_sum = []
         cdef int i
         for i in range(1,nrOfNodes+1,1):
@@ -46,7 +45,7 @@ cdef class FlatLBP:
         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
         fold_sum = tools.crossVal(items, numberOfFolds, graph, nrOfNodes,
                        defaultClassMat, lbpSteps, lbpThreshold,
-                       x_val, common.prepareFoldClassMat,
+                       x_val, folds, common.prepareFoldClassMat,
                        lbp.lbp, None, method.flatCrossVal, False, percentOfTrainignNodes, None, None, None)
         
         cdef list foldSumEstimated = tools.prepareToEvaluate(fold_sum, nrOfClasses)

@@ -30,7 +30,7 @@ cdef class Multilayer_LBP:
         pass
 
 
-    cpdef start(self, graph, np.ndarray defaultClassMat, int nrOfClasses, int nrOfNodes, int nrOfFolds, int lbpMaxSteps, float lbpThreshold, list layerWeights, float percentOfTrainingNodes, int method_type):
+    cpdef start(self, graph, np.ndarray defaultClassMat, int nrOfClasses, int nrOfNodes, int nrOfFolds, int lbpMaxSteps, float lbpThreshold, list layerWeights, float percentOfTrainingNodes, int method_type, list folds):
         
         
         
@@ -48,7 +48,7 @@ cdef class Multilayer_LBP:
         x_val = x_val_methods.stratifies_x_val if method_type == 1 else common.k_fold_cross_validation
         fold_sum, fusion_mean, fusion_mean_scores, fusion_layer, fusion_layer_scores, fusion_random, fusion_convergence_max, fusion_convergence_min, layer_results, rwp = tools.crossVal(items, nrOfFolds, graph, nrOfNodes,
                        defaultClassMat, lbpMaxSteps, lbpThreshold, 
-                       x_val, tools.giveCorrectData,
+                       x_val, folds, tools.giveCorrectData,
                        lbp.lbp, layerWeights, method.multiLayerCrossVal, False, percentOfTrainingNodes, None, tools.separate_layer, tools.prepareClassMatForFold)
 
         print 'Variable fusion mean: ' + str(fusion_mean)

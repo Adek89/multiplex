@@ -25,7 +25,7 @@ cdef class CrossValMethods:
         '''
 
     cpdef list flatCrossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
-                      defaultClassMat, int lbpSteps, float lbpThreshold, object k_fold_cross_validation,
+                      defaultClassMat, int lbpSteps, float lbpThreshold, object k_fold_cross_validation, folds,
                       object separationMethod, object lbp, list layerWeights, isRandomWalk, float percentOfKnownNodes, object adjMatPrep,
                       object prepareLayers, object prepareClassMat):
         utils = NetworkUtils()
@@ -40,7 +40,7 @@ cdef class CrossValMethods:
         cdef int num_of_res
         cdef list sum
         cdef int iter
-        for training, validation in k_fold_cross_validation(items, numberOfFolds):
+        for training, validation in folds:
             print "-----FOLD %d-----" % fold_number
             #separate layers
             results_agregator = []
@@ -68,7 +68,7 @@ cdef class CrossValMethods:
         return fold_sum
 
     cpdef multiLayerCrossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
-                     np.ndarray defaultClassMat, int lbpSteps, float lbpThreshold, k_fold_cross_validation,
+                     np.ndarray defaultClassMat, int lbpSteps, float lbpThreshold, k_fold_cross_validation, folds,
                      separationMethod, lbp, list layerWeights, isRandomWalk, float percentOfKnownNodes, prepareAdjMat, prepareLayers, prepareClassMat):
         cdef int fold_number = 1
         cdef list fold_sum = []
@@ -117,7 +117,7 @@ cdef class CrossValMethods:
                 layer_results[l].append([i,0,0])
 
 
-        for training, validation in k_fold_cross_validation(items, numberOfFolds):
+        for training, validation in folds:
             map_iterations = {}
             adjTransMatrixes = []
             print 'Multilayer method'

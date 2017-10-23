@@ -1,8 +1,10 @@
 __author__ = 'Adrian'
 import unittest
+
+import mockito
 import networkx as nx
 import numpy as np
-import mockito
+
 from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 from tests.utils.TestUtils import TestUtils
 
@@ -21,12 +23,15 @@ class TestsLoopyBeliefPropagation(unittest.TestCase):
         sortedNodes = sorted(nodes, key=lambda node: node.id)
         repetitions = 1000
         epsilon = 0.01
-        trainingInstances = [0, 1, 2, 3]
-        testingInstances = [4]
+        trainingInstances = [0, 2, 3]
+        testingInstances = [1, 4]
         #when
         mockito.when(graph).edges_iter(mockito.any(), data=True)\
-            .thenReturn(utils.generateEdges(10, nodeList, edgesData))
-        adjacency_matrix = nx.adjacency_matrix(graph, sortedNodes, weight=None)
+            .thenReturn(utils.generateEdges(5, nodeList, edgesData))
+        mockito.when(graph).number_of_edges().thenReturn(5)
+        mockito.when(graph).is_directed().thenReturn(False)
+        mockito.when(graph).selfloop_edges(data=True).thenReturn(False)
+        adjacency_matrix = nx.adjacency_matrix(graph, sortedNodes)
         #then
         res = self.lbp.lbp(adjacency_matrix, class_mat, repetitions, epsilon, trainingInstances, testingInstances)
         assert res.__len__() == EXPECTED_RESULT_LENGTH

@@ -1,5 +1,5 @@
 cimport numpy as np
-cimport graph.gen.Node as n
+
 cdef class LBPTools:
     '''
     classdocs
@@ -20,9 +20,9 @@ cdef class LBPTools:
 
     cpdef crossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
                      np.ndarray defaultClassMat, int lbpSteps, float lbpThreshold,
-                     k_fold_cross_validation, separationMethod, lbp, list layerWeights, crossValMethod, isRandomWalk, percentOfKnownNodes, adjMarPrep, prepareLayers, prepareClassMat)
+                     k_fold_cross_validation, folds, separationMethod, lbp, list layerWeights, crossValMethod, isRandomWalk, percentOfKnownNodes, adjMarPrep, prepareLayers, prepareClassMat)
     cdef list prepareUnobservdRow(self, int nrOfClasses)
-    cdef list prepareEmptyRow(self, int nrOfClasses)
+    cdef list prepareEmptyRow(self, label, int nrOfClasses)
     cpdef giveCorrectData(self, int label)
     cpdef np.ndarray giveCorrectClassMat(self, int label)
     cdef void addToGraph(self, g, n0, n1, set nodes, np.ndarray classMat, int nrOfClasses, edge)

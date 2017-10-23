@@ -1,7 +1,10 @@
 __author__ = 'Adrian'
 import numpy as np
+
 from graph.gen.Group import Group
 from graph.gen.Node import Node
+
+
 class TestUtils():
 
     def prepareNodesAndEdges(self):
@@ -14,8 +17,8 @@ class TestUtils():
         node5 = Node(groupBlue, 1, 4)
         nodes = ({node1, node2, node3, node4, node5})
         nodeList = [node1, node2, node3, node4, node5]
-        edge1 = dict([('layer', 'L1'), ('conWeight', 0.5), ('weight', 1)])
-        edge2 = dict([('layer', 'L2'), ('conWeight', 0.5), ('weight', 2)])
+        edge1 = dict([('layer', 'L1'), ('conWeight', 0.5)])
+        edge2 = dict([('layer', 'L2'), ('conWeight', 0.5)])
         edgesData = ([edge1, edge2])
         return edgesData, nodes, nodeList
 
@@ -32,16 +35,6 @@ class TestUtils():
                     yield (nodes[0], nodes[1], edgesData[0])
                 elif (i == 4):
                     yield (nodes[1], nodes[4], edgesData[0])
-                elif (i == 5):
-                    yield (nodes[0], nodes[2], edgesData[1])
-                elif (i == 6):
-                    yield (nodes[1], nodes[3], edgesData[1])
-                elif (i == 7):
-                    yield (nodes[1], nodes[4], edgesData[1])
-                elif (i == 8):
-                    yield (nodes[0], nodes[1], edgesData[1])
-                elif (i == 9):
-                    yield (nodes[2], nodes[3], edgesData[1])
 
     def prepareTestClassMat(self):
         defaultClassMat = np.ndarray(shape=(5, 2))
@@ -54,10 +47,10 @@ class TestUtils():
 
     def prepareTestClassMatWithUnknownNodes(self):
         testClassMat = np.ndarray(shape=(5, 2))
-        testClassMat[0] = [0, 1]
-        testClassMat[1] = [1, 0]
-        testClassMat[2] = [0, 1]
-        testClassMat[3] = [1, 0]
+        testClassMat[0] = [0.1, 0.9]
+        testClassMat[1] = [0.5, 0.5]
+        testClassMat[2] = [0.1, 0.9]
+        testClassMat[3] = [0.9, 0.1]
         testClassMat[4] = [0.5, 0.5]
         return testClassMat
 
