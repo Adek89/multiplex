@@ -2,11 +2,10 @@ import csv
 import os
 
 import networkx as nx
-
 from graph.reader.Airline2016.Airline2016Node import Airline2016Node
 
-PATH_TO_NODES = '..\\..\\..\\dataset\\Airline2016\\airline_nodes_class_%s.csv'
-PATH_TO_EDGES = '..\\..\\..\\dataset\\Airline2016\\airline_network_2016.csv'
+PATH_TO_NODES = '/home/apopiel/multiplex/MuNeG/dataset/Airline2016/airline_nodes_class_%s.csv'
+PATH_TO_EDGES = '/home/apopiel/multiplex/MuNeG/dataset/Airline2016/airline_network_2016.csv'
 class Airline2016Reader():
 
     graph = nx.MultiGraph()
@@ -71,6 +70,21 @@ class Airline2016Reader():
                     self.nodes.update({name: node})
                     i = i + 1
         return i
+
+    def calcuclate_homogenity(self):
+        results = []
+        for node in self.graph.nodes():
+            neighbors = nx.neighbors(self.graph, node)
+            summ = 0
+            for n in neighbors:
+                if node.label == n.label:
+                    summ = summ + 1
+            if len(neighbors) <> 0:
+                results.append(float(summ)/float(len(neighbors)))
+            else:
+                results.append(0.0)
+        homogenity = float(sum(results))/float(len(self.graph.nodes()))
+        return homogenity
 
 if __name__ == "__main__":
     reader = Airline2016Reader()
