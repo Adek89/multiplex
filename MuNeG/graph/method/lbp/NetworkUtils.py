@@ -30,9 +30,9 @@ class NetworkUtils:
             row = []
             for i in range(0, nrOfClasses):
                 if (node.label == i):
-                    row.append(1.0)
+                    row.append(0.9)
                 else:
-                    row.append(0.0)
+                    row.append(0.1)
             classMat.append(row)
         classMatNumPy = np.asarray(classMat)    
         return classMatNumPy, nrOfClasses    

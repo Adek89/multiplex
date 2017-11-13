@@ -56,7 +56,7 @@ def plot(figure, nodes, size, label, probIn, probBetween, nrOfLayers, probe, qty
     frame.set_facecolor('white')
     frame.set_edgecolor('black')
     figure.set_size_inches(19, 12)
-    figure.savefig('/lustre/scratch/apopiel/synthetic/roc2/' + file_name + '_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + str(probe) +'.png', dpi=100)
+    figure.savefig('D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\synthetic\\roc2\\' + file_name + '_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + str(probe) +'.png', dpi=100)
     plt.close(figure)
 
 
@@ -74,7 +74,7 @@ def read_function(tokens):
 
 def prepare_file():
     global tokens
-    path = '../dataset/DanioRerio/functions.csv'
+    path = 'D:\\pycharm_workspace\\multiplex\\MuNeG\\DanioRerio\\functions.csv'
     path = os.path.join(os.path.dirname(__file__), '%s' % path)
     f = open(path)
     tokens = token.generate_tokens(f.readline)
@@ -82,12 +82,12 @@ def prepare_file():
 
 
 def save_mean_rates(means, rate_type, nodes, size, label, probIn, probBetween, nrOfLayers, probe, fold=None):
-    target_file = open('/lustre/scratch/apopiel/synthetic/means/mean_' + rate_type + '_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + (str('_'+str(fold)) if fold <> None else '') + '_' + str(probe) + '.txt', 'ab')
+    target_file = open('D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\synthetic\\means\\mean_' + rate_type + '_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + (str('_'+str(fold)) if fold <> None else '') + '_' + str(probe) + '.txt', 'ab')
     pickle.dump(means, target_file)
     target_file.close()
 
 def save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, key, aoc, probe):
-    with open('/lustre/scratch/apopiel/synthetic/aoc/synt_aoc_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + (str(fold) if fold <> '' else 'global') + '_' + str(probe) + '.csv','ab') as csvfile:
+    with open('D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\synthetic\\aoc\\synt_aoc_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + (str(fold) if fold <> '' else 'global') + '_' + str(probe) + '.csv','ab') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([nodes, size, label, probIn, probBetween, nrOfLayers, fold, key, aoc, probe])
 
@@ -108,10 +108,10 @@ if __name__ == "__main__":
         nodes = int(sys.argv[1])
         size = int(sys.argv[2])
         probe = int(sys.argv[3])
-        for label in [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]:
-            for probIn in [5, 6, 7, 8, 9]:
-                for probBetween in [0.1, 0.5, 1, 2, 3, 4, 5]:
-                    for nrOfLayers in [2, 3, 4, 5, 6, 8, 10, 21]:
+        for label in [10]:
+            for probIn in [6]:
+                for probBetween in [0.5]:
+                    for nrOfLayers in [21]:
                         execute = True
 
                         while execute:

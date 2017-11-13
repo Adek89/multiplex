@@ -2,7 +2,6 @@ import os
 import tokenize as token
 
 import networkx as nx
-
 from graph.reader.StarWars.StarWarsNode import StarWarsNode
 
 PATH_TO_NODES = '..\\..\\..\\dataset\\StarWars\\StarWars_layout.txt'
@@ -25,7 +24,7 @@ class StarWarsReader():
             raise ValueError('Node should be available in set')
         return node
 
-    def read(self, isAnakinEqualVader = True):
+    def read(self, isAnakinEqualVader = False):
         self.graph = nx.MultiGraph()
         self.read_nodes()
         self.read_edges()
@@ -100,6 +99,21 @@ class StarWarsReader():
                 tokens.next()
             except:
                 break
+
+    def calcuclate_homogenity(self):
+        results = []
+        for node in self.graph.nodes():
+            neighbors = nx.neighbors(self.graph, node)
+            summ = 0
+            for n in neighbors:
+                if node.label == n.label:
+                    summ = summ + 1
+            if len(neighbors) <> 0:
+                results.append(float(summ)/float(len(neighbors)))
+            else:
+                results.append(0.0)
+        homogenity = float(sum(results))/float(len(self.graph.nodes()))
+        return homogenity
 
 
 if __name__ == "__main__":

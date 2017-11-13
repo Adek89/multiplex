@@ -44,7 +44,10 @@ cdef class LBPTools:
         cdef list row = []
         cdef int i
         for i in range(0, nrOfClasses):
-            row.append(0.0)
+            if int(label) == i:
+                row.append(0.9)
+            else:
+                row.append(0.1)
         return row
 
     cpdef giveCorrectData(self, int label):

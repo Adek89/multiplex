@@ -22,5 +22,5 @@ with open('..\\results\\functions.csv', 'rb') as csvfile:
         with open(FILE_PATH + 'real_baseline.csv' ,'ab') as csvfile:
                     writer = csv.writer(csvfile)
 
-                    writer.writerow([row[0], baseline_fmeasure, homogenity])
+                    writer.writerow([row[0], homogenity])
 

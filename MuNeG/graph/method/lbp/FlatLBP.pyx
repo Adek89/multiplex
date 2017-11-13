@@ -6,6 +6,7 @@ Created on 18 mar 2014
 import time
 
 cimport numpy as np
+
 from graph.method.lbp.LoopyBeliefPropagation import LoopyBeliefPropagation
 cimport graph.method.lbp.CrossValMethods as crossValMethods
 cimport graph.method.lbp.LBPTools as tool

@@ -7,7 +7,6 @@ import csv
 
 import networkx as nx
 import sklearn.metrics as metrics
-
 from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.method.common.XValWithSampling import XValMethods
 from graph.method.lbp.FlatLBP import FlatLBP
@@ -36,8 +35,8 @@ class DecisionFusion(object):
      
     NUMBER_OF_FOLDS = 5
      
-    LBP_MAX_STEPS = 10000
-    LBP_TRESHOLD = 0.0001
+    LBP_MAX_STEPS = 15
+    LBP_TRESHOLD = 0.01
     
     training = []
     validation = []
@@ -215,16 +214,16 @@ class DecisionFusion(object):
         new_fusion_min_conv_scores = []
 
         for id in xrange(0, len(self.realLabels)):
-            if not id in ids_to_remove:
-            # if True:
+            # if not id in ids_to_remove:
+            if True:
                 new_labels.append(self.realLabels[id])
-                new_reduction_scores.append(round(self.realFlatScores[id],2))
-                new_fold_sum_scores.append(round(self.realLBPFoldSumScores[id]))
-                new_fusion_mean_scores.append(round(self.realLBPFusionMeanScores[id],2))
-                new_fusion_layer_scores.append(round(self.realFusionLayerScores[id],2))
-                new_fusion_random_scores.append(round(self.realFusionRandomScores[id],2))
-                new_fusion_max_conv_scores.append(round(self.realFusionConvergenceMaxScores[id],2))
-                new_fusion_min_conv_scores.append(round(self.realFusionConvergenceMinScores[id],2))
+                new_reduction_scores.append(self.realFlatScores[id])
+                new_fold_sum_scores.append(self.realLBPFoldSumScores[id])
+                new_fusion_mean_scores.append(self.realLBPFusionMeanScores[id])
+                new_fusion_layer_scores.append(self.realFusionLayerScores[id])
+                new_fusion_random_scores.append(self.realFusionRandomScores[id])
+                new_fusion_max_conv_scores.append(self.realFusionConvergenceMaxScores[id])
+                new_fusion_min_conv_scores.append(self.realFusionConvergenceMinScores[id])
         ev = EvaluationTools()
         fMacroFlatReal = metrics.f1_score(self.realLabels, self.realFlatResult,pos_label=None, average='micro')
         self.append_roc_rates_for_average(new_reduction_scores, new_labels, "reduction")
