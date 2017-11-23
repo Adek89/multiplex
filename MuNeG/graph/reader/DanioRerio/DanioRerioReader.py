@@ -3,7 +3,6 @@ import os
 import tokenize as token
 
 import networkx as nx
-
 from graph.reader.DanioRerio.DanioRerioNode import DanioRerioNode
 
 PATH_TO_NETWORK = '..\\..\\..\\dataset\\DanioRerio\\edge_list_danioRerio_layer%s.txt'
@@ -115,5 +114,6 @@ class DanioRerioReader():
             results.append(float(summ)/float(len(neighbors)))
         homogenity = float(sum(results))/float(len(self.graph.nodes()))
         return homogenity
+
 
 

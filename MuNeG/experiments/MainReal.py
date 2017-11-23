@@ -21,7 +21,7 @@ import sklearn.metrics as metrics
 from scipy import interp
 
 sys.path.append('/home/apopiel/multiplex/MuNeG/')
-
+sys.path.append('D:\pycharm_workspace\multiplex\MuNeG')
 
 from experiments.DecisionFusionReal import DecisionFusion
 import gc
@@ -93,11 +93,25 @@ def save_mean_rates(means, rate_type, function, weight, probe, fold=None):
     pickle.dump(means, target_file)
     target_file.close()
 
-def save_aoc_results(fold, weight, key, aoc, probe, function=''):
+def save_aoc_results(fold, weight, key, aoc, probe, function='', max_layer=False):
     file_name = function.replace(":", "") if function <> "" else "global"
     with open('..\\results\\real\\aoc\\real_aoc_' + file_name + '_' + (str(fold) if fold <> '' else 'global') + '_' + str(probe) + '.csv','ab') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow([function, weight, fold, key, aoc, probe])
+        writer.writerow([function, weight, fold, "max_layer" if max_layer else key, aoc, probe])
+
+def calculate_layer_results(fold, weight, function, probe, fprs_per_method, tprs_per_method):
+    auc_for_layer = {}
+    for l in xrange(1, 6):  # 5 layers in DanioRerio
+        roc_auc = metrics.auc(fprs_per_method['L' + str(l)], tprs_per_method['L' + str(l)])
+        save_aoc_results(fold, weight, "L" + str(l), roc_auc, probe, function)
+        auc_for_layer.update({l: roc_auc})
+    layer_results = auc_for_layer.values()
+    min_layer_result = min(layer_results)
+    max_layer_result = max(layer_results)
+    avg_layer_result = sum(layer_results) / float(len(layer_results))
+    save_aoc_results(fold, weight, "max_layer", max_layer_result, probe, function)
+    save_aoc_results(fold, weight, "min_layer", min_layer_result, probe, function)
+    save_aoc_results(fold, weight, "avg_layer", avg_layer_result, probe, function)
 
 
 if __name__ == "__main__":
@@ -136,6 +150,9 @@ if __name__ == "__main__":
                     roc_auc = metrics.auc(fprs_per_method[key], tprs_per_method[key])
                     plot_roc_curve(fprs_per_method[key], tprs_per_method[key], roc_auc, names[key], colors[key])
                     save_aoc_results(fold, weight, key, roc_auc, probe, function)
+
+                calculate_layer_results(fold, weight, function, probe, fprs_per_method, tprs_per_method)
+
                 plot(fold_figure, probe, function=function, qty=weight, fold_nr=str(fold))
                 save_mean_rates(fprs_per_method, 'fprs', function, weight, probe, fold=fold)
                 save_mean_rates(tprs_per_method, 'tprs', function, weight, probe, fold=fold)

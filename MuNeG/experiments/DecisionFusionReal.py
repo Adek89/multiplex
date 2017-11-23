@@ -242,6 +242,7 @@ class DecisionFusion(object):
         fMicroFromLayers = {}
         for layer, result in self.realFusionForLayers.iteritems():
             fMicroFromLayers[layer] = metrics.f1_score(self.realLabels, result, pos_label=None, average='micro')
+            self.append_roc_rates_for_average(self.realFusionForLayersScores[layer], new_labels, 'L'+str(layer))
         # fMacroRWPRealFoldSum = metrics.f1_score(self.realLabels, self.realRWPFoldSum,pos_label=None, average='micro')
         # fMacroRWPRealFusionMean = metrics.f1_score(self.realLabels, self.realRWPFusionMean,pos_label=None, average='micro')
         # fMacroRWPReal = metrics.f1_score(self.realLabels, self.rwpResult,pos_label=None, average='micro')
@@ -255,6 +256,18 @@ class DecisionFusion(object):
         # plt.title('Receiver operating characteristic example')
         # plt.legend(loc="lower right")
         # plt.show()
+        # nr_of_unknown_neighbors, nr_of_neighbors = self.count_avg_nr_of_unknown_neighbours(self.realGraph)
+        # homogenity = self.calcuclate_homogenity(self.realGraph)
+        # lbp_tools = tools.LBPTools(self.NUMBER_OF_NODES, self.realGraph, self.realGraphClassMat, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.percentOfTrainignNodes)
+        # lbp_tools.separate_layer(self.realGraph, self.REAL_LAYERS_WEIGHTS, self.realGraphClassMat)
+        #
+        # nr_of_unknown_and_all_neighbors_in_layer = []
+        # homogenities_in_layer = []
+        # for gid in self.REAL_LAYERS_WEIGHTS:
+        #     g = lbp_tools.graphs[str(gid)]
+        #     nr_of_unknown_and_all_neighbors_in_layer.append(self.count_avg_nr_of_unknown_neighbours(g, type="layer"))
+        #     homogenities_in_layer.append(self.calcuclate_homogenity(g))
+
         with open(self.file_path + 'real.csv', 'ab') as csvfile:
             writer = csv.writer(csvfile)
         
@@ -287,3 +300,36 @@ class DecisionFusion(object):
                     maxi = j
             classMatForEv.append(maxi)
         return classMatForEv
+
+    def count_avg_nr_of_unknown_neighbours(self, graph, type="default"):
+        unknown_neighbors_per_node = []
+        neighborhood_per_node = []
+        for train, test in self.folds:
+            for test_node in test:
+                nodes = graph.nodes()
+                if type == "default":
+                    node_object = filter(lambda n: n.id == test_node, nodes)[0]
+                    neighbors = graph.neighbors(node_object)
+                    neighborhood_per_node.append(len(neighbors))
+                    unknown_neighbors = filter(lambda neighbor: neighbor.id in test, neighbors)
+                else:
+                    neighbors = graph.neighbors(test_node)
+                    neighborhood_per_node.append(len(neighbors))
+                    unknown_neighbors = filter(lambda neighbor: neighbor in test, neighbors)
+                unknown_neighbors_per_node.append(len(unknown_neighbors))
+        return float(sum(unknown_neighbors_per_node)) / float(len(unknown_neighbors_per_node)), float(sum(neighborhood_per_node)) / float(len(neighborhood_per_node))
+
+    def calcuclate_homogenity(self, graph):
+        results = []
+        for node in graph.nodes():
+            neighbors = nx.neighbors(graph, node)
+            summ = 0
+            for n in neighbors:
+                if node.label == n.label:
+                    summ = summ + 1
+            if len(neighbors) == 0:
+                results.append(0)
+            else:
+                results.append(float(summ)/float(len(neighbors)))
+        homogenity = float(sum(results))/float(len(graph.nodes()))
+        return homogenity

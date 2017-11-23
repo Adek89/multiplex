@@ -6,6 +6,7 @@ Created on 18 mar 2014
 
 import os
 import sys
+sys.path.append('D:\pycharm_workspace\multiplex\MuNeG')
 import time
 
 import networkx as nx
@@ -35,10 +36,10 @@ if __name__ == '__main__':
 
     nodes = int(sys.argv[1])
     size = int(sys.argv[2])
-    for label in [10]:
+    for label in [5]:
         for probIn in [5]:
             for probBetween in [1]:
-                for nrOfLayers in [21]:
+                for nrOfLayers in [1]:
 
                     layer_names, layer_weights = prepare_layers()
 

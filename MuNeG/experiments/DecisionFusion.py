@@ -7,6 +7,7 @@ import csv
 import math
 import time
 
+import graph.method.lbp.LBPTools as tools
 import graph.reader.syntethic.MuNeGGraphReader as reader
 import networkx as nx
 import sklearn.metrics as metrics
@@ -127,6 +128,7 @@ class DecisionFusion:
         self.flatLBP()
         self.multiLayerLBP()
         self.evaluation()
+        self.postprocessing()
         return self.fprs_per_method, self.tprs_per_method
         
     '''
@@ -251,19 +253,96 @@ class DecisionFusion:
         fMicroFromLayers = {}
         for layer, result in self.syntheticFusionForLayers.iteritems():
             fMicroFromLayers[layer] = metrics.f1_score(self.syntheticLabels, result, pos_label=None, average='micro')
+            self.append_roc_rates_for_average(self.syntheticFusionForLayersScores[layer], new_labels, 'L'+str(layer))
         # fMacroRWPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticRWPFoldSum, pos_label=None, average='micro')
         # fMacroRWPSyntheticFusionMean = metrics.f1_score(self.syntheticLabels, self.syntheticRWPFusionMean, pos_label=None, average='micro')
         # fMacroRWPSyntheticResult = metrics.f1_score(self.syntheticLabels, self.rwpResult, pos_label=None, average='micro')
         # fMacroRWCSyntheticResult = metrics.f1_score(self.syntheticLabels, self.syntheticRwcResult, pos_label=None, average='micro')
 
-        with open(self.FILE_PATH + self.build_output_file_name(),'wb') as csvfile:
+        with open("..\\results\\synthetic\\stats/res_" + self.build_output_file_name(),'wb') as csvfile:
             writer = csv.writer(csvfile)
+            self.write_method_results(writer, "expected", self.syntheticLabels)
+            self.write_method_results(writer, "redution", self.syntheticFlatResult)
+            self.write_method_results(writer, "fold_sum", self.syntheticLBPFoldSum)
+            self.write_method_results(writer, "fusion_mean", self.syntheticLBPFusionMean)
+            self.write_method_results(writer, "fusion_layer", self.syntheticFusionLayer)
+            self.write_method_results(writer, "fusion_random", self.syntheticFusionRandom)
+            self.write_method_results(writer, "fusion_convergence_max", self.syntheticFusionConvergenceMax)
+            self.write_method_results(writer, "fusion_convergence_min", self.syntheticFusionConvergenceMin)
+            for layer, result in self.syntheticFusionForLayers.iteritems():
+                self.write_method_results(writer, "L"+str(layer), result)
         
+
+    def postprocessing(self):
+        graph_for_reduction = self.synthetic
+        lbp_tools = tools.LBPTools(self.NUMBER_OF_NODES, self.synthetic, self.syntheticClassMat, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.percentOfTrainignNodes)
+        lbp_tools.separate_layer(self.synthetic, self.LAYERS_WEIGHTS, self.syntheticClassMat)
+
+        with open("/lustre/scratch/apopiel/synthetic/stats/distributions_" + self.build_output_file_name(),'wb') as csvfile:
+            writer = csv.writer(csvfile)
+            homogenity_distribution, known_neighbors_distribution, unknown_neighbors_distribution, node_degree_distribution, node_ids = self.calculate_distributions(self.synthetic, "reduction")
             writer.writerow([self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.GROUP_LABEL_HOMOGENITY,
-                              self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP, self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
-                                self.nrOfLayers, self.method, self.NUMBER_OF_FOLDS,
-                            fMacroFlatSynthetic, fMacroLBPSyntheticFoldSum, fMacroLBPSyntheticFusionMean, fMicroLBPFusionLayer, fMicroLBPFusionRandom, fMicroLBPFusionConvergenceMax, fMicroLBPFusionConvergenceMin, [str(e) + ',' + str(fMicroFromLayers[e] if fMicroFromLayers.has_key(e) else '') for e in xrange(1,22)]])
-        
+                self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP, self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
+                self.nrOfLayers, "reduction", self.NUMBER_OF_FOLDS,
+                homogenity_distribution, known_neighbors_distribution, unknown_neighbors_distribution, node_degree_distribution, node_ids])
+
+
+            for l in xrange(1, self.nrOfLayers+1):
+                homogenity_distribution, known_neighbors_distribution, unknown_neighbors_distribution, node_degree_distribution, node_ids = self.calculate_distributions(lbp_tools.graphs[str(l)], "")
+                writer.writerow([self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.GROUP_LABEL_HOMOGENITY,
+                self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP, self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
+                self.nrOfLayers, "L" + str(l), self.NUMBER_OF_FOLDS,
+                homogenity_distribution, known_neighbors_distribution, unknown_neighbors_distribution, node_degree_distribution, node_ids])
+
+    def write_method_results(self, writer, method, results):
+        writer.writerow([self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.GROUP_LABEL_HOMOGENITY,
+                         self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP,
+                         self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS,
+                         self.nrOfLayers, method, self.NUMBER_OF_FOLDS,
+                         results])
+
+    def calculate_distributions(self, graph, method):
+        # homogenity
+        homogenity_distribution = []
+        known_neighbors_distribution = []
+        unknown_neighbors_distribution = []
+        node_degree_distribution = []
+        node_ids = []
+        nodes = graph.nodes()
+        for train, test in self.folds:
+            for node_id in test:
+                neighbors_with_expected_class = 0
+                known_neighbors = 0
+                unknown_neighbors = 0
+
+                if method == 'reduction':
+                    node_object = filter(lambda n: n.id == node_id, nodes)[0]
+                    neighbors = graph.neighbors(node_object)
+                    for neighbor in neighbors:
+                        if neighbor.id in train:
+                            known_neighbors = known_neighbors + 1
+                            if neighbor.label == node_object.label:
+                                neighbors_with_expected_class = neighbors_with_expected_class + 1
+                        else:
+                            unknown_neighbors = unknown_neighbors + 1
+                else:
+                    node_objects = self.synthetic.nodes()
+                    node_object = filter(lambda n: n.id == node_id, node_objects)[0]
+                    neighbors = graph.neighbors(node_id)
+                    for neighbor in neighbors:
+                        if neighbor in train:
+                            known_neighbors = known_neighbors + 1
+                            neighbor_object = filter(lambda n: n.id == neighbor, node_objects)[0]
+                            if neighbor_object.label == node_object.label:
+                                neighbors_with_expected_class = neighbors_with_expected_class + 1
+                        else:
+                            unknown_neighbors = unknown_neighbors + 1
+                homogenity_distribution.append(float(neighbors_with_expected_class) / float(known_neighbors) if known_neighbors > 0 else 0)
+                known_neighbors_distribution.append(known_neighbors)
+                unknown_neighbors_distribution.append(unknown_neighbors)
+                node_degree_distribution.append(known_neighbors + unknown_neighbors)
+                node_ids.append(node_id)
+        return homogenity_distribution, known_neighbors_distribution, unknown_neighbors_distribution, node_degree_distribution, node_ids
 
     def preprocess_for_evaluation(self):
         ids_to_remove = []
@@ -290,6 +369,7 @@ class DecisionFusion:
                     maxi = j
             classMatForEv.append(maxi)
         return classMatForEv
+
     
     if __name__ == '__main__':        
         print 

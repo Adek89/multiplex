@@ -21,6 +21,7 @@ from scipy import interp
 import seaborn as sns
 
 sys.path.append('/home/apopiel/multiplex/MuNeG')
+sys.path.append('D:\pycharm_workspace\multiplex\MuNeG')
 
 from experiments.DecisionFusion import DecisionFusion
 import gc
@@ -56,7 +57,7 @@ def plot(figure, nodes, size, label, probIn, probBetween, nrOfLayers, probe, qty
     frame.set_facecolor('white')
     frame.set_edgecolor('black')
     figure.set_size_inches(19, 12)
-    figure.savefig('D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\synthetic\\roc2\\' + file_name + '_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + str(probe) +'.png', dpi=100)
+    figure.savefig('/lustre/scratch/apopiel/synthetic/roc2/' + file_name + '_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + str(probe) +'.png', dpi=100)
     plt.close(figure)
 
 
@@ -74,7 +75,7 @@ def read_function(tokens):
 
 def prepare_file():
     global tokens
-    path = 'D:\\pycharm_workspace\\multiplex\\MuNeG\\DanioRerio\\functions.csv'
+    path = '/home/apopiel/functions.csv'
     path = os.path.join(os.path.dirname(__file__), '%s' % path)
     f = open(path)
     tokens = token.generate_tokens(f.readline)
@@ -82,15 +83,29 @@ def prepare_file():
 
 
 def save_mean_rates(means, rate_type, nodes, size, label, probIn, probBetween, nrOfLayers, probe, fold=None):
-    target_file = open('D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\synthetic\\means\\mean_' + rate_type + '_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + (str('_'+str(fold)) if fold <> None else '') + '_' + str(probe) + '.txt', 'ab')
+    target_file = open('/lustre/scratch/apopiel/synthetic/means_new/mean_' + rate_type + '_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + (str('_'+str(fold)) if fold <> None else '') + '_' + str(probe) + '.txt', 'ab')
     pickle.dump(means, target_file)
     target_file.close()
 
 def save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, key, aoc, probe):
-    with open('D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\synthetic\\aoc\\synt_aoc_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + (str(fold) if fold <> '' else 'global') + '_' + str(probe) + '.csv','ab') as csvfile:
+    with open('/lustre/scratch/apopiel/synthetic/aoc_new/synt_aoc_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + (str(fold) if fold <> '' else 'global') + '_' + str(probe) + '.csv','ab') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([nodes, size, label, probIn, probBetween, nrOfLayers, fold, key, aoc, probe])
 
+
+def calculate_layer_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, probe, fprs_per_method, tprs_per_method):
+    auc_for_layer = {}
+    for l in xrange(1, nrOfLayers+1):  # 6 layers in DanioRerio
+        roc_auc = metrics.auc(fprs_per_method['L' + str(l)], tprs_per_method['L' + str(l)])
+        save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, "L" + str(l), roc_auc, probe)
+        auc_for_layer.update({l: roc_auc})
+    layer_results = auc_for_layer.values()
+    min_layer_result = min(layer_results)
+    max_layer_result = max(layer_results)
+    avg_layer_result = sum(layer_results) / float(len(layer_results))
+    save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, "max_layer", max_layer_result, probe)
+    save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, "min_layer", min_layer_result, probe)
+    save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, "avg_layer", avg_layer_result, probe)
 
 
 if __name__ == "__main__":
@@ -108,10 +123,10 @@ if __name__ == "__main__":
         nodes = int(sys.argv[1])
         size = int(sys.argv[2])
         probe = int(sys.argv[3])
-        for label in [10]:
-            for probIn in [6]:
-                for probBetween in [0.5]:
-                    for nrOfLayers in [21]:
+        for label in [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]:
+            for probIn in [5, 6, 7, 8, 9]:
+                for probBetween in [0.1, 0.5, 1, 2, 3, 4, 5]:
+                    for nrOfLayers in [2, 3, 4, 5, 6, 8, 10, 21]:
                         execute = True
 
                         while execute:
@@ -121,6 +136,10 @@ if __name__ == "__main__":
                             for key in keys:
                                 mean_fprs[key] = np.linspace(0, 1, 100)
                                 mean_tprs[key] = 0.0
+                            for key in xrange(1, nrOfLayers+1):
+                                key_for_layer = 'L' + str(key)
+                                mean_fprs[key_for_layer] = np.linspace(0, 1, 100)
+                                mean_tprs[key_for_layer] = 0.0
                             for fold in [2.0, 3.0, 4.0, 5.0, 10.0, 20.0]:
                                 fold_figure = plt.figure()
                                 fprs_per_method = {}
@@ -130,17 +149,39 @@ if __name__ == "__main__":
                                     roc_auc = metrics.auc(fprs_per_method[key], tprs_per_method[key])
                                     plot_roc_curve(fprs_per_method[key], tprs_per_method[key], roc_auc, names[key], colors[key])
                                     save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, key, roc_auc, probe)
+
+                                calculate_layer_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, probe, fprs_per_method, tprs_per_method)
+                                #means_for_global_calculations
                                 plot(fold_figure, nodes, size, label, probIn, probBetween, nrOfLayers, probe, file_name='fold_'+str(fold))
                                 save_mean_rates(fprs_per_method, 'fprs', nodes, size, label, probIn, probBetween, nrOfLayers, probe, fold=fold)
                                 save_mean_rates(tprs_per_method, 'tprs', nodes, size, label, probIn, probBetween, nrOfLayers, probe, fold=fold)
                                 for key in keys:
                                     mean_tprs[key] = append_roc_rates_for_average(mean_fprs[key], mean_tprs[key], fprs_per_method[key], tprs_per_method[key])
+                                for key in xrange(1, nrOfLayers+1):
+                                    key_for_layer = 'L' + str(key)
+                                    mean_tprs[key_for_layer] = append_roc_rates_for_average(mean_fprs[key_for_layer], mean_tprs[key_for_layer], fprs_per_method[key_for_layer], tprs_per_method[key_for_layer])
                             for key in keys:
                                 mean_tprs[key] /= 6
                                 mean_tprs[key][-1] = 1.0
                                 roc_auc = metrics.auc(mean_fprs[key], mean_tprs[key])
                                 plot_roc_curve(mean_fprs[key], mean_tprs[key], roc_auc, names[key], colors[key])
                                 save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, '', key, roc_auc, probe)
+                            auc_for_layer = {}
+                            for key in xrange(1, nrOfLayers+1):
+                                key_for_layer = 'L' + str(key)
+                                mean_tprs[key_for_layer] /= 6
+                                mean_tprs[key_for_layer][-1] = 1.0
+                                roc_auc = metrics.auc(mean_fprs[key_for_layer], mean_tprs[key_for_layer])
+                                save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, '', key_for_layer, roc_auc, probe)
+                                auc_for_layer.update({key: roc_auc})
+                            layer_results = auc_for_layer.values()
+                            min_layer_result = min(layer_results)
+                            max_layer_result = max(layer_results)
+                            avg_layer_result = sum(layer_results) / float(len(layer_results))
+                            save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, '', "max_layer", max_layer_result, probe)
+                            save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, '', "min_layer", min_layer_result, probe)
+                            save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, '', "avg_layer", avg_layer_result, probe)
+
                             plot(figure, nodes, size, label, probIn, probBetween, nrOfLayers, probe)
                             save_mean_rates(mean_fprs, 'fprs', nodes, size, label, probIn, probBetween, nrOfLayers, probe)
                             save_mean_rates(mean_tprs, 'tprs', nodes, size, label, probIn, probBetween, nrOfLayers, probe)
