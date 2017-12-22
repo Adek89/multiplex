@@ -1,7 +1,8 @@
 __author__ = 'Adek'
-cimport cython
 from random import shuffle
+
 import networkx as nx
+cimport numpy as np
 cdef class CommonUtils:
 
     def __cinit__(self):
@@ -54,7 +55,7 @@ cdef class CommonUtils:
             yield training, validation
 
 
-    cpdef prepareFoldClassMat(self, graph, np.ndarray  defaultClassMat, list validation):
+    def prepareFoldClassMat(self, graph, np.ndarray  defaultClassMat, list validation):
         cdef classMat = defaultClassMat.copy()
         cdef int nrOfClasses = classMat.shape[1]
         cdef int i
@@ -66,7 +67,7 @@ cdef class CommonUtils:
                 row = self.prepareUnobservdRow(nrOfClasses)
                 classMat[i] = row
 
-        sortedNodes = sorted(graph.nodes())
+        sortedNodes = sorted(graph.nodes(), key=lambda n : n.id)
         adjMat = nx.adjacency_matrix(graph, sortedNodes)
 
         return classMat, adjMat, sortedNodes

@@ -158,7 +158,7 @@ class DecisionFusion:
 
     def generateSyntheticData(self):
         start_time = time.time()
-        self.synthetic = reader.read_from_gml('..\\results', self.build_file_name(),)
+        self.synthetic = reader.read_from_gml('..\\results\\', self.build_file_name(),)
         print("---generation time: %s seconds ---" % str(time.time() - start_time))
         
     '''
@@ -259,7 +259,7 @@ class DecisionFusion:
         # fMacroRWPSyntheticResult = metrics.f1_score(self.syntheticLabels, self.rwpResult, pos_label=None, average='micro')
         # fMacroRWCSyntheticResult = metrics.f1_score(self.syntheticLabels, self.syntheticRwcResult, pos_label=None, average='micro')
 
-        with open("..\\results\\synthetic\\stats/res_" + self.build_output_file_name(),'wb') as csvfile:
+        with open("..\\results\\synthetic\\stats\\res_" + self.build_output_file_name(),'wb') as csvfile:
             writer = csv.writer(csvfile)
             self.write_method_results(writer, "expected", self.syntheticLabels)
             self.write_method_results(writer, "redution", self.syntheticFlatResult)
@@ -369,6 +369,25 @@ class DecisionFusion:
                     maxi = j
             classMatForEv.append(maxi)
         return classMatForEv
+
+    def calculate_homogenity(self, graph):
+        # homogenity
+        homogenity_distribution = []
+        node_ids = []
+        nodes = graph.nodes()
+        sorted_nodes = sorted(nodes, key=lambda n: n.id)
+        for n in sorted_nodes:
+            neighbors_with_same_class = 0
+            neighbors = graph.neighbors(n)
+            for neighbor in neighbors:
+                if neighbor.label == n.label:
+                    neighbors_with_same_class = neighbors_with_same_class + 1
+            homogenity_distribution.append(float(neighbors_with_same_class)/float(len(neighbors)) if len(neighbors) > 0 else 0.0)
+            node_ids.append(n.id)
+        return homogenity_distribution, node_ids
+
+
+
 
     
     if __name__ == '__main__':        

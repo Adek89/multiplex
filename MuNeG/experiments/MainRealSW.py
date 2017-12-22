@@ -91,6 +91,20 @@ def save_aoc_results(probe, aoc, key, type_of_exp, fold ='', file_name = 'global
         writer = csv.writer(csvfile)
         writer.writerow([key, fold, aoc, probe])
 
+def calculate_layer_results(fold, type_of_exp, probe, fprs_per_method, tprs_per_method, file_name='global'):
+    auc_for_layer = {}
+    for l in xrange(1, 7):
+        key_for_layer = 'L' + str(l)
+        roc_auc = metrics.auc(fprs_per_method[key_for_layer], tprs_per_method[key_for_layer])
+        save_aoc_results(probe, roc_auc, key_for_layer, type_of_exp, fold=fold, file_name=file_name)
+        auc_for_layer.update({l: roc_auc})
+    layer_results = auc_for_layer.values()
+    min_layer_result = min(layer_results)
+    max_layer_result = max(layer_results)
+    avg_layer_result = sum(layer_results) / float(len(layer_results))
+    save_aoc_results(probe, max_layer_result, "max_layer", type_of_exp, fold=fold, file_name=file_name)
+    save_aoc_results(probe, min_layer_result, "min_layer", type_of_exp, fold=fold, file_name=file_name)
+    save_aoc_results(probe, avg_layer_result, "avg_layer", type_of_exp, fold=fold, file_name=file_name)
 
 
 def main(probe, type_of_exp):
@@ -105,6 +119,7 @@ def main(probe, type_of_exp):
             global_tprs[key] = 0.0
         tokens = prepare_file()
         execute = True
+        nrOfLayers = 6
         while execute:
             mean_fprs = {}
             mean_tprs = {}
@@ -113,6 +128,10 @@ def main(probe, type_of_exp):
             for key in keys:
                 mean_fprs[key] = np.linspace(0, 1, 100)
                 mean_tprs[key] = 0.0
+            for key in xrange(1, nrOfLayers+1):
+                key_for_layer = 'L' + str(key)
+                mean_fprs[key_for_layer] = np.linspace(0, 1, 100)
+                mean_tprs[key_for_layer] = 0.0
             for fold in [2.0, 3.0, 4.0, 5.0, 10.0, 20.0]:
                 fold_figure = plt.figure()
                 fprs_per_method = {}
@@ -123,17 +142,38 @@ def main(probe, type_of_exp):
                     roc_auc = metrics.auc(fprs_per_method[key], tprs_per_method[key])
                     plot_roc_curve(fprs_per_method[key], tprs_per_method[key], roc_auc, names[key], colors[key])
                     save_aoc_results(probe, roc_auc, key, type_of_exp, fold=fold, file_name='fold_'+str(fold))
+
+                calculate_layer_results(fold, type_of_exp, probe, fprs_per_method, tprs_per_method, file_name='fold_'+str(fold))
+
                 plot(fold_figure, type_of_exp, probe, file_name='fold_'+str(fold))
                 save_mean_rates(fprs_per_method, 'fprs', type_of_exp, probe, fold=fold)
                 save_mean_rates(tprs_per_method, 'tprs', type_of_exp, probe, fold=fold)
                 for key in keys:
                     mean_tprs[key] = append_roc_rates_for_average(mean_fprs[key], mean_tprs[key], fprs_per_method[key], tprs_per_method[key])
+                for key in xrange(1, nrOfLayers+1):
+                    key_for_layer = 'L' + str(key)
+                    mean_tprs[key_for_layer] = append_roc_rates_for_average(mean_fprs[key_for_layer], mean_tprs[key_for_layer], fprs_per_method[key_for_layer], tprs_per_method[key_for_layer])
             for key in keys:
                 mean_tprs[key] /= 6
                 mean_tprs[key][-1] = 1.0
                 roc_auc = metrics.auc(mean_fprs[key], mean_tprs[key])
                 plot_roc_curve(mean_fprs[key], mean_tprs[key], roc_auc, names[key], colors[key])
                 save_aoc_results(probe, roc_auc, key, type_of_exp)
+            auc_for_layer = {}
+            for key in xrange(1, nrOfLayers+1):
+                key_for_layer = 'L' + str(key)
+                mean_tprs[key_for_layer] /= 6
+                mean_tprs[key_for_layer][-1] = 1.0
+                roc_auc = metrics.auc(mean_fprs[key_for_layer], mean_tprs[key_for_layer])
+                save_aoc_results(probe, roc_auc, key_for_layer, type_of_exp)
+                auc_for_layer.update({key: roc_auc})
+            layer_results = auc_for_layer.values()
+            min_layer_result = min(layer_results)
+            max_layer_result = max(layer_results)
+            avg_layer_result = sum(layer_results) / float(len(layer_results))
+            save_aoc_results(probe, max_layer_result, "max_layer", type_of_exp)
+            save_aoc_results(probe, min_layer_result, "min_layer", type_of_exp)
+            save_aoc_results(probe, avg_layer_result, "avg_layer", type_of_exp)
             plot(figure, type_of_exp, probe)
             save_mean_rates(mean_fprs, 'fprs', type_of_exp, probe)
             save_mean_rates(mean_tprs, 'tprs', type_of_exp, probe)
@@ -151,7 +191,7 @@ def main(probe, type_of_exp):
 
 
 if __name__ == '__main__':
-    for i in xrange(1, 2):
-        main(i, 'anakin_light')
+    for i in xrange(2, 21):
+        main(i, 'default')
 
 

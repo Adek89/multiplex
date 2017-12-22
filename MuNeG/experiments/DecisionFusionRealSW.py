@@ -142,7 +142,7 @@ class DecisionFusion(object):
     '''      
     def readRealData(self):
         reader = StarWarsReader()
-        reader.read(isAnakinEqualVader=True)
+        reader.read(isAnakinEqualVader=False)
         self.realGraph = reader.graph
         # ga = GraphAnalyser(self.realGraph)
         # ga.analyse()
@@ -241,6 +241,7 @@ class DecisionFusion(object):
         fMicroFromLayers = {}
         for layer, result in self.realFusionForLayers.iteritems():
             fMicroFromLayers[layer] = metrics.f1_score(self.realLabels, result, pos_label=None, average='micro')
+            self.append_roc_rates_for_average(self.realFusionForLayersScores[layer], new_labels, 'L'+str(layer))
         # fMacroRWPRealFoldSum = metrics.f1_score(self.realLabels, self.realRWPFoldSum,pos_label=None, average='micro')
         # fMacroRWPRealFusionMean = metrics.f1_score(self.realLabels, self.realRWPFusionMean,pos_label=None, average='micro')
         # fMacroRWPReal = metrics.f1_score(self.realLabels, self.rwpResult,pos_label=None, average='micro')

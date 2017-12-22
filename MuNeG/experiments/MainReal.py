@@ -120,6 +120,7 @@ if __name__ == "__main__":
         names = {"reduction":'LR',"fusion_sum":'SF', "fusion_mean":'MF', "fusion_layer":'LF', "fusion_random":'RF', "fusion_convergence_max":'SCF', "fusion_convergence_min" : "FCF"}
         global_fprs = {}
         global_tprs = {}
+        nrOfLayers = 5
         sum_of_weights = 0
         sns.set_style("darkgrid")
         for key in keys:
@@ -141,6 +142,10 @@ if __name__ == "__main__":
             for key in keys:
                 mean_fprs[key] = np.linspace(0, 1, 100)
                 mean_tprs[key] = 0.0
+            for key in xrange(1, nrOfLayers+1):
+                key_for_layer = 'L' + str(key)
+                mean_fprs[key_for_layer] = np.linspace(0, 1, 100)
+                mean_tprs[key_for_layer] = 0.0
             for fold in [2.0, 3.0, 4.0, 5.0, 10.0, 20.0]:
                 fold_figure = plt.figure()
                 fprs_per_method = {}
@@ -158,12 +163,31 @@ if __name__ == "__main__":
                 save_mean_rates(tprs_per_method, 'tprs', function, weight, probe, fold=fold)
                 for key in keys:
                     mean_tprs[key] = append_roc_rates_for_average(mean_fprs[key], mean_tprs[key], fprs_per_method[key], tprs_per_method[key])
+                for key in xrange(1, nrOfLayers+1):
+                    key_for_layer = 'L' + str(key)
+                    mean_tprs[key_for_layer] = append_roc_rates_for_average(mean_fprs[key_for_layer], mean_tprs[key_for_layer], fprs_per_method[key_for_layer], tprs_per_method[key_for_layer])
             for key in keys:
                 mean_tprs[key] /= 6
                 mean_tprs[key][-1] = 1.0
                 roc_auc = metrics.auc(mean_fprs[key], mean_tprs[key])
                 plot_roc_curve(mean_fprs[key], mean_tprs[key], roc_auc, names[key], colors[key])
                 save_aoc_results('', weight, key, roc_auc, probe, function)
+            auc_for_layer = {}
+            for key in xrange(1, nrOfLayers+1):
+                key_for_layer = 'L' + str(key)
+                mean_tprs[key_for_layer] /= 6
+                mean_tprs[key_for_layer][-1] = 1.0
+                roc_auc = metrics.auc(mean_fprs[key_for_layer], mean_tprs[key_for_layer])
+                save_aoc_results('', weight, 'L'+str(key), roc_auc, probe, function)
+                auc_for_layer.update({key: roc_auc})
+            layer_results = auc_for_layer.values()
+            min_layer_result = min(layer_results)
+            max_layer_result = max(layer_results)
+            avg_layer_result = sum(layer_results) / float(len(layer_results))
+            save_aoc_results('', weight, "max_layer", max_layer_result, probe, function)
+            save_aoc_results('', weight, "min_layer", min_layer_result, probe, function)
+            save_aoc_results('', weight, "avg_layer", avg_layer_result, probe, function)
+
             plot(figure, probe, function=function, qty=weight)
             save_mean_rates(mean_fprs, 'fprs', function, weight, probe)
             save_mean_rates(mean_tprs, 'tprs', function, weight, probe)

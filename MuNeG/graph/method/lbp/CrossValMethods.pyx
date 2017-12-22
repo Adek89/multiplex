@@ -46,8 +46,6 @@ cdef class CrossValMethods:
             results_agregator = []
             num_of_res = 0
             class_Mat, adjMat, nodes = separationMethod(graph, defaultClassMat, validation)
-
-
                 #-------------LBP----------------------
             class_mat, i = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
             self.write_stop_iters(i, fold_number, 'flat')
@@ -63,7 +61,6 @@ cdef class CrossValMethods:
             for i in range(0,nrOfNodes,1):
                 fold_sum[i][1]+=sorted_sum[i][1]
                 fold_sum[i][2]+=sorted_sum[i][2]
-            # print sum
             fold_number = fold_number + 1
         return fold_sum
 

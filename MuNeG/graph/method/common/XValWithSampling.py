@@ -15,7 +15,7 @@ class XValMethods():
     def stratifies_x_val(self, nodes, nr_of_folds):
         sorted_nodes = sorted(nodes, key= lambda node: node.id)
         y = [node.label for node in sorted_nodes]
-        str = StratifiedKFold(y, n_folds=nr_of_folds)
+        str = StratifiedKFold(y, n_folds=nr_of_folds, shuffle=True)
         folds = []
         for train_index, test_index in str:
             folds.append((train_index.tolist(), test_index.tolist()))

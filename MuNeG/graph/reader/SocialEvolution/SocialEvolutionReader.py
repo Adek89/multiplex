@@ -13,9 +13,9 @@ class SocialEvolutionReader():
     nodes = dict([])
     layers = dict([])
 
-    def read(self):
+    def read(self, class_label):
         self.graph = nx.MultiGraph()
-        self.load_nodes_with_labels()
+        self.load_nodes_with_labels(class_label)
         l_id = self.load_edges_and_layers()
         l_id = self.load_calls(l_id)
         l_id = self.read_proximity_layer(l_id)
@@ -159,7 +159,7 @@ class SocialEvolutionReader():
                 i = i + 1
             return l_id
 
-    def load_nodes_with_labels(self):
+    def load_nodes_with_labels(self, class_label):
         path = os.path.join(os.path.dirname(__file__), '%s' % PATH_TO_NODES)
         with open(path, 'r') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
@@ -172,11 +172,11 @@ class SocialEvolutionReader():
                     if self.nodes.has_key(node_id):
                         node = self.nodes.get(node_id)
                         prefered_party = row[2]
-                        label = 1 if prefered_party == 'Republican' else 0
+                        label = 1 if prefered_party == class_label else 0
                         node.label = label if label == 1 else node.label
                     else:
                         prefered_party = row[2]
-                        label = 1 if prefered_party == 'Republican' else 0
+                        label = 1 if prefered_party == class_label else 0
                         node = SocialEvolutionNode(node_id, label)
                         self.graph.add_node(node)
                         self.nodes.update({node_id: node})

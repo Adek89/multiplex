@@ -1,30 +1,28 @@
 import sys
-
-import networkx as nx
-
 sys.path.append('D:\pycharm_workspace\multiplex\MuNeG')
 sys.path.append('/home/apopiel/multiplex/MuNeG/')
-from experiments.DecisionFusion import DecisionFusion
+
+from experiments.DecisionFusionReal import DecisionFusion
 import sklearn.metrics as metrics
 import csv
 from graph.method.common.XValWithSampling import XValMethods
+import networkx as nx
 
-nodes = 100
-size = 20
-label = 6
-probIn = 3
-probBetween = 1
+fun = sys.argv[1]
+weight = int(sys.argv[2])
+fold = int(sys.argv[3])
+r = int(sys.argv[4])
+direction = sys.argv[5]
 nrOfLayers = 5
-fold = int(sys.argv[1])
-rep = int(sys.argv[2])
-direction = sys.argv[3]
 keys = ["reduction", "fusion_sum", "fusion_mean", "fusion_layer", "fusion_random", "fusion_convergence_max", "fusion_convergence_min"]
 for l in xrange(1, nrOfLayers+1):
     keys.append("L"+str(l))
 aucs = {}
-df = DecisionFusion(nodes, size, label, probIn, probBetween, nrOfLayers, fold)
-df.generateSyntheticData()
-graph = df.synthetic
+df = DecisionFusion(1, fold, fun)
+df.readRealData()
+xval = XValMethods(df.realGraph)
+df.folds = xval.stratifies_x_val(df.realGraph.nodes(), df.NUMBER_OF_FOLDS)
+graph = df.realGraph
 edges = graph.edges(data=True)
 edges_between_different_labels = filter(lambda e : e[0].label <> e[1].label, edges)
 edges_between_same_labels = filter(lambda e: e[0].label == e[1].label, edges)
@@ -44,12 +42,10 @@ else:
 stopCondition = True
 i = 0
 layer_fully_changed = {}
-xval = XValMethods(df.synthetic)
-df.folds = xval.stratifies_x_val(df.synthetic.nodes(), df.NUMBER_OF_FOLDS)
 while stopCondition:
-    syntheticClassMat, syntheticNrOfClasses = df.nu.createClassMat(df.synthetic)
-    df.syntheticClassMat = syntheticClassMat
-    df.syntheticNrOfClasses = syntheticNrOfClasses
+    realGraphClassMat, realNrOfClasses = df.nu.createClassMat(df.realGraph)
+    df.realGraphClassMat = realGraphClassMat
+    df.realNrOfClasses = realNrOfClasses
     df.flatLBP()
     df.multiLayerLBP()
     df.evaluation()
@@ -58,18 +54,16 @@ while stopCondition:
         roc_auc = metrics.auc(df.fprs_per_method[key], df.tprs_per_method[key])
         aucs_in_iteration.append(roc_auc)
     aucs.update({i:aucs_in_iteration})
-    homogenity_distribution, node_ids = df.calculate_homogenity(df.synthetic)
+    homogenity_distribution, node_ids = df.calculate_homogenity(df.realGraph)
     avg_homogenity = float(sum(homogenity_distribution))/float(len(homogenity_distribution))
-    with open("..\\results\\synthetic\\stats\\distributions_homogenity_" + str(fold) + "_" + str(rep) + ".csv",'ab') as csvfile:
+    with open("/lustre/scratch/apopiel/real/stats/distributions_homogenity_" + str(fold) + "_" + str(r) +".csv",'ab') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow([avg_homogenity, aucs_in_iteration, fold, nx.density(graph), rep])
+        writer.writerow([avg_homogenity, aucs_in_iteration, fold, nx.density(graph), r ])
     i = i + 1
     #change graph
     if len(layer_fully_changed.keys()) == nrOfLayers:
         stopCondition = False
     else:
-        # trzebaby zaczac od wezlow z najwiekszym degree
-        # sprawdzac czy nie tworzymy loopow
         if direction == 'f':
             for l in xrange(1, nrOfLayers+1):
                 if len(edges_in_layers[l]) > 1:
@@ -96,7 +90,7 @@ while stopCondition:
                         graph.add_edge(e1[0], e2[1], weight=data['weight'], layer=data['layer'], conWeight=data['conWeight'])
                     else:
                         graph.add_edge(e1[0], e2[0], weight=data['weight'], layer=data['layer'], conWeight=data['conWeight'])
-                    df.synthetic = graph
+                    df.realGraph = graph
                 else:
                     layer_fully_changed.update({l:True})
         else:

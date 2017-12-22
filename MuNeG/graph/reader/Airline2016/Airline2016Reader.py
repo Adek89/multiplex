@@ -4,8 +4,8 @@ import os
 import networkx as nx
 from graph.reader.Airline2016.Airline2016Node import Airline2016Node
 
-PATH_TO_NODES = '/home/apopiel/multiplex/MuNeG/dataset/Airline2016/airline_nodes_class_%s.csv'
-PATH_TO_EDGES = '/home/apopiel/multiplex/MuNeG/dataset/Airline2016/airline_network_2016.csv'
+PATH_TO_NODES = 'D:\\pycharm_workspace\\multiplex\\MuNeG\\dataset\\Airline2016\\airline_nodes_class_%s.csv'
+PATH_TO_EDGES = 'D:\\pycharm_workspace\\multiplex\\MuNeG\\dataset\\Airline2016\\airline_network_2016.csv'
 class Airline2016Reader():
 
     graph = nx.MultiGraph()

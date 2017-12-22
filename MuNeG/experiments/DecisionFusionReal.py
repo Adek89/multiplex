@@ -3,7 +3,6 @@ Created on 13.03.2014
 
 @author: apopiel
 '''
-import csv
 
 import networkx as nx
 import sklearn.metrics as metrics
@@ -268,12 +267,12 @@ class DecisionFusion(object):
         #     nr_of_unknown_and_all_neighbors_in_layer.append(self.count_avg_nr_of_unknown_neighbours(g, type="layer"))
         #     homogenities_in_layer.append(self.calcuclate_homogenity(g))
 
-        with open(self.file_path + 'real.csv', 'ab') as csvfile:
-            writer = csv.writer(csvfile)
-        
-            writer.writerow([
-                self.realGraph.nodes().__len__(),self.fun, self.terms_map[self.fun], self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
-                            fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMicroLBPFusionLayer, fMicroLBPFusionRandom, fMicroLBPFusionConvergenceMax, fMicroLBPFusionConvergenceMin, [str(e[0]) + ',' + str(e[1]) for e in fMicroFromLayers.iteritems()]])
+        # with open(self.file_path + 'real.csv', 'ab') as csvfile:
+        #     writer = csv.writer(csvfile)
+        #
+        #     writer.writerow([
+        #         self.realGraph.nodes().__len__(),self.fun, self.terms_map[self.fun], self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
+        #                     fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMicroLBPFusionLayer, fMicroLBPFusionRandom, fMicroLBPFusionConvergenceMax, fMicroLBPFusionConvergenceMin, [str(e[0]) + ',' + str(e[1]) for e in fMicroFromLayers.iteritems()]])
 
     def preprocess_for_evaluation(self):
         ids_to_remove = []
@@ -333,3 +332,62 @@ class DecisionFusion(object):
                 results.append(float(summ)/float(len(neighbors)))
         homogenity = float(sum(results))/float(len(graph.nodes()))
         return homogenity
+
+    def calculate_distributions(self, graph, method):
+        # homogenity
+        homogenity_distribution = []
+        known_neighbors_distribution = []
+        unknown_neighbors_distribution = []
+        node_degree_distribution = []
+        node_ids = []
+        nodes = graph.nodes()
+        for train, test in self.folds:
+            for node_id in test:
+                neighbors_with_expected_class = 0
+                known_neighbors = 0
+                unknown_neighbors = 0
+
+                if method == 'reduction':
+                    node_object = filter(lambda n: n.id == node_id, nodes)[0]
+                    neighbors = graph.neighbors(node_object)
+                    for neighbor in neighbors:
+                        if neighbor.id in train:
+                            known_neighbors = known_neighbors + 1
+                            if neighbor.label == node_object.label:
+                                neighbors_with_expected_class = neighbors_with_expected_class + 1
+                        else:
+                            unknown_neighbors = unknown_neighbors + 1
+                else:
+                    node_objects = self.realGraph.nodes()
+                    node_object = filter(lambda n: n.id == node_id, node_objects)[0]
+                    neighbors = graph.neighbors(node_id)
+                    for neighbor in neighbors:
+                        if neighbor in train:
+                            known_neighbors = known_neighbors + 1
+                            neighbor_object = filter(lambda n: n.id == neighbor, node_objects)[0]
+                            if neighbor_object.label == node_object.label:
+                                neighbors_with_expected_class = neighbors_with_expected_class + 1
+                        else:
+                            unknown_neighbors = unknown_neighbors + 1
+                homogenity_distribution.append(float(neighbors_with_expected_class) / float(known_neighbors) if known_neighbors > 0 else 0)
+                known_neighbors_distribution.append(known_neighbors)
+                unknown_neighbors_distribution.append(unknown_neighbors)
+                node_degree_distribution.append(known_neighbors + unknown_neighbors)
+                node_ids.append(node_id)
+        return homogenity_distribution, known_neighbors_distribution, unknown_neighbors_distribution, node_degree_distribution, node_ids
+
+    def calculate_homogenity(self, graph):
+        # homogenity
+        homogenity_distribution = []
+        node_ids = []
+        nodes = graph.nodes()
+        sorted_nodes = sorted(nodes, key=lambda n: n.id)
+        for n in sorted_nodes:
+            neighbors_with_same_class = 0
+            neighbors = graph.neighbors(n)
+            for neighbor in neighbors:
+                if neighbor.label == n.label:
+                    neighbors_with_same_class = neighbors_with_same_class + 1
+            homogenity_distribution.append(float(neighbors_with_same_class)/float(len(neighbors)) if len(neighbors) > 0 else 0.0)
+            node_ids.append(n.id)
+        return homogenity_distribution, node_ids
