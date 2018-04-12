@@ -89,12 +89,9 @@ cdef class LBPTools:
         cdef list row
         for node in classMat:
             if i not in training:
-                rowCurr = classMat[i]
-                int1 = rowCurr[0] 
-                int2 = rowCurr[1]
-                if (int1 != 0.0 or int2 != 0.0):
-                    row = self.prepareUnobservdRow(nrOfClasses)
-                    classMat[i] = row
+                row = self.prepareUnobservdRow(nrOfClasses)
+                classMat[i] = row
+                print 'Row ' + str(i) + ' exchanhed with value:' + str(row)
             i = i + 1
         print 'prepare classmat'
         print classMat

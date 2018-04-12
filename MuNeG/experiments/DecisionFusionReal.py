@@ -213,8 +213,8 @@ class DecisionFusion(object):
         new_fusion_min_conv_scores = []
 
         for id in xrange(0, len(self.realLabels)):
-            # if not id in ids_to_remove:
-            if True:
+            if not id in ids_to_remove:
+            # if True:
                 new_labels.append(self.realLabels[id])
                 new_reduction_scores.append(self.realFlatScores[id])
                 new_fold_sum_scores.append(self.realLBPFoldSumScores[id])
