@@ -88,7 +88,7 @@ def save_mean_rates(means, rate_type, nodes, size, label, probIn, probBetween, n
     target_file.close()
 
 def save_aoc_results(nodes, size, label, probIn, probBetween, nrOfLayers, fold, key, aoc, probe):
-    with open('/lustre/scratch/apopiel/synthetic/aoc/synt_aoc_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + (str(fold) if fold <> '' else 'global') + '_' + str(probe) + '.csv','ab') as csvfile:
+    with open('..\\results\\synthetic\\aoc\\synt_aoc_' + str(nodes) + '_' + str(size) + '_' + str(label) + '_' + str(probIn) + '_' + str(probBetween) + '_' + str(nrOfLayers) + '_' + (str(fold) if fold <> '' else 'global') + '_' + str(probe) + '.csv','ab') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([nodes, size, label, probIn, probBetween, nrOfLayers, fold, key, aoc, probe])
 

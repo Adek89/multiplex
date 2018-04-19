@@ -45,7 +45,7 @@ class DecisionFusion:
     training = []
     validation = []
     
-    FILE_PATH = "..\\results\\synthetic\\"
+    FILE_PATH = "../results/synthetic/"
     
     
     nu = NetworkUtils()
@@ -158,7 +158,7 @@ class DecisionFusion:
 
     def generateSyntheticData(self):
         start_time = time.time()
-        self.synthetic = reader.read_from_gml('..\\results\\', self.build_file_name(),)
+        self.synthetic = reader.read_from_gml('/home/apopiel/multiplex/MuNeG/results/', self.build_file_name(),)
         print("---generation time: %s seconds ---" % str(time.time() - start_time))
         
     '''
@@ -217,6 +217,10 @@ class DecisionFusion:
 
         ids_to_remove = self.preprocess_for_evaluation()
         new_labels = []
+        for id in xrange(0, len(self.syntheticLabels)):
+            if not id in ids_to_remove:
+            # if True:
+                new_labels.append(self.syntheticLabels[id])
         new_reduction_scores = []
         new_fold_sum_scores = []
         new_fusion_mean_scores = []
@@ -224,11 +228,25 @@ class DecisionFusion:
         new_fusion_random_scores = []
         new_fusion_max_conv_scores = []
         new_fusion_min_conv_scores = []
-
-        for id in xrange(0, len(self.syntheticLabels)):
-            if not id in ids_to_remove:
-            # if True:
-                new_labels.append(self.syntheticLabels[id])
+        new_fusion_for_layers = {}
+        for layer, result in self.syntheticFusionForLayersScores.iteritems():
+            new_fusion_for_layers.update({layer : []})
+        if not all(l == 0 for l in new_labels) and not all(l == 1 for l in new_labels):
+            for id in xrange(0, len(self.syntheticLabels)):
+                if not id in ids_to_remove:
+                # if True:
+                    new_reduction_scores.append(self.syntheticFlatScores[id])
+                    new_fold_sum_scores.append(self.syntheticLBPFoldSumScores[id])
+                    new_fusion_mean_scores.append(self.syntheticLBPFusionMeanScores[id])
+                    new_fusion_layer_scores.append(self.syntheticFusionLayerScores[id])
+                    new_fusion_random_scores.append(self.syntheticFusionRandomScores[id])
+                    new_fusion_max_conv_scores.append(self.syntheticFusionConvergenceMaxScores[id])
+                    new_fusion_min_conv_scores.append(self.syntheticFusionConvergenceMinScores[id])
+                    for layer, result in self.syntheticFusionForLayersScores.iteritems():
+                            new_fusion_for_layers[layer].append(result[id])
+        else:
+            new_labels = self.syntheticLabels
+            for id in xrange(0, len(self.syntheticLabels)):
                 new_reduction_scores.append(self.syntheticFlatScores[id])
                 new_fold_sum_scores.append(self.syntheticLBPFoldSumScores[id])
                 new_fusion_mean_scores.append(self.syntheticLBPFusionMeanScores[id])
@@ -236,6 +254,8 @@ class DecisionFusion:
                 new_fusion_random_scores.append(self.syntheticFusionRandomScores[id])
                 new_fusion_max_conv_scores.append(self.syntheticFusionConvergenceMaxScores[id])
                 new_fusion_min_conv_scores.append(self.syntheticFusionConvergenceMinScores[id])
+                for layer, result in self.syntheticFusionForLayersScores.iteritems():
+                    new_fusion_for_layers[layer].append(result[id])
         fMacroFlatSynthetic = metrics.f1_score(self.syntheticLabels, self.syntheticFlatResult, pos_label=None, average='micro')
         self.append_roc_rates_for_average(new_reduction_scores, new_labels, "reduction")
         fMacroLBPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticLBPFoldSum, pos_label=None, average='micro')
@@ -253,13 +273,13 @@ class DecisionFusion:
         fMicroFromLayers = {}
         for layer, result in self.syntheticFusionForLayers.iteritems():
             fMicroFromLayers[layer] = metrics.f1_score(self.syntheticLabels, result, pos_label=None, average='micro')
-            self.append_roc_rates_for_average(self.syntheticFusionForLayersScores[layer], new_labels, 'L'+str(layer))
+            self.append_roc_rates_for_average(new_fusion_for_layers[layer], new_labels, 'L'+str(layer))
         # fMacroRWPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticRWPFoldSum, pos_label=None, average='micro')
         # fMacroRWPSyntheticFusionMean = metrics.f1_score(self.syntheticLabels, self.syntheticRWPFusionMean, pos_label=None, average='micro')
         # fMacroRWPSyntheticResult = metrics.f1_score(self.syntheticLabels, self.rwpResult, pos_label=None, average='micro')
         # fMacroRWCSyntheticResult = metrics.f1_score(self.syntheticLabels, self.syntheticRwcResult, pos_label=None, average='micro')
 
-        with open("..\\results\\synthetic\\stats\\res_" + self.build_output_file_name(),'wb') as csvfile:
+        with open("/lustre/scratch/apopiel/synthetic/stats/res_" + self.build_output_file_name(),'wb') as csvfile:
             writer = csv.writer(csvfile)
             self.write_method_results(writer, "expected", self.syntheticLabels)
             self.write_method_results(writer, "redution", self.syntheticFlatResult)
