@@ -1,13 +1,14 @@
 import csv
+import sys
+sys.path.append('D:\pycharm_workspace\multiplex\MuNeG')
+from graph.reader.StarWars.StarWarsReader import StarWarsReader
 
-from graph.reader.DanioRerio.DanioRerioReader import DanioRerioReader
-
-reader = DanioRerioReader()
-reader.read('GO:0005634')
+reader = StarWarsReader()
+reader.read()
 realGraph = reader.graph
 with open('node_colors.txt','ab') as csvfile:
     writer = csv.writer(csvfile, delimiter=' ', lineterminator='\n')
     writer.writerow(['nodeID', 'layerID', 'color', 'size'])
-    for layer_id in xrange(1, 6):
+    for layer_id in xrange(1, 7):
         for node in sorted(realGraph.nodes(), key=lambda n : n.id):
-            writer.writerow([node.id + 1, layer_id, 'red' if node.label == 0 else 'blue', 10])
+            writer.writerow([node.id + 1, layer_id, 'green' if node.label == 0 else 'orange', 10])
