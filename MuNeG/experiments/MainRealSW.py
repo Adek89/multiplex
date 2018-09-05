@@ -191,7 +191,7 @@ def main(probe, type_of_exp):
 
 
 if __name__ == '__main__':
-    for i in xrange(2, 21):
-        main(i, 'default')
+    for i in xrange(1, 21):
+        main(i, 'anakin_dark')
 
 

@@ -9,9 +9,12 @@ import csv
 from graph.reader.SocialEvolution.SocialEvolutionNode import SocialEvolutionNode
 class SocialEvolutionReader():
 
-    graph = nx.MultiGraph()
-    nodes = dict([])
-    layers = dict([])
+
+
+    def __init__(self):
+        self.graph = nx.MultiGraph()
+        self.nodes = dict([])
+        self.layers = dict([])
 
     def read(self, class_label):
         self.graph = nx.MultiGraph()

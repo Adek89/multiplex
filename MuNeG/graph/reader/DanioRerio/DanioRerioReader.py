@@ -10,9 +10,11 @@ PATH_TO_NODES = '..\\..\\..\\dataset\\DanioRerio\\danioRerio_layout.txt'
 PATH_TO_FUNCTIONS = '..\\..\\..\\dataset\\DanioRerio\\danioRerio_functions.txt'
 class DanioRerioReader():
 
-    graph = nx.MultiGraph()
-    nodes = dict([])
 
+
+    def __init__(self):
+        self.graph = nx.MultiGraph()
+        self.nodes = dict([])
 
     def prepare_graph(self):
         for i in xrange(1, 6):

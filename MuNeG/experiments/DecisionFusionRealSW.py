@@ -142,7 +142,7 @@ class DecisionFusion(object):
     '''      
     def readRealData(self):
         reader = StarWarsReader()
-        reader.read(isAnakinEqualVader=False)
+        reader.read()
         self.realGraph = reader.graph
         # ga = GraphAnalyser(self.realGraph)
         # ga.analyse()
@@ -287,3 +287,19 @@ class DecisionFusion(object):
                     maxi = j
             classMatForEv.append(maxi)
         return classMatForEv
+
+    def calculate_homogenity(self, graph):
+        # homogenity
+        homogenity_distribution = []
+        node_ids = []
+        nodes = graph.nodes()
+        sorted_nodes = sorted(nodes, key=lambda n: n.id)
+        for n in sorted_nodes:
+            neighbors_with_same_class = 0
+            neighbors = graph.neighbors(n)
+            for neighbor in neighbors:
+                if neighbor.label == n.label:
+                    neighbors_with_same_class = neighbors_with_same_class + 1
+            homogenity_distribution.append(float(neighbors_with_same_class)/float(len(neighbors)) if len(neighbors) > 0 else 0.0)
+            node_ids.append(n.id)
+        return homogenity_distribution, node_ids

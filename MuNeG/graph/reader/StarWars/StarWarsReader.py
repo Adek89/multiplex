@@ -8,8 +8,9 @@ PATH_TO_NODES = '..\\..\\..\\dataset\\StarWars\\StarWars_layout.txt'
 PATH_TO_NETWORK = '..\\..\\..\\dataset\\StarWars\\StarWars_episode%s.edges'
 class StarWarsReader():
 
-    graph = nx.MultiGraph()
-    nodes = dict([])
+    def __init__(self):
+        self.graph = nx.MultiGraph()
+        self.nodes = dict([])
 
     def prepare_file(self, path):
         path = os.path.join(os.path.dirname(__file__), '%s' % path)

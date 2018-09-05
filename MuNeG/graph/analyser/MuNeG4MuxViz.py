@@ -2,9 +2,10 @@ import csv
 import math
 import sys
 import time
-
-from graph.gen.GraphGenerator import GraphGenerator
-
+sys.path.append('D:\pycharm_workspace\multiplex\MuNeG')
+from experiments.DecisionFusion import DecisionFusion
+from graph.reader.Airline2016.Airline2016Reader import Airline2016Reader
+from graph.reader.SocialEvolution.SocialEvolutionReader import SocialEvolutionReader
 
 def build_file_name(nodes, avg_in_group, homogenity, prob_in, prob_out, layers):
     homogenity = homogenity if homogenity in [5.5, 6.5, 7.5, 8.5, 9.5] else int(math.floor(homogenity))
@@ -14,22 +15,36 @@ def build_file_name(nodes, avg_in_group, homogenity, prob_in, prob_out, layers):
             homogenity) + '_' + str(prob_in) + '_' + str(
             prob_out) + '_' + str(layers) + '.gml'
 
-def generateSyntheticData(nodes, avg_in_group, homogenity, prob_in, prob_out, layers):
-    start_time = time.time()
-    gen = GraphGenerator(nodes, avg_in_group, [1, 2, 3, 4], homogenity, prob_in, prob_out, ['L1', 'L2', 'L3', 'L4'])
-    synthetic = gen.generate()
-    print("---generation time: %s seconds ---" % str(time.time() - start_time))
-    return synthetic
+# def generateSyntheticData(nodes, avg_in_group, homogenity, prob_in, prob_out, layers):
+#     start_time = time.time()
+#     gen = GraphGenerator(nodes, avg_in_group, [1, 2, 3, 4], homogenity, prob_in, prob_out, ['L1', 'L2', 'L3', 'L4'])
+#     synthetic = gen.generate()
+#     print("---generation time: %s seconds ---" % str(time.time() - start_time))
+#     return synthetic
 
 
 if __name__ == "__main__":
-    nodes = int(sys.argv[1])
-    avg_in_group = int(sys.argv[2])
-    homogenity = float(sys.argv[3])
-    prob_in = float(sys.argv[4])
-    prob_out = float(sys.argv[5])
-    layers = int(sys.argv[6])
-    graph = generateSyntheticData(nodes, avg_in_group, homogenity, prob_in, prob_out, layers)
+    # -------------------Synthetic
+    # nodes = int(sys.argv[1])
+    # avg_in_group = int(sys.argv[2])
+    # homogenity = float(sys.argv[3])
+    # prob_in = float(sys.argv[4])
+    # prob_out = float(sys.argv[5])
+    # layers = int(sys.argv[6])
+    # # graph = generateSyntheticData(nodes, avg_in_group, homogenity, prob_in, prob_out, layers)
+    # df = DecisionFusion(nodes, avg_in_group, homogenity, prob_in, prob_out, layers, 2)
+    # df.generateSyntheticData()
+    # graph = df.synthetic
+
+    # -------------------Airline
+    # reader = Airline2016Reader()
+    # reader.read(0, 'f')
+    # graph = reader.graph
+
+    # ------------------Social Evolution
+    reader = SocialEvolutionReader()
+    reader.read("Democrat")
+    graph = reader.graph
 
     layers_set = set([])
     nodes_set = set([])
@@ -68,7 +83,7 @@ if __name__ == "__main__":
     with open('node_colors.txt','ab') as csvfile:
         writer = csv.writer(csvfile, delimiter=' ', lineterminator='\n')
         writer.writerow(['nodeID', 'layerID', 'color', 'size'])
-        for layer_id in xrange(1, 5):
+        for layer_id in xrange(1, 9):
             for node in sorted(graph.nodes(), key=lambda n : n.id):
-                writer.writerow([node.id + 1, layer_id, 'red' if node.label == 0 else 'blue', 10])
+                writer.writerow([node.id + 1, layer_id, 'green' if node.label == 0 else 'orange', 10])
 

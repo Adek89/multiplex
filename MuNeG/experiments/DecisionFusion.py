@@ -143,6 +143,8 @@ class DecisionFusion:
         group = int(self.PROBABILITY_OF_EDGE_EXISTANCE_IN_SAME_GROUP )
         between_other_groups = self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS if self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS in [0.1, 0.5] else int(self.PROBABILITY_OF_EDGE_EXISTANCE_BETWEEN_OTHER_GROUPS)
         nodes = int(round(float(self.NUMBER_OF_NODES) / 100.0) * 100)
+        if nodes < 100:
+            nodes = self.NUMBER_OF_NODES
         return 'muneg_' + str(nodes) + '_' + str(self.AVERAGE_GROUP_SIZE) + '_' + str(
             homogenity) + '_' + str(group) + '_' + str(
             between_other_groups) + '_' + str(self.nrOfLayers) + '.gml'
@@ -158,7 +160,7 @@ class DecisionFusion:
 
     def generateSyntheticData(self):
         start_time = time.time()
-        self.synthetic = reader.read_from_gml('/home/apopiel/multiplex/MuNeG/results/', self.build_file_name(),)
+        self.synthetic = reader.read_from_gml('D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\', self.build_file_name(),)
         print("---generation time: %s seconds ---" % str(time.time() - start_time))
         
     '''
@@ -279,7 +281,7 @@ class DecisionFusion:
         # fMacroRWPSyntheticResult = metrics.f1_score(self.syntheticLabels, self.rwpResult, pos_label=None, average='micro')
         # fMacroRWCSyntheticResult = metrics.f1_score(self.syntheticLabels, self.syntheticRwcResult, pos_label=None, average='micro')
 
-        with open("/lustre/scratch/apopiel/synthetic/stats/res_" + self.build_output_file_name(),'wb') as csvfile:
+        with open("..//results//synthetic//stats//res_" + self.build_output_file_name(),'wb') as csvfile:
             writer = csv.writer(csvfile)
             self.write_method_results(writer, "expected", self.syntheticLabels)
             self.write_method_results(writer, "redution", self.syntheticFlatResult)
@@ -298,7 +300,7 @@ class DecisionFusion:
         lbp_tools = tools.LBPTools(self.NUMBER_OF_NODES, self.synthetic, self.syntheticClassMat, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.percentOfTrainignNodes)
         lbp_tools.separate_layer(self.synthetic, self.LAYERS_WEIGHTS, self.syntheticClassMat)
 
-        with open("/lustre/scratch/apopiel/synthetic/stats/distributions_" + self.build_output_file_name(),'wb') as csvfile:
+        with open("..//results//synthetic//stats//distributions_" + self.build_output_file_name(),'wb') as csvfile:
             writer = csv.writer(csvfile)
             homogenity_distribution, known_neighbors_distribution, unknown_neighbors_distribution, node_degree_distribution, node_ids = self.calculate_distributions(self.synthetic, "reduction")
             writer.writerow([self.NUMBER_OF_NODES, self.AVERAGE_GROUP_SIZE, self.GROUP_LABEL_HOMOGENITY,
