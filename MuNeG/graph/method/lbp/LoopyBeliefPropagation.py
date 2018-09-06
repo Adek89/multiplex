@@ -44,7 +44,7 @@ class LoopyBeliefPropagation:
                     temp_pos = temp_pos * classMat[elem, 1]
             phi[i,0] = classMat[i,0] * temp_neg
             phi[i,1] = classMat[i,1] * temp_pos
-        # psi = self.calculate_psi_based_on_homogenity(adjMat, classMat, trainingInstances, testingInstances)
+        psi, avg_homogenity = self.calculate_psi_based_on_homogenity(adjMat, classMat, trainingInstances, testingInstances)
         messages = np.full(classMat.shape, 1)
         for k in range(0, repetitions):
             pre_messages = messages.copy()
@@ -74,12 +74,16 @@ class LoopyBeliefPropagation:
                 break
         beliefs = classMat.copy()
         for i in testingInstances:
+            if avg_homogenity < 0.5:
+                beliefs[i,0] = phi[i,1] * messages[i,0]
+                beliefs[i,1] = phi[i,0] * messages[i,1]
+        else:
             beliefs[i,0] = phi[i,0] * messages[i,0]
             beliefs[i,1] = phi[i,1] * messages[i,1]
-            row = beliefs[i,:]
-            new_sum = self.normalize(row)
-            beliefs[i,0] = new_sum[0]
-            beliefs[i,1] = new_sum[1]
+        row = beliefs[i,:]
+        new_sum = self.normalize(row)
+        beliefs[i,0] = new_sum[0]
+        beliefs[i,1] = new_sum[1]
         return beliefs, k
             
     def stopConditionReached(self, delta, epsilon):
@@ -128,7 +132,7 @@ class LoopyBeliefPropagation:
             avg_homogenity = 0.9
         end = time.time()
         print("time of calculation: " + str(end - start))
-        return  [[avg_homogenity, 1.0-avg_homogenity], [1.0-avg_homogenity, avg_homogenity]]
+        return  [[avg_homogenity, 1.0-avg_homogenity], [1.0-avg_homogenity, avg_homogenity]], avg_homogenity
 
     def set_no_connection(self, neighbours, testingInstances):
         neighbours[0, testingInstances] = 0
