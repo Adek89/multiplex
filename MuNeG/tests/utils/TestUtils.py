@@ -12,11 +12,14 @@ class TestUtils():
         groupBlue = Group('b', 2)
         node1 = Node(groupRed, 1, 0)
         node2 = Node(groupBlue, 0, 1)
-        node3 = Node(groupRed, 1, 2)
+        node3 = Node(groupRed, 2, 2)
         node4 = Node(groupBlue, 0, 3)
         node5 = Node(groupBlue, 1, 4)
-        nodes = ({node1, node2, node3, node4, node5})
-        nodeList = [node1, node2, node3, node4, node5]
+        node6 = Node(groupRed, 2, 5)
+        node7 = Node(groupBlue, 1, 6)
+        node8 = Node(groupRed, 2, 7)
+        nodes = ({node1, node2, node3, node4, node5, node6, node7, node8})
+        nodeList = [node1, node2, node3, node4, node5, node6, node7, node8]
         edge1 = dict([('layer', 'L1'), ('conWeight', 0.5)])
         edge2 = dict([('layer', 'L2'), ('conWeight', 0.5)])
         edgesData = ([edge1, edge2])
@@ -35,6 +38,16 @@ class TestUtils():
                     yield (nodes[0], nodes[1], edgesData[0])
                 elif (i == 4):
                     yield (nodes[1], nodes[4], edgesData[0])
+                elif (i == 5):
+                    yield (nodes[0], nodes[3], edgesData[0])
+                elif (i == 6):
+                    yield (nodes[0], nodes[6], edgesData[0])
+                elif (i == 7):
+                    yield (nodes[6], nodes[7], edgesData[0])
+                elif (i == 8):
+                    yield (nodes[1], nodes[7], edgesData[0])
+                elif (i == 9):
+                    yield (nodes[2], nodes[5], edgesData[0])
 
     def prepareTestClassMat(self):
         defaultClassMat = np.ndarray(shape=(5, 2))
@@ -46,12 +59,15 @@ class TestUtils():
         return defaultClassMat
 
     def prepareTestClassMatWithUnknownNodes(self):
-        testClassMat = np.ndarray(shape=(5, 2))
-        testClassMat[0] = [0.1, 0.9]
-        testClassMat[1] = [0.5, 0.5]
-        testClassMat[2] = [0.1, 0.9]
-        testClassMat[3] = [0.9, 0.1]
-        testClassMat[4] = [0.5, 0.5]
+        testClassMat = np.ndarray(shape=(8, 3))
+        testClassMat[0] = [0.05, 0.9, 0.05]
+        testClassMat[1] = [0.33, 0.33, 0.33]
+        testClassMat[2] = [0.05, 0.05, 0.9]
+        testClassMat[3] = [0.9, 0.05, 0.05]
+        testClassMat[4] = [0.33, 0.33, 0.33]
+        testClassMat[5] = [0.05, 0.05, 0.9]
+        testClassMat[6] = [0.05, 0.9, 0.05]
+        testClassMat[7] = [0.05, 0.05, 0.9]
         return testClassMat
 
     def prepareEdgesList(self, edges, nodesList):

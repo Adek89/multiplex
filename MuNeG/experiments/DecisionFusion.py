@@ -238,44 +238,44 @@ class DecisionFusion:
                 if not id in ids_to_remove:
                 # if True:
                     new_reduction_scores.append(self.syntheticFlatScores[id])
-                    new_fold_sum_scores.append(self.syntheticLBPFoldSumScores[id])
-                    new_fusion_mean_scores.append(self.syntheticLBPFusionMeanScores[id])
-                    new_fusion_layer_scores.append(self.syntheticFusionLayerScores[id])
-                    new_fusion_random_scores.append(self.syntheticFusionRandomScores[id])
-                    new_fusion_max_conv_scores.append(self.syntheticFusionConvergenceMaxScores[id])
-                    new_fusion_min_conv_scores.append(self.syntheticFusionConvergenceMinScores[id])
-                    for layer, result in self.syntheticFusionForLayersScores.iteritems():
-                            new_fusion_for_layers[layer].append(result[id])
+                    # new_fold_sum_scores.append(self.syntheticLBPFoldSumScores[id])
+                    # new_fusion_mean_scores.append(self.syntheticLBPFusionMeanScores[id])
+                    # new_fusion_layer_scores.append(self.syntheticFusionLayerScores[id])
+                    # new_fusion_random_scores.append(self.syntheticFusionRandomScores[id])
+                    # new_fusion_max_conv_scores.append(self.syntheticFusionConvergenceMaxScores[id])
+                    # new_fusion_min_conv_scores.append(self.syntheticFusionConvergenceMinScores[id])
+                    # for layer, result in self.syntheticFusionForLayersScores.iteritems():
+                    #         new_fusion_for_layers[layer].append(result[id])
         else:
             new_labels = self.syntheticLabels
             for id in xrange(0, len(self.syntheticLabels)):
                 new_reduction_scores.append(self.syntheticFlatScores[id])
-                new_fold_sum_scores.append(self.syntheticLBPFoldSumScores[id])
-                new_fusion_mean_scores.append(self.syntheticLBPFusionMeanScores[id])
-                new_fusion_layer_scores.append(self.syntheticFusionLayerScores[id])
-                new_fusion_random_scores.append(self.syntheticFusionRandomScores[id])
-                new_fusion_max_conv_scores.append(self.syntheticFusionConvergenceMaxScores[id])
-                new_fusion_min_conv_scores.append(self.syntheticFusionConvergenceMinScores[id])
-                for layer, result in self.syntheticFusionForLayersScores.iteritems():
-                    new_fusion_for_layers[layer].append(result[id])
+                # new_fold_sum_scores.append(self.syntheticLBPFoldSumScores[id])
+                # new_fusion_mean_scores.append(self.syntheticLBPFusionMeanScores[id])
+                # new_fusion_layer_scores.append(self.syntheticFusionLayerScores[id])
+                # new_fusion_random_scores.append(self.syntheticFusionRandomScores[id])
+                # new_fusion_max_conv_scores.append(self.syntheticFusionConvergenceMaxScores[id])
+                # new_fusion_min_conv_scores.append(self.syntheticFusionConvergenceMinScores[id])
+                # for layer, result in self.syntheticFusionForLayersScores.iteritems():
+                #     new_fusion_for_layers[layer].append(result[id])
         fMacroFlatSynthetic = metrics.f1_score(self.syntheticLabels, self.syntheticFlatResult, pos_label=None, average='micro')
         self.append_roc_rates_for_average(new_reduction_scores, new_labels, "reduction")
-        fMacroLBPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticLBPFoldSum, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fold_sum_scores, new_labels, "fusion_sum")
-        fMacroLBPSyntheticFusionMean =  metrics.f1_score(self.syntheticLabels, self.syntheticLBPFusionMean, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_mean_scores, new_labels, "fusion_mean")
-        fMicroLBPFusionLayer = metrics.f1_score(self.syntheticLabels, self.syntheticFusionLayer, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_layer_scores, new_labels, "fusion_layer")
-        fMicroLBPFusionRandom = metrics.f1_score(self.syntheticLabels, self.syntheticFusionRadom, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_random_scores, new_labels, "fusion_random")
-        fMicroLBPFusionConvergenceMax = metrics.f1_score(self.syntheticLabels, self.syntheticFusionConvergenceMax, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_max_conv_scores, new_labels, "fusion_convergence_max")
-        fMicroLBPFusionConvergenceMin = metrics.f1_score(self.syntheticLabels, self.syntheticFusionConvergenceMin, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_min_conv_scores, new_labels, "fusion_convergence_min")
-        fMicroFromLayers = {}
-        for layer, result in self.syntheticFusionForLayers.iteritems():
-            fMicroFromLayers[layer] = metrics.f1_score(self.syntheticLabels, result, pos_label=None, average='micro')
-            self.append_roc_rates_for_average(new_fusion_for_layers[layer], new_labels, 'L'+str(layer))
+        # fMacroLBPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticLBPFoldSum, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fold_sum_scores, new_labels, "fusion_sum")
+        # fMacroLBPSyntheticFusionMean =  metrics.f1_score(self.syntheticLabels, self.syntheticLBPFusionMean, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_mean_scores, new_labels, "fusion_mean")
+        # fMicroLBPFusionLayer = metrics.f1_score(self.syntheticLabels, self.syntheticFusionLayer, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_layer_scores, new_labels, "fusion_layer")
+        # fMicroLBPFusionRandom = metrics.f1_score(self.syntheticLabels, self.syntheticFusionRadom, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_random_scores, new_labels, "fusion_random")
+        # fMicroLBPFusionConvergenceMax = metrics.f1_score(self.syntheticLabels, self.syntheticFusionConvergenceMax, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_max_conv_scores, new_labels, "fusion_convergence_max")
+        # fMicroLBPFusionConvergenceMin = metrics.f1_score(self.syntheticLabels, self.syntheticFusionConvergenceMin, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_min_conv_scores, new_labels, "fusion_convergence_min")
+        # fMicroFromLayers = {}
+        # for layer, result in self.syntheticFusionForLayers.iteritems():
+        #     fMicroFromLayers[layer] = metrics.f1_score(self.syntheticLabels, result, pos_label=None, average='micro')
+        #     self.append_roc_rates_for_average(new_fusion_for_layers[layer], new_labels, 'L'+str(layer))
         # fMacroRWPSyntheticFoldSum = metrics.f1_score(self.syntheticLabels, self.syntheticRWPFoldSum, pos_label=None, average='micro')
         # fMacroRWPSyntheticFusionMean = metrics.f1_score(self.syntheticLabels, self.syntheticRWPFusionMean, pos_label=None, average='micro')
         # fMacroRWPSyntheticResult = metrics.f1_score(self.syntheticLabels, self.rwpResult, pos_label=None, average='micro')
@@ -285,14 +285,14 @@ class DecisionFusion:
             writer = csv.writer(csvfile)
             self.write_method_results(writer, "expected", self.syntheticLabels)
             self.write_method_results(writer, "redution", self.syntheticFlatResult)
-            self.write_method_results(writer, "fold_sum", self.syntheticLBPFoldSum)
-            self.write_method_results(writer, "fusion_mean", self.syntheticLBPFusionMean)
-            self.write_method_results(writer, "fusion_layer", self.syntheticFusionLayer)
-            self.write_method_results(writer, "fusion_random", self.syntheticFusionRandom)
-            self.write_method_results(writer, "fusion_convergence_max", self.syntheticFusionConvergenceMax)
-            self.write_method_results(writer, "fusion_convergence_min", self.syntheticFusionConvergenceMin)
-            for layer, result in self.syntheticFusionForLayers.iteritems():
-                self.write_method_results(writer, "L"+str(layer), result)
+            # self.write_method_results(writer, "fold_sum", self.syntheticLBPFoldSum)
+            # self.write_method_results(writer, "fusion_mean", self.syntheticLBPFusionMean)
+            # self.write_method_results(writer, "fusion_layer", self.syntheticFusionLayer)
+            # self.write_method_results(writer, "fusion_random", self.syntheticFusionRandom)
+            # self.write_method_results(writer, "fusion_convergence_max", self.syntheticFusionConvergenceMax)
+            # self.write_method_results(writer, "fusion_convergence_min", self.syntheticFusionConvergenceMin)
+            # for layer, result in self.syntheticFusionForLayers.iteritems():
+            #     self.write_method_results(writer, "L"+str(layer), result)
         
 
     def postprocessing(self):

@@ -2,22 +2,24 @@ import sys
 sys.path.append('D:\pycharm_workspace\multiplex\MuNeG')
 sys.path.append('/home/apopiel/multiplex/MuNeG/')
 
-from experiments.DecisionFusionRealSW import DecisionFusion
+from experiments.DecisionFusionRealAirline import DecisionFusion
 import sklearn.metrics as metrics
 import csv
 from graph.method.common.XValWithSampling import XValMethods
 import networkx as nx
 
 fold = int(sys.argv[1])
-r = int(sys.argv[2])
-direction = sys.argv[3]
-nrOfLayers = 6
+threshold = int(sys.argv[2])
+class_label = sys.argv[3]
+r = int(sys.argv[4])
+direction = sys.argv[5]
+nrOfLayers = 132
 keys = ["reduction"]
 # for l in xrange(1, nrOfLayers+1):
 #     keys.append("L"+str(l))
 aucs = {}
-df = DecisionFusion(1, fold)
-df.readRealData()
+df = DecisionFusion(1, fold, threshold)
+df.readRealData(threshold, class_label)
 xval = XValMethods(df.realGraph)
 df.folds = xval.stratifies_x_val(df.realGraph.nodes(), df.NUMBER_OF_FOLDS)
 graph = df.realGraph
@@ -30,13 +32,13 @@ for l in xrange(1, nrOfLayers+1):
 if direction == 'f':
     for e in edges_between_different_labels:
         data = e[2]
-        layer = data['weight']
-        edges_in_layers[layer].append(e)
+        # layer = data['weight']
+        # edges_in_layers[layer].append(e)
 else:
     for e in edges_between_same_labels:
         data = e[2]
-        layer = data['weight']
-        edges_in_layers[layer].append(e)
+        # layer = data['weight']
+        # edges_in_layers[layer].append(e)
 stopCondition = True
 i = 0
 layer_fully_changed = {}
@@ -58,7 +60,7 @@ while stopCondition:
     homogenity_distribution, node_ids = df.calculate_homogenity(df.realGraph)
     avg_homogenity = float(sum(homogenity_distribution))/float(len(homogenity_distribution))
     # with open("/lustre/scratch/apopiel/real_sw/stats/distributions_homogenity_" + str(fold) + "_" + str(r) +".csv",'ab') as csvfile:
-    with open("D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\real_sw\\stats\\distributions_homogenity_" + str(fold) + "_" + str(r) +".csv",'ab') as csvfile:
+    with open("D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\real_airline\\stats\\distributions_homogenity_" + str(fold) + "_" + str(r) +".csv",'ab') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([avg_homogenity, aucs_in_iteration, fold, nx.density(graph), r ])
     i = i + 1

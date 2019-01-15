@@ -3,7 +3,6 @@ Created on 19.02.2014
 
 @author: apopiel
 '''
-import math
 import time
 
 import numpy as np
@@ -32,58 +31,62 @@ class LoopyBeliefPropagation:
         calculate phi, which will be fixed for whole propagation. Phi has meaning only for test nodes.
         For training nodes we will write values from class matrix
         '''
+        nr_of_classes = classMat.shape[1]
+        temp_values = {}
         phi = classMat.copy()
         for i in testingInstances:
             row = adjMat[i,:]
             row[0, testingInstances] = 0
-            temp_neg = 1
-            temp_pos = 1
+            for c_id in xrange(0, nr_of_classes):
+                temp_values.update({c_id:1.0})
             for elem in xrange(0, row.shape[1]):
                 if row[0, elem] <> 0:
-                    temp_neg = temp_neg * classMat[elem, 0]
-                    temp_pos = temp_pos * classMat[elem, 1]
-            phi[i,0] = classMat[i,0] * temp_neg
-            phi[i,1] = classMat[i,1] * temp_pos
-        psi, avg_homogenity = self.calculate_psi_based_on_homogenity(adjMat, classMat, trainingInstances, testingInstances)
+                    for c_id in xrange(0, nr_of_classes):
+                        temp_phi = temp_values[c_id]
+                        temp_values.update({c_id:temp_phi * classMat[elem, c_id]})
+            for c_id in xrange(0, nr_of_classes):
+                phi[i,c_id] = classMat[i,c_id] * temp_values[c_id]
+        psi = self.calculate_psi_based_on_homogenity(adjMat, classMat, trainingInstances, testingInstances)
         messages = np.full(classMat.shape, 1)
         for k in range(0, repetitions):
             pre_messages = messages.copy()
             messages = np.full(classMat.shape, 1)
             for i in testingInstances:
-                sum = [0.0, 0.0]
-                for j in xrange(0, 2): #number of classes
-                    sum[0] = sum[0] + (psi[0][j] * phi[i,j])
-                    sum[1] = sum[1] + (psi[1][j] * phi[i,j])
-                sum[0] = sum[0] * pre_messages[i, 0]
-                sum[1] = sum[1] * pre_messages[i, 1]
-                pre_new_sum = self.normalize(sum)
+                sum = [0.0 for c_id in xrange(0, nr_of_classes)]
+                for j in xrange(0, nr_of_classes): #number of classes
+                    for c_id in xrange(0, nr_of_classes):
+                        sum[c_id] = sum[c_id] + (psi[c_id][j] * phi[i,j])
+                for c_id in xrange(0, nr_of_classes):
+                    sum[c_id] = sum[c_id] * pre_messages[i, c_id]
+                pre_new_sum = self.normalize(sum, nr_of_classes)
                 neighbours = adjMat[i,:]
                 neighbours[0, trainingInstances] = 0
                 for n in xrange(0, neighbours.shape[1]):
                     if neighbours[0,n] >= 1:
-                        messages[n,0] = pre_new_sum[0] * messages[n, 0]
-                        messages[n,1] = pre_new_sum[1] * messages[n, 1]
-                        sum = [0.0, 0.0]
+                        for c_id in xrange(0, nr_of_classes):
+                            messages[n,c_id] = pre_new_sum[c_id] * messages[n, c_id]
+                        sum = [0.0 for c_id in xrange(0, nr_of_classes)]
                         row = messages[n,:]
-                        sum[0] = row[0]
-                        sum[1] = row[1]
-                        new_sum = self.normalize(sum)
-                        messages[n,0] = new_sum[0]
-                        messages[n,1] = new_sum[1]
+                        for c_id in xrange(0, nr_of_classes):
+                            sum[c_id] = row[c_id]
+                        new_sum = self.normalize(sum, nr_of_classes)
+                        for c_id in xrange(0, nr_of_classes):
+                            messages[n,c_id] = new_sum[c_id]
             if (self.stopConditionReached(messages-pre_messages, epsilon)):
                 break
+        phi_correlations = {}
+        for c_id in xrange(0, nr_of_classes):
+            maximum_class_value = max(psi[c_id])
+            maximum_class = psi[c_id].index(maximum_class_value)
+            phi_correlations.update({c_id : maximum_class})
         beliefs = classMat.copy()
         for i in testingInstances:
-            if avg_homogenity < 0.5:
-                beliefs[i,0] = phi[i,1] * messages[i,0]
-                beliefs[i,1] = phi[i,0] * messages[i,1]
-        else:
-            beliefs[i,0] = phi[i,0] * messages[i,0]
-            beliefs[i,1] = phi[i,1] * messages[i,1]
-        row = beliefs[i,:]
-        new_sum = self.normalize(row)
-        beliefs[i,0] = new_sum[0]
-        beliefs[i,1] = new_sum[1]
+            for c_id in xrange(0, nr_of_classes):
+                beliefs[i,c_id] = phi[i,phi_correlations[c_id]] * messages[i,c_id]
+            row = beliefs[i,:]
+            new_sum = self.normalize(row, nr_of_classes)
+            for c_id in xrange(0, nr_of_classes):
+                beliefs[i,c_id] = new_sum[c_id]
         return beliefs, k
             
     def stopConditionReached(self, delta, epsilon):
@@ -93,21 +96,22 @@ class LoopyBeliefPropagation:
         return maxValue<epsilon
                
                     
-    def normalize(self, sum):
-        new_sum = [0.0, 0.0]
-        faktor = sum[0] + sum[1]
+    def normalize(self, sum_for_all_classes, nr_of_classes):
+        new_sum = [0.0 for c_id in xrange(0, nr_of_classes)]
+        faktor = sum(sum_for_all_classes)
         if faktor == 0.0:
-            new_sum[0] = 0.5
-            new_sum[1] = 0.5
+            for c_id in xrange(0, nr_of_classes):
+                new_sum[c_id] = float(1.0/nr_of_classes)
         else:
             norm_faktor = 1.0/faktor
-            new_sum[0] = sum[0] * norm_faktor
-            new_sum[1] = sum[1] * norm_faktor
+            for c_id in xrange(0, nr_of_classes):
+                new_sum[c_id] = sum_for_all_classes[c_id] * norm_faktor
         return new_sum
 
     def calculate_psi_based_on_homogenity(self, adjMat, classMat, trainingInstances, testingInstances):
         start = time.time()
         print("start of psi calculation: " + str(start))
+        nr_of_classes = classMat.shape[1]
         #arrays with adj rows for all known nodes
         neighbours_of_known_nodes = [adjMat[i,:] for i in trainingInstances]
         #filter test nodes in previously calculated array
@@ -117,22 +121,35 @@ class LoopyBeliefPropagation:
         known_neighbours_of_known_nodes = [n.copy() for n in neighbours_of_known_nodes]
         map(lambda n : self.remove_weights(n, trainingInstances), known_neighbours_of_known_nodes)
 
-
-        #set 1 when neighbour have same class, 0 otherwise
-        map(lambda (i, n): self.neigbours_with_same_class(n, classMat, classMat[trainingInstances[i],:]), enumerate(neighbours_of_known_nodes))
-        sum_of_known_nodes_with_with_same_class = [sum([n[0,elem] for elem in xrange(n.shape[1])]) for n in neighbours_of_known_nodes]
-        # number_of_neighbours_for_known_nodes =
+        #set class id for all neighbours, when there is no connection set -1
+        map(lambda (i, n): self.neigbours_classes(n, classMat, nr_of_classes), enumerate(neighbours_of_known_nodes))
+        nodes_neighbours_classes_map = {}
+        map(lambda (i, n): nodes_neighbours_classes_map.update({i : self.nr_of_neigbours_classes(n, nr_of_classes)}),enumerate(neighbours_of_known_nodes))
         sum_of_all_neighbours = [sum([n[0,elem] for elem in xrange(n.shape[1])]) for n in known_neighbours_of_known_nodes]
-        homogenity = [float(sum_of_known_nodes_with_with_same_class[i]/float(n)) if n <> 0 else float('nan') for i, n in enumerate(sum_of_all_neighbours)]
-        homogenity = filter(lambda elem : not math.isnan(elem), homogenity)
-        if len(homogenity) > 0:
-            avg_homogenity = float(sum(homogenity))/float(len(homogenity))
-        else:
-            print "No connections between known nodes. I use default value of psi"
-            avg_homogenity = 0.9
+
+        homogenity = {}
+        map(lambda (id, neighbour_classes): homogenity.update({id: [float(elem)/float(sum_of_all_neighbours[id]) if sum_of_all_neighbours[id] <> 0 else 0.5 for elem in neighbour_classes]}), nodes_neighbours_classes_map.iteritems())
+
+        class_mats_of_known_nodes = classMat[trainingInstances,:]
+        classes_of_known_nodes = [self.get_class_for_row(class_mats_of_known_nodes[id,:], nr_of_classes)for id in xrange(0, class_mats_of_known_nodes.shape[0])]
+
+        avg_homogenity = {}
+        map(lambda c_id: avg_homogenity.update({c_id: []}), xrange(0, nr_of_classes))
+        nr_of_nodes_from_classes = [classes_of_known_nodes.count(c_id) for c_id in xrange(0, nr_of_classes)]
+        map(lambda (id, h): avg_homogenity.update({classes_of_known_nodes[id] : self.add_homogenities(avg_homogenity[classes_of_known_nodes[id]], h)}) , homogenity.iteritems())
+        map(lambda (id, h): avg_homogenity.update({id : [float(elem)/float(nr_of_nodes_from_classes[id]) for elem in h]}), avg_homogenity.iteritems())
+        psi = [h for (c_id, h) in avg_homogenity.iteritems()]
         end = time.time()
         print("time of calculation: " + str(end - start))
-        return  [[avg_homogenity, 1.0-avg_homogenity], [1.0-avg_homogenity, avg_homogenity]], avg_homogenity
+        return psi
+
+    def add_homogenities(self, exisitng_h, h):
+        if len(exisitng_h) == 0:
+            return h
+        else:
+            for i in xrange(0, len(exisitng_h)):
+                exisitng_h[i] = exisitng_h[i] + h[i]
+            return exisitng_h
 
     def set_no_connection(self, neighbours, testingInstances):
         neighbours[0, testingInstances] = 0
@@ -146,16 +163,38 @@ class LoopyBeliefPropagation:
         else:
             n[0,i] = 0
 
-    def neigbours_with_same_class(self, n, classMat, row_of_n):
-        same_classes = [1 if classMat[x,0] == row_of_n[0]
-                             and  classMat[x,0] == row_of_n[0]
-                             and n[0,x] <> 0
-                        else 0
-                        for x in xrange(0, n.shape[1])]
-        map(lambda (i, x) : self.assign_value_to_neighbours(n, i, x), enumerate(same_classes))
+    def neigbours_classes(self, n, classMat, nr_of_classes):
+        neighbours_classes = []
+        for x in xrange(0, n.shape[1]):
+            if n[0,x] == 0:
+                neighbours_classes.append(-1)
+            else:
+                neighbours_classes.append(self.get_class_for_row(classMat[x,:], nr_of_classes))
+        map(lambda (i, x) : self.assign_value_to_neighbours(n, i, x), enumerate(neighbours_classes))
+
+
+    def get_class_for_row(self, class_mat_row, nr_of_classes):
+        node_class = 0
+        for c_id in xrange(0, nr_of_classes):
+            if class_mat_row[c_id] > class_mat_row[node_class]:
+                node_class = c_id
+        return node_class
 
     def assign_value_to_neighbours(self, n, i, x):
-        n[0,i] = 1 if x == 1 else 0
+        n[0,i] = x
+
+    def nr_of_neigbours_classes(self, n, nr_of_classes):
+        neighbours_counts = [0 for c_id in xrange(0, nr_of_classes)]
+        for i in xrange(0, n.shape[1]):
+            if n[0,i] <> -1:
+                for c_id in xrange(0, nr_of_classes):
+                    if n[0,i] == c_id:
+                        neighbours_counts[c_id] = neighbours_counts[c_id] + 1
+                        break
+        return neighbours_counts
+
+
+
 
 
 

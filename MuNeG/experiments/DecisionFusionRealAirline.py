@@ -5,6 +5,8 @@ Created on 13.03.2014
 '''
 
 import networkx as nx
+import numpy as np
+import scipy
 import sklearn.metrics as metrics
 from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.method.common.XValWithSampling import XValMethods
@@ -168,7 +170,7 @@ class DecisionFusion(object):
         flatLBP = FlatLBP()
         nrOfNodes = self.realGraph.nodes().__len__()
         fold_sum, self.realFlatResult = flatLBP.start(self.realGraph, nrOfNodes, self.realGraphClassMat, self.realNrOfClasses, self.LBP_MAX_STEPS, self.LBP_TRESHOLD, self.NUMBER_OF_FOLDS, self.percentOfTrainignNodes, self.method, self.folds)
-        self.realFlatScores = [element[2] for element in fold_sum]
+        self.realFlatScores = [[element[i] for i in xrange(1, self.realGraphClassMat.shape[1]+1)] for element in fold_sum]
         
         
     def multiLayerLBP(self):
@@ -229,64 +231,58 @@ class DecisionFusion(object):
                 if not id in ids_to_remove:
                 # if True:
                     new_reduction_scores.append(self.realFlatScores[id])
-                    new_fold_sum_scores.append(self.realLBPFoldSumScores[id])
-                    new_fusion_mean_scores.append(self.realLBPFusionMeanScores[id])
-                    new_fusion_layer_scores.append(self.realFusionLayerScores[id])
-                    new_fusion_random_scores.append(self.realFusionRandomScores[id])
-                    new_fusion_max_conv_scores.append(self.realFusionConvergenceMaxScores[id])
-                    new_fusion_min_conv_scores.append(self.realFusionConvergenceMinScores[id])
-                    for layer, result in self.realFusionForLayersScores.iteritems():
-                        new_fusion_for_layers[layer].append(result[id])
+                    # new_fold_sum_scores.append(self.realLBPFoldSumScores[id])
+                    # new_fusion_mean_scores.append(self.realLBPFusionMeanScores[id])
+                    # new_fusion_layer_scores.append(self.realFusionLayerScores[id])
+                    # new_fusion_random_scores.append(self.realFusionRandomScores[id])
+                    # new_fusion_max_conv_scores.append(self.realFusionConvergenceMaxScores[id])
+                    # new_fusion_min_conv_scores.append(self.realFusionConvergenceMinScores[id])
+                    # for layer, result in self.realFusionForLayersScores.iteritems():
+                    #     new_fusion_for_layers[layer].append(result[id])
         else:
             new_labels = self.realLabels
             for id in xrange(0, len(self.realLabels)):
                 new_reduction_scores.append(self.realFlatScores[id])
-                new_fold_sum_scores.append(self.realLBPFoldSumScores[id])
-                new_fusion_mean_scores.append(self.realLBPFusionMeanScores[id])
-                new_fusion_layer_scores.append(self.realFusionLayerScores[id])
-                new_fusion_random_scores.append(self.realFusionRandomScores[id])
-                new_fusion_max_conv_scores.append(self.realFusionConvergenceMaxScores[id])
-                new_fusion_min_conv_scores.append(self.realFusionConvergenceMinScores[id])
-                for layer, result in self.realFusionForLayersScores.iteritems():
-                    new_fusion_for_layers[layer].append(result[id])
+                # new_fold_sum_scores.append(self.realLBPFoldSumScores[id])
+                # new_fusion_mean_scores.append(self.realLBPFusionMeanScores[id])
+                # new_fusion_layer_scores.append(self.realFusionLayerScores[id])
+                # new_fusion_random_scores.append(self.realFusionRandomScores[id])
+                # new_fusion_max_conv_scores.append(self.realFusionConvergenceMaxScores[id])
+                # new_fusion_min_conv_scores.append(self.realFusionConvergenceMinScores[id])
+                # for layer, result in self.realFusionForLayersScores.iteritems():
+                #     new_fusion_for_layers[layer].append(result[id])
         ev = EvaluationTools()
         fMacroFlatReal = metrics.f1_score(self.realLabels, self.realFlatResult,pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_reduction_scores, new_labels, "reduction")
-        fMacroLBPRealFoldSum = metrics.f1_score(self.realLabels, self.realLBPFoldSum,pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fold_sum_scores, new_labels, "fusion_sum")
-        fMacroLBPRealFusionMean = metrics.f1_score(self.realLabels, self.realLBPFusionMean,pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_mean_scores, new_labels, "fusion_mean")
-        fMicroLBPFusionLayer = metrics.f1_score(self.realLabels, self.realFusionLayer, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_layer_scores, new_labels, "fusion_layer")
-        fMicroLBPFusionRandom = metrics.f1_score(self.realLabels, self.realFusionRadom, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_random_scores, new_labels, "fusion_random")
-        fMicroLBPFusionConvergenceMax = metrics.f1_score(self.realLabels, self.realFusionConvergenceMax, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_max_conv_scores, new_labels, "fusion_convergence_max")
-        fMicroLBPFusionConvergenceMin = metrics.f1_score(self.realLabels, self.realFusionConvergenceMin, pos_label=None, average='micro')
-        self.append_roc_rates_for_average(new_fusion_min_conv_scores, new_labels, "fusion_convergence_min")
-        fMicroFromLayers = {}
-        for layer, result in self.realFusionForLayers.iteritems():
-            fMicroFromLayers[layer] = metrics.f1_score(self.realLabels, result, pos_label=None, average='micro')
-            self.append_roc_rates_for_average(new_fusion_for_layers[layer], new_labels, 'L'+str(layer))
-        # fMacroRWPRealFoldSum = metrics.f1_score(self.realLabels, self.realRWPFoldSum,pos_label=None, average='micro')
-        # fMacroRWPRealFusionMean = metrics.f1_score(self.realLabels, self.realRWPFusionMean,pos_label=None, average='micro')
-        # fMacroRWPReal = metrics.f1_score(self.realLabels, self.rwpResult,pos_label=None, average='micro')
-        # fMacroRWCRealResult = metrics.f1_score(self.realLabels, self.realRwcResult,pos_label=None, average='micro')
-        #
-        # plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-        # plt.xlim([0.0, 1.0])
-        # plt.ylim([0.0, 1.05])
-        # plt.xlabel('False Positive Rate')
-        # plt.ylabel('True Positive Rate')
-        # plt.title('Receiver operating characteristic example')
-        # plt.legend(loc="lower right")
-        # plt.show()
-        # with open(self.file_path + 'real.csv', 'ab') as csvfile:
-        #     writer = csv.writer(csvfile)
-        #
-        #     writer.writerow([
-        #         self.realGraph.nodes().__len__(), self.method, self.percentOfTrainignNodes if self.method == 2 else self.NUMBER_OF_FOLDS,
-        #                     fMacroFlatReal, fMacroLBPRealFoldSum, fMacroLBPRealFusionMean, fMicroLBPFusionLayer, fMicroLBPFusionRandom, fMicroLBPFusionConvergenceMax, fMicroLBPFusionConvergenceMin, [str(e[0]) + ',' + str(e[1]) for e in fMicroFromLayers.iteritems()]])
+        for c_id in xrange(0, self.realNrOfClasses):
+            self.append_roc_rates_for_average([score[c_id] for score in new_reduction_scores], [1 if l == c_id else 0 for l in new_labels], str(c_id))
+        self.append_roc_rates_for_average([score[c_id]  for c_id in xrange(0, self.realNrOfClasses) for score in new_reduction_scores], [1 if l == c_id else 0 for c_id in xrange(0, self.realGraphClassMat.shape[1]) for l in new_labels], "micro")
+        self.append_macro_results()
+        # self.append_roc_rates_for_average(new_reduction_scores, new_labels, "reduction")
+        # fMacroLBPRealFoldSum = metrics.f1_score(self.realLabels, self.realLBPFoldSum,pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fold_sum_scores, new_labels, "fusion_sum")
+        # fMacroLBPRealFusionMean = metrics.f1_score(self.realLabels, self.realLBPFusionMean,pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_mean_scores, new_labels, "fusion_mean")
+        # fMicroLBPFusionLayer = metrics.f1_score(self.realLabels, self.realFusionLayer, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_layer_scores, new_labels, "fusion_layer")
+        # fMicroLBPFusionRandom = metrics.f1_score(self.realLabels, self.realFusionRadom, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_random_scores, new_labels, "fusion_random")
+        # fMicroLBPFusionConvergenceMax = metrics.f1_score(self.realLabels, self.realFusionConvergenceMax, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_max_conv_scores, new_labels, "fusion_convergence_max")
+        # fMicroLBPFusionConvergenceMin = metrics.f1_score(self.realLabels, self.realFusionConvergenceMin, pos_label=None, average='micro')
+        # self.append_roc_rates_for_average(new_fusion_min_conv_scores, new_labels, "fusion_convergence_min")
+        # fMicroFromLayers = {}
+        # for layer, result in self.realFusionForLayers.iteritems():
+        #     fMicroFromLayers[layer] = metrics.f1_score(self.realLabels, result, pos_label=None, average='micro')
+        #     self.append_roc_rates_for_average(new_fusion_for_layers[layer], new_labels, 'L'+str(layer))
+
+    def append_macro_results(self):
+        all_fpr = np.unique(np.concatenate([self.fprs_per_method[str(i)] for i in range(self.realNrOfClasses)]))
+        mean_tpr = np.zeros_like(all_fpr)
+        for i in range(self.realNrOfClasses):
+            mean_tpr += scipy.interp(all_fpr, self.fprs_per_method[str(i)], self.tprs_per_method[str(i)])
+        mean_tpr /= self.realNrOfClasses
+        self.fprs_per_method["macro"] = all_fpr
+        self.tprs_per_method["macro"] = mean_tpr
 
     def preprocess_for_evaluation(self):
         ids_to_remove = []

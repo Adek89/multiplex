@@ -9,18 +9,18 @@ import sklearn.metrics as metrics
 import csv
 from graph.method.common.XValWithSampling import XValMethods
 
-nodes = 6
-size = 2
-label = 9
-probIn = 9
-probBetween = 5
+nodes = 100
+size = 20
+label = 6
+probIn = 3
+probBetween = 1
 nrOfLayers = 5
 fold = int(sys.argv[1])
 rep = int(sys.argv[2])
 direction = sys.argv[3]
-keys = ["reduction", "fusion_sum", "fusion_mean", "fusion_layer", "fusion_random", "fusion_convergence_max", "fusion_convergence_min"]
-for l in xrange(1, nrOfLayers+1):
-    keys.append("L"+str(l))
+keys = ["reduction"]
+# for l in xrange(1, nrOfLayers+1):
+#     keys.append("L"+str(l))
 aucs = {}
 df = DecisionFusion(nodes, size, label, probIn, probBetween, nrOfLayers, fold)
 df.generateSyntheticData()
@@ -51,7 +51,7 @@ while stopCondition:
     df.syntheticClassMat = syntheticClassMat
     df.syntheticNrOfClasses = syntheticNrOfClasses
     df.flatLBP()
-    df.multiLayerLBP()
+    # df.multiLayerLBP()
     df.evaluation()
     aucs_in_iteration = []
     for key in keys:

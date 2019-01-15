@@ -12,9 +12,9 @@ fold = int(sys.argv[1])
 r = int(sys.argv[2])
 direction = sys.argv[3]
 nrOfLayers = 8
-keys = ["reduction", "fusion_sum", "fusion_mean", "fusion_layer", "fusion_random", "fusion_convergence_max", "fusion_convergence_min"]
-for l in xrange(1, nrOfLayers+1):
-    keys.append("L"+str(l))
+keys = ["reduction"]#, "fusion_sum", "fusion_mean", "fusion_layer", "fusion_random", "fusion_convergence_max", "fusion_convergence_min"]
+# for l in xrange(1, nrOfLayers+1):
+#     keys.append("L"+str(l))
 aucs = {}
 df = DecisionFusion(1, fold)
 df.readRealData("Democrat")
@@ -45,10 +45,13 @@ while stopCondition:
     df.realGraphClassMat = realGraphClassMat
     df.realNrOfClasses = realNrOfClasses
     df.flatLBP()
-    df.multiLayerLBP()
+    # df.multiLayerLBP()
     df.evaluation()
     aucs_in_iteration = []
-    for key in keys:
+    roc_methods = [str(c_id) for c_id in xrange(0,realNrOfClasses)]
+    roc_methods.append("micro")
+    roc_methods.append("macro")
+    for key in roc_methods:
         roc_auc = metrics.auc(df.fprs_per_method[key], df.tprs_per_method[key])
         aucs_in_iteration.append(roc_auc)
     aucs.update({i:aucs_in_iteration})

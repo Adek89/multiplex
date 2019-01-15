@@ -13,12 +13,12 @@ class Airline2016Reader():
     name_quantity = {'22Q': 2, 'WE': 6, '5Y': 512, '5X': 906, 'FX': 1886, 'WN': 5451, '5V': 316, 'ZX': 4, 'S5': 940, 'VJT': 5, 'K3': 51, '1RQ': 48, 'F9': 407, '2TQ': 25, 'K5': 48, 'WP': 14, 'O6': 1, 'K8': 600, 'HBQ': 14, '29Q': 6, 'G7': 534, '1BQ': 40, '9K': 90, 'G4': 1370, 'ABX': 164, 'NC': 213, '9E': 724, 'RVQ': 2, 'X9': 105, 'PRQ': 8, 'SEB': 9, '8C': 81, '9S': 54, 'C5': 238, 'GV': 501, 'WRD': 4, 'CH': 6, 'ELL': 4, '0WQ': 713, 'N8': 34, 'AMQ': 787, '1SQ': 12, 'ADB': 5, 'B6': 505, '28Q': 10, 'XP': 437, '2O': 116, 'VI': 12, '1WQ': 12, 'OO': 1608, 'SY': 1006, 'HA': 76, '8V': 178, 'KD': 154, '09Q': 1465, 'KAH': 117, 'KO': 189, 'SNK': 17, 'KS': 105, 'KAQ': 167, 'X4': 10, 'J5': 70, 'PM': 14, 'EM': 210, 'DL': 2347, 'KH': 18, 'Q5': 17, '0MQ': 28, '1TQ': 19, 'U7': 322, '1EQ': 54, 'YX': 1124, '4W': 72, 'M6': 28, 'WST': 4, '3M': 62, 'NEW': 2, '4EQ': 44, 'YR': 67, '3F': 40, 'YV': 780, 'LF': 442, '1PQ': 4, 'PT': 165, '4Y': 326, 'I4': 14, '7H': 395, 'EE': 739, 'GL': 1391, '7S': 474, 'ZW': 430, 'AJQ': 461, 'V8': 186, 'PH': 4, 'PO': 66, '04Q': 887, 'Z3': 2, 'AA': 2719, '20Q': 5, 'AC': 94, 'ZK': 74, '2HQ': 37, 'GCH': 1, 'KAT': 10, '1YQ': 36, 'AS': 387, 'NK': 432, '1QQ': 2, 'KLQ': 309, 'VX': 99, 'AX': 417, 'CP': 306, 'EV': 1485, '4B': 60, 'AAT': 4, '1AQ': 670, '2E': 27, 'QX': 163, 'GFQ': 110, 'H6': 1255, '2F': 71, '8D': 131, '8E': 418, 'PFQ': 5, '27Q': 523, 'MW': 96, 'MQ': 627, 'L2': 136, 'QK': 2, '23Q': 33, 'UA': 2749, 'OH': 967}
 
     def __init__(self):
-        self.graph = nx.MultiGraph()
+        self.graph = nx.Graph()
         self.nodes = dict([])
         self.layers = dict([])
 
     def read(self, threshold, classLabel):
-        self.graph = nx.MultiGraph()
+        self.graph = nx.Graph()
         id = self.read_nodes(classLabel)
         self.read_edges(id, threshold)
         pass
@@ -54,7 +54,7 @@ class Airline2016Reader():
                             self.nodes.update({name_to:node_to})
                             node_id = node_id + 1
                         layer_name = 'L' + str(layer_id)
-                        self.graph.add_edge(node_from, node_to, weight=layer_id, layer=layer_name, conWeight=0.5)
+                        self.graph.add_edge(node_from, node_to)#, weight=layer_id, layer=layer_name, conWeight=0.5)
                         i = i + 1
         pass
 

@@ -31,8 +31,13 @@ cdef class CrossValMethods:
         utils = NetworkUtils()
         cdef list fold_sum = []
         cdef int i
+        nr_of_classes = defaultClassMat.shape[1]
         for i in range(0,nrOfNodes,1):
-            fold_sum.append([i,0,0])
+            fold_sum_row_for_node = []
+            fold_sum_row_for_node.append(i)
+            for c_id in xrange(0, nr_of_classes):
+                fold_sum_row_for_node.append(0)
+            fold_sum.append(fold_sum_row_for_node)
         cdef int fold_number = 1
         cdef list training
         cdef list validation
@@ -52,15 +57,20 @@ cdef class CrossValMethods:
             #create zero result matrix
             sum = []
             for node in nodes:
+                test_result_for_node = []
+                test_result_for_node.append(node.id)
                 if (node.id in validation):
-                    sum.append([node.id,class_mat[node.id,0],class_mat[node.id,1]])
-                else:  
-                    sum.append([node.id,0,0])
+                    for c_id in xrange(0, nr_of_classes):
+                        test_result_for_node.append(class_mat[node.id,c_id])
+                else:
+                    for c_id in xrange(0, nr_of_classes):
+                        test_result_for_node.append(0)
+                sum.append(test_result_for_node)
             sorted_sum = utils.sort_sum(sum)
             #fusion - sum
             for i in range(0,nrOfNodes,1):
-                fold_sum[i][1]+=sorted_sum[i][1]
-                fold_sum[i][2]+=sorted_sum[i][2]
+                for c_id in xrange(0, nr_of_classes):
+                    fold_sum[i][c_id+1]+=sorted_sum[i][c_id+1]
             fold_number = fold_number + 1
         return fold_sum
 
