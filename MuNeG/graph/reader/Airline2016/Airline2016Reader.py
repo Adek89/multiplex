@@ -54,7 +54,7 @@ class Airline2016Reader():
                             self.nodes.update({name_to:node_to})
                             node_id = node_id + 1
                         layer_name = 'L' + str(layer_id)
-                        self.graph.add_edge(node_from, node_to)#, weight=layer_id, layer=layer_name, conWeight=0.5)
+                        self.graph.add_edge(node_from, node_to, weight=layer_id, layer=layer_name, conWeight=0.5)
                         i = i + 1
         pass
 

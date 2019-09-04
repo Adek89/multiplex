@@ -28,11 +28,12 @@ class NetworkUtils:
         sortedNodes = sorted(nodes, key=attrgetter('id'))
         for node in sortedNodes:
             row = []
+            x = 1.0/(2.0*nrOfClasses-1)
             for i in range(0, nrOfClasses):
                 if (node.label == i):
-                    row.append(0.9)
+                    row.append(nrOfClasses*x)
                 else:
-                    row.append(0.1)
+                    row.append(x)
             classMat.append(row)
         classMatNumPy = np.asarray(classMat)    
         return classMatNumPy, nrOfClasses    

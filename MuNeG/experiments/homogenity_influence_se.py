@@ -7,19 +7,20 @@ import sklearn.metrics as metrics
 import csv
 from graph.method.common.XValWithSampling import XValMethods
 import networkx as nx
+import math
 
 fold = int(sys.argv[1])
 r = int(sys.argv[2])
 direction = sys.argv[3]
-nrOfLayers = 8
+nrOfLayers = 7
 keys = ["reduction"]#, "fusion_sum", "fusion_mean", "fusion_layer", "fusion_random", "fusion_convergence_max", "fusion_convergence_min"]
 # for l in xrange(1, nrOfLayers+1):
 #     keys.append("L"+str(l))
 aucs = {}
-df = DecisionFusion(1, fold)
+df = DecisionFusion(1, math.fabs(fold))
 df.readRealData("Democrat")
 xval = XValMethods(df.realGraph)
-df.folds = xval.stratifies_x_val(df.realGraph.nodes(), df.NUMBER_OF_FOLDS)
+df.folds = xval.stratifies_x_val(df.realGraph.nodes(), fold)
 graph = df.realGraph
 edges = graph.edges(data=True)
 edges_between_different_labels = filter(lambda e : e[0].label <> e[1].label, edges)
@@ -46,7 +47,7 @@ while stopCondition:
     df.realNrOfClasses = realNrOfClasses
     df.flatLBP()
     # df.multiLayerLBP()
-    df.evaluation()
+    df.evaluation(fold)
     aucs_in_iteration = []
     roc_methods = [str(c_id) for c_id in xrange(0,realNrOfClasses)]
     roc_methods.append("micro")
@@ -57,7 +58,7 @@ while stopCondition:
     aucs.update({i:aucs_in_iteration})
     homogenity_distribution, node_ids = df.calculate_homogenity(df.realGraph)
     avg_homogenity = float(sum(homogenity_distribution))/float(len(homogenity_distribution))
-    with open("/lustre/scratch/apopiel/real_se/stats/distributions_homogenity_" + str(fold) + "_" + str(r) +".csv",'ab') as csvfile:
+    with open("/lustre/scratch/apopiel/real_se/stats_uniplex/distributions_homogenity_" + str(fold) + "_" + str(r) +".csv",'ab') as csvfile:
     # with open("D:\\pycharm_workspace\\multiplex\\MuNeG\\results\\real_se\\stats\\distributions_homogenity_" + str(fold) + "_" + str(r) +".csv",'ab') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([avg_homogenity, aucs_in_iteration, fold, nx.density(graph), r ])

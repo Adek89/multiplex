@@ -1,9 +1,12 @@
 __author__ = 'Adrian'
 
+import math
+
 import networkx as nx
 import numpy as np
 import scipy.sparse as sp
 from sklearn.cross_validation import StratifiedKFold
+
 
 class XValMethods():
 
@@ -15,10 +18,13 @@ class XValMethods():
     def stratifies_x_val(self, nodes, nr_of_folds):
         sorted_nodes = sorted(nodes, key= lambda node: node.id)
         y = [node.label for node in sorted_nodes]
-        str = StratifiedKFold(y, n_folds=nr_of_folds, shuffle=True)
+        str = StratifiedKFold(y, n_folds=math.fabs(nr_of_folds), shuffle=True)
         folds = []
         for train_index, test_index in str:
-            folds.append((train_index.tolist(), test_index.tolist()))
+            if nr_of_folds > 0:
+                folds.append((train_index.tolist(), test_index.tolist()))
+            else:
+                folds.append((test_index.tolist(), train_index.tolist()))
         return folds
 
 

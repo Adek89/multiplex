@@ -11,3 +11,15 @@ class Airline2016Node():
 
     def __repr__(self):
         return str(self.name)
+
+    def __str__(self):
+        return self.id.__str__()+" "+self.label.__str__()+" "+self.name.__str__()
+
+    def get_id(self):
+        return self.id
+
+    def get_label(self):
+        return self.label
+
+    def get_name(self):
+        return self.name

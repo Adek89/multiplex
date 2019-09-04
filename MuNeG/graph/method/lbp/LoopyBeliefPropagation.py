@@ -3,10 +3,10 @@ Created on 19.02.2014
 
 @author: apopiel
 '''
+import math
 import time
 
 import numpy as np
-
 
 class LoopyBeliefPropagation:
 
@@ -47,10 +47,10 @@ class LoopyBeliefPropagation:
             for c_id in xrange(0, nr_of_classes):
                 phi[i,c_id] = classMat[i,c_id] * temp_values[c_id]
         psi = self.calculate_psi_based_on_homogenity(adjMat, classMat, trainingInstances, testingInstances)
-        messages = np.full(classMat.shape, 1)
+        messages = np.full(classMat.shape)
         for k in range(0, repetitions):
             pre_messages = messages.copy()
-            messages = np.full(classMat.shape, 1)
+            messages = np.full(classMat.shape, 1.0)
             for i in testingInstances:
                 sum = [0.0 for c_id in xrange(0, nr_of_classes)]
                 for j in xrange(0, nr_of_classes): #number of classes
@@ -100,13 +100,19 @@ class LoopyBeliefPropagation:
         new_sum = [0.0 for c_id in xrange(0, nr_of_classes)]
         faktor = sum(sum_for_all_classes)
         if faktor == 0.0:
-            for c_id in xrange(0, nr_of_classes):
-                new_sum[c_id] = float(1.0/nr_of_classes)
+            self.normalize_based_on_class_number(new_sum, nr_of_classes)
         else:
-            norm_faktor = 1.0/faktor
-            for c_id in xrange(0, nr_of_classes):
-                new_sum[c_id] = sum_for_all_classes[c_id] * norm_faktor
+            norm_faktor = 1.0/faktor #faktor very near 0 gives norm_faktor as inf
+            if math.isinf(norm_faktor):
+                self.normalize_based_on_class_number(new_sum, nr_of_classes)
+            else:
+                for c_id in xrange(0, nr_of_classes):
+                    new_sum[c_id] = sum_for_all_classes[c_id] * norm_faktor
         return new_sum
+
+    def normalize_based_on_class_number(self, new_sum, nr_of_classes):
+        for c_id in xrange(0, nr_of_classes):
+            new_sum[c_id] = float(1.0 / nr_of_classes)
 
     def calculate_psi_based_on_homogenity(self, adjMat, classMat, trainingInstances, testingInstances):
         start = time.time()
@@ -128,7 +134,7 @@ class LoopyBeliefPropagation:
         sum_of_all_neighbours = [sum([n[0,elem] for elem in xrange(n.shape[1])]) for n in known_neighbours_of_known_nodes]
 
         homogenity = {}
-        map(lambda (id, neighbour_classes): homogenity.update({id: [float(elem)/float(sum_of_all_neighbours[id]) if sum_of_all_neighbours[id] <> 0 else 0.5 for elem in neighbour_classes]}), nodes_neighbours_classes_map.iteritems())
+        map(lambda (id, neighbour_classes): homogenity.update({id: [float(elem)/float(sum_of_all_neighbours[id]) if sum_of_all_neighbours[id] <> 0 else 1.0/float(nr_of_classes) for elem in neighbour_classes]}), nodes_neighbours_classes_map.iteritems())
 
         class_mats_of_known_nodes = classMat[trainingInstances,:]
         classes_of_known_nodes = [self.get_class_for_row(class_mats_of_known_nodes[id,:], nr_of_classes)for id in xrange(0, class_mats_of_known_nodes.shape[0])]
@@ -139,6 +145,7 @@ class LoopyBeliefPropagation:
         map(lambda (id, h): avg_homogenity.update({classes_of_known_nodes[id] : self.add_homogenities(avg_homogenity[classes_of_known_nodes[id]], h)}) , homogenity.iteritems())
         map(lambda (id, h): avg_homogenity.update({id : [float(elem)/float(nr_of_nodes_from_classes[id]) for elem in h]}), avg_homogenity.iteritems())
         psi = [h for (c_id, h) in avg_homogenity.iteritems()]
+        map(lambda (i): self.fill_empty_class(psi[i], i, nr_of_classes), xrange(0,nr_of_classes))
         end = time.time()
         print("time of calculation: " + str(end - start))
         return psi
@@ -193,7 +200,10 @@ class LoopyBeliefPropagation:
                         break
         return neighbours_counts
 
-
+    def fill_empty_class(self, row, c_id, nr_of_classes):
+        if len(row) == 0:
+            for i in xrange(0, nr_of_classes):
+                row.append(0.9 if i == c_id else 0.1/(nr_of_classes-1))
 
 
 
