@@ -7,24 +7,29 @@ import sklearn.metrics as metrics
 import csv
 from graph.method.common.XValWithSampling import XValMethods
 from graph.evaluation.EvaluationTools import EvaluationTools
+from graph.reader.Cora.CoraNode import CoraNode
 import networkx as nx
 import math
+import pickle
+
+def node_destringizer(value):
+    value_str = str(value)
+    value_splitted = value_str.split()
+    if reader == 'Cora':
+        return CoraNode(int(value_splitted[0]),int(value_splitted[1]))
 
 fold = int(sys.argv[1])
 r = int(sys.argv[2])
-direction = sys.argv[3]
+homogenity = float(sys.argv[3])
 reader = sys.argv[4]
 aucs = {}
 ev = EvaluationTools()
 df = DecisionFusion(math.fabs(fold))
-df.readRealData(reader)
-xval = XValMethods(df.realGraph)
-df.folds = xval.stratifies_x_val(df.realGraph.nodes(), fold)
-graph = df.realGraph
-
-edges = graph.edges(data=True)
-edges_between_different_labels = filter(lambda e : e[0].label <> e[1].label, edges)
-edges_between_same_labels = filter(lambda e: e[0].label == e[1].label, edges)
+graph = nx.read_gml("/lustre/scratch/apopiel/real_" + reader.lower() + "/stats/temp_graphs/graph_" + str(r) + "_" + str(homogenity) + ".gml", destringizer=node_destringizer)
+df.realGraph = graph
+folds_file = open("/lustre/scratch/apopiel/real_" + reader.lower() + "/stats/temp_graphs/folds" + str(fold) + "_" + str(r) + ".tmp", "rb")
+df.folds = pickle.load(folds_file)
+folds_file.close()
 
 stopCondition = True
 i = 0
@@ -49,60 +54,3 @@ while stopCondition:
         writer = csv.writer(csvfile)
         writer.writerow([avg_homogenity, aucs_in_iteration, accuracy, fold, nx.density(graph), r ])
     i = i + 1
-    #change graph
-    if direction == 'f':
-        if len(edges_between_different_labels) > 1:
-            e1 = edges_between_different_labels[0]
-            graph.remove_edge(*e1[:2])
-            del edges_between_different_labels[0]
-
-            list_with_left_labels = filter(lambda edge: edge[0].label == e1[0].label and edge[0].id <> e1[0].id, edges_between_different_labels)
-            empty_left_labels = len(list_with_left_labels) == 0
-            if empty_left_labels:
-                list_with_right_labels = filter(lambda edge: edge[1].label == e1[0].label and edge[1].id <> e1[0].id, edges_between_different_labels)
-                if len(list_with_right_labels) > 0:
-                    e2 = list_with_right_labels[0]
-                else:
-                    stopCondition = True
-                    break
-            else:
-                e2 = list_with_left_labels[0]
-            graph.remove_edge(*e2[:2])
-            edges_between_different_labels.remove(e2)
-
-            data = e1[2]
-            if empty_left_labels:
-                graph.add_edge(e1[0], e2[1])
-            else:
-                graph.add_edge(e1[0], e2[0])
-            df.realGraph = graph
-        else:
-            stopCondition = True
-    else:
-        if len(edges_between_same_labels) > 1:
-            e1 = edges_between_same_labels[0]
-            graph.remove_edge(*e1[:2])
-            del edges_between_same_labels[0]
-
-            list_with_left_labels = filter(lambda edge: edge[0].label <> e1[0].label and edge[0].id <> e1[0].id, edges_between_same_labels)
-            empty_left_labels = len(list_with_left_labels) == 0
-            if empty_left_labels:
-                list_with_right_labels = filter(lambda edge: edge[1].label <> e1[0].label and edge[1].id <> e1[0].id, edges_between_same_labels)
-                if len(list_with_right_labels) > 0:
-                    e2 = list_with_right_labels[0]
-                else:
-                    stopCondition = True
-                    break
-            else:
-                e2 = list_with_left_labels[0]
-            graph.remove_edge(*e2[:2])
-            edges_between_same_labels.remove(e2)
-
-            data = e1[2]
-            if empty_left_labels:
-                graph.add_edge(e1[0], e2[1])
-            else:
-                graph.add_edge(e1[0], e2[0])
-            df.realGraph = graph
-        else:
-            stopCondition = True
