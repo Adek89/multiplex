@@ -15,7 +15,7 @@ class CoraReader:
     graph = nx.Graph()
     nodes = dict([])
     classes_dict ={'Case_Based':0, 'Genetic_Algorithms':1, 'Neural_Networks':2, 'Probabilistic_Methods':3, 'Reinforcement_Learning':4, 'Rule_Learning':5, 'Theory':6}
-
+    identity = 0
 
     def prepare_file(self, path):
         path = os.path.join(os.path.dirname(__file__), '%s' % path)
@@ -66,6 +66,7 @@ class CoraReader:
                 except:
                     break
             tokens.next()  # line ending
-            node = CoraNode(id, self.classes_dict[class_name])
+            node = CoraNode(self.identity, self.classes_dict[class_name])
             self.nodes.update({id:node})
             self.graph.add_node(node)
+            self.identity = self.identity + 1

@@ -21,6 +21,7 @@ class DecisionFusion:
     realFlatResult = []
     realFlatScores = []
     realLabels = []
+    homogenities_during_experiment = {}
 
 
     def __init__(self, fold):
@@ -41,7 +42,7 @@ class DecisionFusion:
     def flatLBP(self):
         flatLBP = FlatLBP()
         nrOfNodes = self.realGraph.nodes().__len__()
-        fold_sum, self.realFlatResult = flatLBP.start(self.realGraph, nrOfNodes, self.realGraphClassMat, self.realNrOfClasses, 25, 0.001, self.number_of_folds, 0, 1, self.folds)
+        fold_sum, self.realFlatResult, self.homogenities_during_experiment = flatLBP.start(self.realGraph, nrOfNodes, self.realGraphClassMat, self.realNrOfClasses, 25, 0.001, self.number_of_folds, 0, 1, self.folds)
         self.realFlatScores = [[element[i] for i in xrange(1, self.realGraphClassMat.shape[1]+1)] for element in fold_sum]
 
     def evaluation(self):

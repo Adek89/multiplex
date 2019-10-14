@@ -24,7 +24,7 @@ cdef class CrossValMethods:
         Constructor
         '''
 
-    cpdef list flatCrossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
+    cpdef tuple flatCrossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
                       defaultClassMat, int lbpSteps, float lbpThreshold, object k_fold_cross_validation, folds,
                       object separationMethod, object lbp, list layerWeights, isRandomWalk, float percentOfKnownNodes, object adjMatPrep,
                       object prepareLayers, object prepareClassMat):
@@ -52,7 +52,7 @@ cdef class CrossValMethods:
             num_of_res = 0
             class_Mat, adjMat, nodes = separationMethod(graph, defaultClassMat, validation)
                 #-------------LBP----------------------
-            class_mat, i = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
+            class_mat, i, avg_homogenity = lbp(adjMat, class_Mat, lbpSteps, lbpThreshold, training, validation)
             self.write_stop_iters(i, fold_number, 'flat')
             #create zero result matrix
             sum = []
@@ -72,7 +72,7 @@ cdef class CrossValMethods:
                 for c_id in xrange(0, nr_of_classes):
                     fold_sum[i][c_id+1]+=sorted_sum[i][c_id+1]
             fold_number = fold_number + 1
-        return fold_sum
+        return fold_sum, avg_homogenity
 
     cpdef multiLayerCrossVal(self, list items, int numberOfFolds, graph, int nrOfNodes,
                      np.ndarray defaultClassMat, int lbpSteps, float lbpThreshold, k_fold_cross_validation, folds,

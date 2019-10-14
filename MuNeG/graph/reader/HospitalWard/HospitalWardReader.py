@@ -9,6 +9,8 @@ class HospitalWardReader:
 
     graph = nx.Graph()
     nodes = dict([])
+    classes_dict ={'ADM':0, 'MED':1, 'NUR':2, 'PAT':3}
+    identity = 0
 
     def prepare_file(self, path):
         path = os.path.join(os.path.dirname(__file__), '%s' % path)
@@ -37,7 +39,8 @@ class HospitalWardReader:
         if self.nodes.has_key(id):
             return self.nodes.get(id)
         else:
-            node = HospitalWardNode(id, status)
+            node = HospitalWardNode(self.identity, self.classes_dict.get(status))
             self.nodes.update({id:node})
             self.graph.add_node(node)
+            self.identity = self.identity + 1
             return node

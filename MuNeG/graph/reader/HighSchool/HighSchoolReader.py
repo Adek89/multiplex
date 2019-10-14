@@ -10,6 +10,7 @@ class HighSchoolReader:
     graph = nx.Graph()
     nodes = dict([])
     classes_dict ={'2BIO1':0, '2BIO2':1, '2BIO3':2, 'MP':3, 'MP*1':4, 'MP*2':5, 'PC':6, 'PC*':7, 'PSI*':8}
+    identity = 0
 
     def prepare_file(self, path):
         path = os.path.join(os.path.dirname(__file__), '%s' % path)
@@ -42,7 +43,8 @@ class HighSchoolReader:
         if self.nodes.has_key(id):
             return self.nodes.get(id)
         else:
-            node = HighSchoolNode(id, self.classes_dict.get(label))
+            node = HighSchoolNode(self.identity, self.classes_dict.get(label))
             self.nodes.update({id:node})
             self.graph.add_node(node)
+            self.identity = self.identity + 1
             return node

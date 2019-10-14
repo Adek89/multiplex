@@ -8,6 +8,7 @@ import time
 
 import numpy as np
 
+
 class LoopyBeliefPropagation:
 
 
@@ -46,11 +47,11 @@ class LoopyBeliefPropagation:
                         temp_values.update({c_id:temp_phi * classMat[elem, c_id]})
             for c_id in xrange(0, nr_of_classes):
                 phi[i,c_id] = classMat[i,c_id] * temp_values[c_id]
-        psi = self.calculate_psi_based_on_homogenity(adjMat, classMat, trainingInstances, testingInstances)
-        messages = np.full(classMat.shape)
+        psi, avg_homogenity = self.calculate_psi_based_on_homogenity(adjMat, classMat, trainingInstances, testingInstances)
+        messages = np.full(classMat.shape, 1)
         for k in range(0, repetitions):
             pre_messages = messages.copy()
-            messages = np.full(classMat.shape, 1.0)
+            messages = np.full(classMat.shape, 1)
             for i in testingInstances:
                 sum = [0.0 for c_id in xrange(0, nr_of_classes)]
                 for j in xrange(0, nr_of_classes): #number of classes
@@ -87,7 +88,7 @@ class LoopyBeliefPropagation:
             new_sum = self.normalize(row, nr_of_classes)
             for c_id in xrange(0, nr_of_classes):
                 beliefs[i,c_id] = new_sum[c_id]
-        return beliefs, k
+        return beliefs, k, avg_homogenity
             
     def stopConditionReached(self, delta, epsilon):
         absVal = np.abs(delta)
@@ -148,7 +149,7 @@ class LoopyBeliefPropagation:
         map(lambda (i): self.fill_empty_class(psi[i], i, nr_of_classes), xrange(0,nr_of_classes))
         end = time.time()
         print("time of calculation: " + str(end - start))
-        return psi
+        return psi, avg_homogenity
 
     def add_homogenities(self, exisitng_h, h):
         if len(exisitng_h) == 0:
