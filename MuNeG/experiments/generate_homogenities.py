@@ -1,7 +1,8 @@
 import csv
-import sys
-import networkx as nx
 import pickle
+import sys
+
+import networkx as nx
 
 sys.path.append('/home/apopiel/multiplex/MuNeG/')
 from experiments.DecisionFusionGeneric import DecisionFusion
@@ -35,7 +36,7 @@ while not stopCondition:
     avg_homogenity = float(sum(homogenity_distribution))/float(len(homogenity_distribution))
     i = i + 1
     nx.write_gml(graph, "/lustre/scratch/apopiel/real_" + reader.lower() + "/stats/temp_graphs/graph_" + str(r) + "_" + str(avg_homogenity) + ".gml", stringizer=node_stringizer)
-    with open("home/apopiel/multiplex/MuNeG/results/real/homogenity_steps_" + str(r) +".csv",'ab') as csvfile:
+    with open("/home/apopiel/multiplex/MuNeG/results/real_" + reader.lower() + "/homogenity_steps_" + str(r) +".csv",'ab') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([avg_homogenity, nx.density(graph), r])
     print "Data for homogenity: " + str(avg_homogenity) + " has been written"

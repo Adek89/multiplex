@@ -48,10 +48,10 @@ class LoopyBeliefPropagation:
             for c_id in xrange(0, nr_of_classes):
                 phi[i,c_id] = classMat[i,c_id] * temp_values[c_id]
         psi, avg_homogenity = self.calculate_psi_based_on_homogenity(adjMat, classMat, trainingInstances, testingInstances)
-        messages = np.full(classMat.shape, 1)
+        messages = np.full(classMat.shape, 1.0)
         for k in range(0, repetitions):
             pre_messages = messages.copy()
-            messages = np.full(classMat.shape, 1)
+            messages = np.full(classMat.shape, 1.0)
             for i in testingInstances:
                 sum = [0.0 for c_id in xrange(0, nr_of_classes)]
                 for j in xrange(0, nr_of_classes): #number of classes

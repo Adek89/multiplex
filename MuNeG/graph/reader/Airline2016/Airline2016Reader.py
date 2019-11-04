@@ -17,7 +17,7 @@ class Airline2016Reader():
         self.nodes = dict([])
         self.layers = dict([])
 
-    def read(self, threshold, classLabel):
+    def read(self, threshold=1000, classLabel='p'):
         self.graph = nx.Graph()
         id = self.read_nodes(classLabel)
         self.read_edges(id, threshold)

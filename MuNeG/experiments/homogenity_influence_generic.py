@@ -9,6 +9,7 @@ from graph.evaluation.EvaluationTools import EvaluationTools
 from graph.reader.Cora.CoraNode import CoraNode
 from graph.reader.HospitalWard.HospitalWardNode import HospitalWardNode
 from graph.reader.HighSchool.HighSchoolNode import HighSchoolNode
+from graph.reader.Airline2016.Airline2016Node import Airline2016Node
 import networkx as nx
 import math
 import pickle
@@ -22,6 +23,8 @@ def node_destringizer(value):
         return HospitalWardNode(int(value_splitted[0]),int(value_splitted[1]))
     elif reader == 'HighSchool':
         return HighSchoolNode(int(value_splitted[0]),int(value_splitted[1]))
+    elif reader == 'Airline':
+        return Airline2016Node(int(value_splitted[0]),int(value_splitted[1]),value_splitted[2])
 
 fold = int(sys.argv[1])
 r = int(sys.argv[2])

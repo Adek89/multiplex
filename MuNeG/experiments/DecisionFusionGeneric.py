@@ -4,6 +4,7 @@ import scipy
 import sklearn.metrics as metrics
 from graph.method.lbp.FlatLBP import FlatLBP
 from graph.method.lbp.NetworkUtils import NetworkUtils
+from graph.reader.Airline2016.Airline2016Reader import Airline2016Reader
 from graph.reader.Cora.CoraReader import CoraReader
 from graph.reader.HighSchool.HighSchoolReader import HighSchoolReader
 from graph.reader.HospitalWard.HospitalWardReader import HospitalWardReader
@@ -36,6 +37,8 @@ class DecisionFusion:
             reader = HospitalWardReader()
         elif data == 'Cora':
             reader = CoraReader()
+        elif data == 'Airline':
+            reader = Airline2016Reader()
         reader.read()
         self.realGraph = reader.graph
 
