@@ -30,7 +30,7 @@ class DecisionFusion:
         self.fprs_per_method = {}
         self.tprs_per_method = {}
 
-    def readRealData(self, data):
+    def readRealData(self, data, multilayer=False):
         if data == 'HighSchool':
             reader = HighSchoolReader()
         elif data == 'HospitalWard':
@@ -38,7 +38,7 @@ class DecisionFusion:
         elif data == 'Cora':
             reader = CoraReader()
         elif data == 'Airline':
-            reader = Airline2016Reader()
+            reader = Airline2016Reader(multilayer=multilayer)
         reader.read()
         self.realGraph = reader.graph
 
