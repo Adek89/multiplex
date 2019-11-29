@@ -13,7 +13,7 @@ from graph.reader.Airline2016.Airline2016Node import Airline2016Node
 import networkx as nx
 import math
 import pickle
-from multiprocessing import Process
+from multiprocessing import Pool
 
 def node_destringizer(value):
     value_str = str(value)
@@ -27,50 +27,57 @@ def node_destringizer(value):
     elif reader == 'Airline':
         return Airline2016Node(int(value_splitted[0]),int(value_splitted[1]),value_splitted[2])
 
-def homogenity_influence(fold, r, homogenity, reader):
-    aucs = {}
-    ev = EvaluationTools()
-    df = DecisionFusion(math.fabs(fold))
-    graph = nx.read_gml("/lustre/scratch/apopiel/real_" + reader.lower() + "/stats/temp_graphs/graph_" + str(r) + "_" + str(homogenity) + ".gml", destringizer=node_destringizer)
-    df.realGraph = graph
-    folds_file = open("/lustre/scratch/apopiel/real_" + reader.lower() + "/stats/temp_graphs/folds" + str(fold) + "_" + str(r) + ".tmp", "rb")
-    df.folds = pickle.load(folds_file)
-    folds_file.close()
+def homogenity_influence(input_data):
+    try:
+        fold = input_data[0]
+        r = input_data[1]
+        homogenity = input_data[2]
+        reader = input_data[3]
 
-    stopCondition = True
-    i = 0
-    realGraphClassMat, realNrOfClasses = df.nu.createClassMat(df.realGraph)
-    df.realGraphClassMat = realGraphClassMat
-    df.realNrOfClasses = realNrOfClasses
-    df.flatLBP()
-    df.evaluation()
-    aucs_in_iteration = []
-    roc_methods = [str(c_id) for c_id in xrange(0,realNrOfClasses)]
-    roc_methods.append("micro")
-    roc_methods.append("macro")
-    for key in roc_methods:
-        roc_auc = metrics.auc(df.fprs_per_method[key], df.tprs_per_method[key])
-        aucs_in_iteration.append(roc_auc)
-    aucs.update({i:aucs_in_iteration})
-    homogenity_distribution, node_ids = df.calculate_homogenity(df.realGraph)
-    avg_homogenity = float(sum(homogenity_distribution))/float(len(homogenity_distribution))
-    accuracy = ev.calculateAccuracy(df.realLabels, df.realFlatResult)
-    with open("/lustre/scratch/apopiel/real_" + reader.lower() + "/stats/distributions_homogenity_" + str(fold) + "_" + str(r) +".csv",'ab') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow([avg_homogenity, aucs_in_iteration, accuracy, fold, nx.density(graph), r, df.homogenities_during_experiment ])
-    i = i + 1
+        aucs = {}
+        ev = EvaluationTools()
+        df = DecisionFusion(math.fabs(fold))
+        graph = nx.read_gml("/lustre/scratch/apopiel/real_" + reader.lower() + "/stats/temp_graphs/graph_" + str(r) + "_" + str(homogenity) + ".gml", destringizer=node_destringizer)
+        df.realGraph = graph
+        folds_file = open("/lustre/scratch/apopiel/real_" + reader.lower() + "/stats/temp_graphs/folds" + str(fold) + "_" + str(r) + ".tmp", "rb")
+        df.folds = pickle.load(folds_file)
+        folds_file.close()
+
+        stopCondition = True
+        i = 0
+        realGraphClassMat, realNrOfClasses = df.nu.createClassMat(df.realGraph)
+        df.realGraphClassMat = realGraphClassMat
+        df.realNrOfClasses = realNrOfClasses
+        df.flatLBP()
+        df.evaluation()
+        aucs_in_iteration = []
+        roc_methods = [str(c_id) for c_id in xrange(0,realNrOfClasses)]
+        roc_methods.append("micro")
+        roc_methods.append("macro")
+        for key in roc_methods:
+            roc_auc = metrics.auc(df.fprs_per_method[key], df.tprs_per_method[key])
+            aucs_in_iteration.append(roc_auc)
+        aucs.update({i:aucs_in_iteration})
+        homogenity_distribution, node_ids = df.calculate_homogenity(df.realGraph)
+        avg_homogenity = float(sum(homogenity_distribution))/float(len(homogenity_distribution))
+        accuracy = ev.calculateAccuracy(df.realLabels, df.realFlatResult)
+        with open("/lustre/scratch/apopiel/real_" + reader.lower() + "/stats/distributions_homogenity_" + str(fold) + "_" + str(r) +".csv",'ab') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([avg_homogenity, aucs_in_iteration, accuracy, fold, nx.density(graph), r, df.homogenities_during_experiment ])
+        i = i + 1
+    except:
+        print "Finished with parameters: " + str(homogenity) + " " + str(fold) + " " + str(r) + " " + reader
 
 if __name__ == '__main__':
     fold = int(sys.argv[1])
     r = int(sys.argv[2])
     reader = sys.argv[3]
-    processes = []
+
+    tuples = []
+    pool = Pool(processes=200)
     file = open("/home/apopiel/multiplex/MuNeG/results/real_" + reader.lower() + "/homogenity_steps_" + str(r) + ".csv", "rb")
     csv_reader = csv.reader(file, delimiter=',')
     for row in csv_reader:
         homogenity = float(row[0])
-        p = Process(target=homogenity_influence, args=(fold, r, homogenity, reader))
-        processes.append(p)
-        p.start()
-    for p in processes:
-        p.join()
+        tuples.append((fold, r, homogenity, reader))
+    pool.map(homogenity_influence, tuples)
